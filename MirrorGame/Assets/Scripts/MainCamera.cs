@@ -3,12 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float maxDist = 5;
     [SerializeField] private float lerpSpeed = 0.3f;
-
+    [SerializeField] private float xSensitivity = 5;
+    [SerializeField] private float ySensitivity = 5;
+    [SerializeField] private float minAngle = -35f;
+    [SerializeField] private float maxAngle = 45f;
+    
+    public Quaternion FlatDirection => Quaternion.AngleAxis(_theta, Vector3.up);
+    
     private float _dist;
     private float _theta = 0;
     private float _phi = 0;
@@ -17,8 +24,9 @@ public class MainCamera : MonoBehaviour
     private float _acutalPhi = 0;
     private Vector3 _previousMouse;
     private bool _move = true;
-    [SerializeField] private float xSensitivity = 5;
-    [SerializeField] private float ySensitivity = 5;
+
+
+    public bool Move => _move;
 
     private void Start()
     {
@@ -34,8 +42,10 @@ public class MainCamera : MonoBehaviour
             var diff = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             _theta += diff.x * xSensitivity;
             _phi += diff.y * ySensitivity;
+            _phi = Mathf.Clamp(_phi, minAngle, maxAngle);
             _acutalPhi = Mathf.LerpAngle(_acutalPhi, _phi, lerpSpeed);
             _acutalTheta = Mathf.LerpAngle(_acutalTheta, _theta, lerpSpeed);
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -57,12 +67,12 @@ public class MainCamera : MonoBehaviour
                          Quaternion.AngleAxis(_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
-            var targetPos = target.position+Vector3.up;
+            var targetPos = target.position + Vector3.up;
             var ray = new Ray(targetPos, -offset);
-            
+
             if (Physics.Raycast(ray, out intersectCheck, maxDist))
             {
-                _dist = intersectCheck.distance-0.01f;
+                _dist = intersectCheck.distance - 0.01f;
             }
             else
             {
