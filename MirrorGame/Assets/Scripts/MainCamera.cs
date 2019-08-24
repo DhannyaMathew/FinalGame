@@ -15,12 +15,11 @@ public class MainCamera : MonoBehaviour
     [SerializeField, Range(0.01f, 1f)] private float rotateLerpSpeed = 0.085f;
     [SerializeField, Range(0.01f, 1f)] private float cameraDistLerpSpeed = 0.3f;
 
-    public Quaternion FlatDirection => Quaternion.AngleAxis(_theta, Vector3.up);
-    
+    public float FlatDirection { get; private set; }
+
     private float _dist;
     private float _actualDist;
-    
-    private float _theta;
+
     private float _acutalTheta;
     
     private float _phi;
@@ -38,20 +37,11 @@ public class MainCamera : MonoBehaviour
         if (!GameManager.Paused)
         {
             var diff = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-            _theta += diff.x * xSensitivity;
+            FlatDirection += diff.x * xSensitivity;
             _phi += diff.y * ySensitivity;
             _phi = Mathf.Clamp(_phi, minAngle, maxAngle);
             _acutalPhi = Mathf.Lerp(_acutalPhi, _phi, rotateLerpSpeed);
-            _acutalTheta = Mathf.Lerp(_acutalTheta, _theta, rotateLerpSpeed);
-        }
-
-       
-    }
-
-    private void FixedUpdate()
-    {
-        if (!GameManager.Paused)
-        {
+            _acutalTheta = Mathf.Lerp(_acutalTheta, FlatDirection, rotateLerpSpeed);
             var offset = Quaternion.AngleAxis(_acutalTheta, Vector3.up) *
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
@@ -68,5 +58,8 @@ public class MainCamera : MonoBehaviour
             transform.position = targetPos - _actualDist * offset;
             transform.LookAt(targetPos);
         }
+
+       
     }
+    
 }

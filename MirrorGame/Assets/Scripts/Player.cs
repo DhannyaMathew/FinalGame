@@ -18,12 +18,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (!GameManager.Paused)
-            Movement.GetInput();
-    }
-
-    private void FixedUpdate()
-    {
-        if (!GameManager.Paused)
             Movement.Move(mainCamera.FlatDirection);
     }
+
+   
 }
