@@ -1441,6 +1441,7 @@ GameObject:
   - component: {fileID: 1409186936462023398}
   - component: {fileID: 1409186936462023399}
   - component: {fileID: 1050206565}
+  - component: {fileID: 1050206566}
   m_Layer: 0
   m_Name: Character 1
   m_TagString: Untagged
@@ -1492,8 +1493,6 @@ MonoBehaviour:
   runSpeed: 5
   rotateLerpSpeed: 0.085
   accelerationFactor: 1
-  height: 0.5
-  heightPadding: 0.01
   debug: 1
   maxGroundAngle: 180
   ground:
@@ -1513,8 +1512,22 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &1050206566
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409186936462023401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.26
+  m_Height: 1.81
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94, z: 0}
 --- !u!1 &1409186936542598407
 GameObject:
   m_ObjectHideFlags: 0
