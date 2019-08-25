@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6.066754, g: 8.58853, b: 13.636173, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -599,26 +599,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1409186935858497503}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1050206562 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1409186936462023401, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1409186935858497503}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &1050206566
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050206562}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.26
-  m_Height: 1.81
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.94, z: 0}
 --- !u!1 &1068267795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2786,22 +2766,5 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 259485292}
-    - target: {fileID: 1050206565, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4, type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1050206565, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 1050206565, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1409186936462023399, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4,
-        type: 3}
-      propertyPath: ground.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4, type: 3}

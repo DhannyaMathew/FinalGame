@@ -75,7 +75,10 @@ public class PlayerMove : MonoBehaviour
     private void Move()
     {
         if (GroundAngle > maxGroundAngle) return;
-        _rigidbody.velocity = _moveDirection.magnitude * _actualSpeed * Forward;
+        if(_grounded)
+            _rigidbody.velocity = _moveDirection.magnitude * _actualSpeed * Forward;
+
+
     }
 
     private void Rotate(float cameraFlatAngle)
