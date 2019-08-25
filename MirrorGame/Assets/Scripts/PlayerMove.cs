@@ -9,8 +9,6 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float runSpeed = 4.5f;
     [SerializeField, Range(0.01f, 1f)] private float rotateLerpSpeed = 0.085f;
     [SerializeField, Range(0.01f, 1f)] private float accelerationFactor = 0.1f;
-    [SerializeField] private float height;
-    [SerializeField] private float heightPadding;
     [SerializeField] private bool debug;
     [SerializeField] private float maxGroundAngle;
     [SerializeField] private LayerMask ground;
@@ -23,10 +21,12 @@ public class PlayerMove : MonoBehaviour
     private bool _grounded;
     private RaycastHit _hitInfo;
     private float _angle;
+    private Rigidbody _rigidbody;
 
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int YDir = Animator.StringToHash("yDir");
     private static readonly int XDir = Animator.StringToHash("xDir");
+
 
     public Vector3 Forward { get; private set; }
     public float GroundAngle { get; private set; }
@@ -35,6 +35,7 @@ public class PlayerMove : MonoBehaviour
     {
         _speed = walkSpeed;
         _animator = GetComponentInChildren<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void GetInput()
@@ -56,17 +57,12 @@ public class PlayerMove : MonoBehaviour
     {
         GetInput();
         CalculateGroundAngle();
-        CheckGround();
-        ApplyGravity();
         DrawDebugLines();
         CalculateSpeed();
         UpdateAnimator();
         Rotate(cameraFlatAngle);
-        if (_moveDirection.sqrMagnitude > 0.1f * 0.1f)
-        {
-            CalculateForward();
-            Move();
-        }
+        CalculateForward();
+        Move();
     }
 
     private void UpdateAnimator()
@@ -79,7 +75,7 @@ public class PlayerMove : MonoBehaviour
     private void Move()
     {
         if (GroundAngle > maxGroundAngle) return;
-        transform.position += _actualSpeed * Time.deltaTime * Forward;
+        _rigidbody.velocity = _moveDirection.magnitude * _actualSpeed * Forward;
     }
 
     private void Rotate(float cameraFlatAngle)
@@ -95,41 +91,7 @@ public class PlayerMove : MonoBehaviour
 
     private void DrawDebugLines()
     {
-        if (debug)
-        {
-            Debug.DrawLine(transform.position + Vector3.up * height,
-                transform.position + Vector3.up * height + height * Forward, Color.blue);
-            Debug.DrawLine(transform.position + Vector3.up * height, transform.position - Vector3.up * heightPadding,
-                Color.green);
-            Debug.Log(GroundAngle);
-        }
-    }
-
-    private void CheckGround()
-    {
-        if (Physics.Raycast(transform.position + Vector3.up * height, Vector3.down, out _hitInfo,
-            height + heightPadding, ground))
-        {
-            var dh = Vector3.Distance(transform.position + Vector3.up * height, _hitInfo.point) - height;
-            if (dh < 0)
-            {
-                transform.position -= Vector3.up * dh;
-            }
-
-            _grounded = true;
-        }
-        else
-        {
-            _grounded = false;
-        }
-    }
-
-    private void ApplyGravity()
-    {
-        if (!_grounded)
-        {
-            transform.position += Physics.gravity * Time.deltaTime;
-        }
+        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + Forward * 2f, Color.blue);
     }
 
     private void CalculateGroundAngle()
@@ -137,7 +99,11 @@ public class PlayerMove : MonoBehaviour
         if (!_grounded)
             GroundAngle = 0;
         else
-            GroundAngle = Vector3.Angle(_hitInfo.normal, Quaternion.LookRotation(_moveDirection)*transform.forward)-90;
+        {
+            Physics.Raycast(transform.position + Vector3.up, Vector3.down, out _hitInfo, 1.2f, ground);
+            GroundAngle = Vector3.Angle(_hitInfo.normal, Quaternion.LookRotation(_moveDirection) * transform.forward) -
+                          90;
+        }
     }
 
     private void CalculateForward()
@@ -146,5 +112,24 @@ public class PlayerMove : MonoBehaviour
             Forward = transform.forward;
         else
             Forward = Vector3.Cross(_hitInfo.normal, Quaternion.LookRotation(_moveDirection) * -transform.right);
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        if ((1 << other.gameObject.layer & ground.value) != 0)
+        {
+            _grounded = true;
+            foreach (var otherContact in other.contacts)
+            {
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if ((1 << other.gameObject.layer & ground.value) != 0)
+        {
+            _grounded = false;
+        }
     }
 }
