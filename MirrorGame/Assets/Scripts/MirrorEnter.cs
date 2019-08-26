@@ -7,12 +7,10 @@ public class MirrorEnter : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        //var normal = transform.forward;
-        //other.gameObject.GetComponent<PlayerMove>().MirrorEnter(normal);
+        
         var level = GameObject.FindGameObjectWithTag("Level");
         transform.parent = null;
         level.transform.parent = transform;
-        Debug.Log("awe");
         transform.localScale = new Vector3(
             -1 * transform.localScale.x, 1, 1);
         transform.localRotation = Quaternion.LookRotation(-1f * transform.forward);

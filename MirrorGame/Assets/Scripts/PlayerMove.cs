@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -56,12 +53,12 @@ public class PlayerMove : MonoBehaviour
     public void Move(float cameraFlatAngle)
     {
         GetInput();
-        CalculateGroundAngle();
+        //CalculateGroundAngle();
         DrawDebugLines();
         CalculateSpeed();
         UpdateAnimator();
         Rotate(cameraFlatAngle);
-        CalculateForward();
+        //  CalculateForward();
         Move();
     }
 
@@ -74,11 +71,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Move()
     {
-        if (GroundAngle > maxGroundAngle) return;
-        if(_grounded)
-            _rigidbody.velocity = _moveDirection.magnitude * _actualSpeed * Forward;
-
-
+        if (GroundAngle > maxGroundAngle || !_grounded) return;
+        _rigidbody.velocity = _moveDirection.magnitude * _actualSpeed * Forward;
     }
 
     private void Rotate(float cameraFlatAngle)
@@ -94,37 +88,33 @@ public class PlayerMove : MonoBehaviour
 
     private void DrawDebugLines()
     {
-        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + Forward * 2f, Color.blue);
-    }
-
-    private void CalculateGroundAngle()
-    {
-        if (!_grounded)
-            GroundAngle = 0;
-        else
+        if (debug)
         {
-            Physics.Raycast(transform.position + Vector3.up, Vector3.down, out _hitInfo, 1.2f, ground);
-            GroundAngle = Vector3.Angle(_hitInfo.normal, Quaternion.LookRotation(_moveDirection) * transform.forward) -
-                          90;
+            Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + Forward * 2f, Color.blue);
         }
-    }
-
-    private void CalculateForward()
-    {
-        if (!_grounded)
-            Forward = transform.forward;
-        else
-            Forward = Vector3.Cross(_hitInfo.normal, Quaternion.LookRotation(_moveDirection) * -transform.right);
     }
 
     private void OnCollisionStay(Collision other)
     {
         if ((1 << other.gameObject.layer & ground.value) != 0)
         {
-            _grounded = true;
             foreach (var otherContact in other.contacts)
             {
+                if (Vector3.Angle(otherContact.normal, Quaternion.LookRotation(_moveDirection) * transform.forward) -
+                    90 < maxGroundAngle)
+                {
+                    _grounded = true;
+                    Forward = Vector3.Cross(otherContact.normal,
+                        Quaternion.LookRotation(_moveDirection) * -transform.right);
+                    GroundAngle = Vector3.Angle(otherContact.normal,
+                                      Quaternion.LookRotation(_moveDirection) * transform.forward) -
+                                  90;
+                    return;
+                }
             }
+            _grounded = false;
+            Forward = transform.forward;
+            GroundAngle = 0;
         }
     }
 
@@ -133,6 +123,8 @@ public class PlayerMove : MonoBehaviour
         if ((1 << other.gameObject.layer & ground.value) != 0)
         {
             _grounded = false;
+            Forward = transform.forward;
+            GroundAngle = 0;
         }
     }
 }
