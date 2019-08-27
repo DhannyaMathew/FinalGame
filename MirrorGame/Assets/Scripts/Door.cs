@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     [SerializeField] private bool locked;
     [SerializeField] private float interactDistance = 1f;
 
-    [SerializeField]private bool open;
+    [SerializeField] private bool open;
     private int _direction;
     private Transform _hinge;
 
@@ -39,20 +39,18 @@ public class Door : MonoBehaviour
             }
         }
 
-        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, open ? _direction * openAngle : 0, 0),
+        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, open ? -_direction * openAngle : 0, 0),
             openSpeed * Time.deltaTime);
     }
 
     public void Lock()
     {
-        Debug.Log("Locked");
         locked = true;
         open = false;
     }
 
     public void Unlock()
     {
-        Debug.Log("Unlocked");
         locked = false;
     }
 }
