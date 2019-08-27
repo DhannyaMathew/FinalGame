@@ -10,7 +10,7 @@ public class MainCamera : MonoBehaviour
     [SerializeField] private float maxAngle = 45f;
     [SerializeField, Range(0.01f, 1f)] private float rotateLerpSpeed = 0.085f;
     [SerializeField, Range(0.01f, 1f)] private float cameraDistLerpSpeed = 0.3f;
-
+    [SerializeField] private bool alwaysShowPlayer = false;
     public float FlatDirection { get; private set; }
 
     private Transform _target;
@@ -47,11 +47,12 @@ public class MainCamera : MonoBehaviour
 
             var targetPos = _target.position + Vector3.up;
             var ray = new Ray(targetPos, -offset);
-
-            if (Physics.Raycast(ray, out var intersectCheck, maxDist))
-                _dist = intersectCheck.distance - 0.01f;
-            else
-                _dist = maxDist;
+            _dist = maxDist;
+            if (alwaysShowPlayer)
+            {
+                if (Physics.Raycast(ray, out var intersectCheck, maxDist))
+                    _dist = intersectCheck.distance - 0.01f;
+            }
 
             _actualDist = Mathf.Lerp(_actualDist, _dist, cameraDistLerpSpeed);
             transform.position = targetPos - _actualDist * offset;
