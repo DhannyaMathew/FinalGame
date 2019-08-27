@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     [SerializeField] private bool locked;
     [SerializeField] private float interactDistance = 1f;
 
-    private bool _open;
+    [SerializeField]private bool open;
     private int _direction;
     private Transform _hinge;
 
@@ -28,8 +28,8 @@ public class Door : MonoBehaviour
             {
                 if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
                 {
-                    _open = !_open;
-                    if (_open)
+                    open = !open;
+                    if (open)
                     {
                         _direction =
                             (int) Mathf.Sign(Vector3.Dot(GameManager.PlayerTransform.position - transform.position,
@@ -39,7 +39,7 @@ public class Door : MonoBehaviour
             }
         }
 
-        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, _open ? _direction * openAngle : 0, 0),
+        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, open ? _direction * openAngle : 0, 0),
             openSpeed * Time.deltaTime);
     }
 
@@ -47,7 +47,7 @@ public class Door : MonoBehaviour
     {
         Debug.Log("Locked");
         locked = true;
-        _open = false;
+        open = false;
     }
 
     public void Unlock()
