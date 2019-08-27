@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 [Serializable]
 public class ColourSwap
 {
-    public String shaderReference = "_BaseColor";
-    public Color flippedColour;
+    [SerializeField] private string shaderReference = "_BaseColor";
+    [SerializeField] private Color flippedColour;
 
     private Material _material;
     private Color _default;
@@ -22,11 +25,26 @@ public class ColourSwap
     }
 }
 
+[Serializable]
+public class ReflectEvent
+{
+    [SerializeField] private UnityEvent onReflect;
+    [SerializeField] private UnityEvent onRevert;
+
+    public void Reflect(bool isReflected)
+    {
+        if (isReflected)
+            onReflect.Invoke();
+        else
+            onRevert.Invoke();
+    }
+}
+
 
 public class Reflectable : MonoBehaviour
 {
     [SerializeField] private ColourSwap[] colourSwaps;
-
+    [SerializeField] private ReflectEvent reflectEvent;
     private Material _material;
     private bool _isReflected;
 
@@ -46,5 +64,6 @@ public class Reflectable : MonoBehaviour
         {
             colourSwap.Reflect(_isReflected);
         }
+        reflectEvent.Reflect(_isReflected);
     }
 }

@@ -24,6 +24,7 @@ public class PlayerMove : MonoBehaviour
     private static readonly int YDir = Animator.StringToHash("yDir");
     private static readonly int XDir = Animator.StringToHash("xDir");
 
+    private Quaternion _moveDirectionRotation;
 
     public Vector3 Forward { get; private set; }
     public float GroundAngle { get; private set; }
@@ -48,6 +49,9 @@ public class PlayerMove : MonoBehaviour
 
         _moveDirection =
             Vector3.ClampMagnitude(new Vector3(Input.GetAxis("Horizontal") / 2f, 0, Input.GetAxis("Vertical")), 1f);
+        _moveDirectionRotation = _moveDirection.sqrMagnitude > Mathf.Epsilon
+            ? Quaternion.LookRotation(_moveDirection)
+            : Quaternion.identity;
     }
 
     public void Move(float cameraFlatAngle)
@@ -100,18 +104,19 @@ public class PlayerMove : MonoBehaviour
         {
             foreach (var otherContact in other.contacts)
             {
-                if (Vector3.Angle(otherContact.normal, Quaternion.LookRotation(_moveDirection) * transform.forward) -
+                if (Vector3.Angle(otherContact.normal, _moveDirectionRotation * transform.forward) -
                     90 < maxGroundAngle)
                 {
                     _grounded = true;
                     Forward = Vector3.Cross(otherContact.normal,
-                        Quaternion.LookRotation(_moveDirection) * -transform.right);
+                        _moveDirectionRotation * -transform.right);
                     GroundAngle = Vector3.Angle(otherContact.normal,
-                                      Quaternion.LookRotation(_moveDirection) * transform.forward) -
+                                      _moveDirectionRotation * transform.forward) -
                                   90;
                     return;
                 }
             }
+
             _grounded = false;
             Forward = transform.forward;
             GroundAngle = 0;
