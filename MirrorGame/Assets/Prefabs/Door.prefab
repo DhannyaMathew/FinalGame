@@ -262,6 +262,19 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+--- !u!65 &4031009665017227059
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2635046881092569633}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.197673, y: 2.0000005, z: 4.000001}
+  m_Center: {x: 0.007894497, y: 0, z: 2.0000005}
 --- !u!1 &3694686865460435727
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7796041442738153548}
   - component: {fileID: 6515325749659690701}
+  - component: {fileID: 236479504}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -458,9 +472,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a101b225f28d0cc4d9d6384c9c4bacd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSpeed: 0
-  openAngle: 0
-  locked: 0
+  openSpeed: 1
+  openAngle: 135
+  locked: 1
+  interactDistance: 1
+--- !u!114 &236479504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796041442738153549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9a4349ea464a34495187e659c33206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colourSwaps: []
+  reflectEvent:
+    onReflect:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6515325749659690701}
+          m_MethodName: Unlock
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    onRevert:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6515325749659690701}
+          m_MethodName: Unlock
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
 --- !u!1001 &7796041443340116819
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -528,11 +589,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: d3edeb122e6382444b63927c98186606,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -8733040240986845777, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -560,6 +616,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6176015257123474719, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: -6176015257123474719, guid: d3edeb122e6382444b63927c98186606,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
@@ -567,11 +628,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: -6176015257123474719, guid: d3edeb122e6382444b63927c98186606,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.13
       objectReference: {fileID: 0}
     - target: {fileID: -1474152398727639331, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
@@ -605,18 +661,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6839232869896635926, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6839232869896635926, guid: d3edeb122e6382444b63927c98186606,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6839232869896635926, guid: d3edeb122e6382444b63927c98186606,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.145
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839232869896635926, guid: d3edeb122e6382444b63927c98186606,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 8940632808050562651, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
