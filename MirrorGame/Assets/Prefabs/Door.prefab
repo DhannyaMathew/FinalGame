@@ -148,8 +148,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 2, y: 4, z: 1}
   m_Children: []
-  m_Father: {fileID: 1207480035715895884}
-  m_RootOrder: 0
+  m_Father: {fileID: 7796041442738153548}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &2258705432770033639
 MeshFilter:
@@ -328,19 +328,6 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
---- !u!65 &4031009665017227059
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2635046881092569633}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.197673, y: 2.0000005, z: 4.000001}
-  m_Center: {x: 0.007894497, y: 0, z: 2.0000005}
 --- !u!114 &2678003842523721979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,13 +401,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2942942117571719467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2027083292342712874}
   - {fileID: 8475242304783925339}
   m_Father: {fileID: 7796041442738153548}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1203223633
 MonoBehaviour:
@@ -451,7 +437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8253463789005518681
 Transform:
   m_ObjectHideFlags: 0
@@ -610,12 +596,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7261663327179059451}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0.7071067, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 31.91628, y: -4.481627, z: -30.02414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1207480035715895884}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2483302284299333656
 Camera:
@@ -628,7 +614,7 @@ Camera:
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
+  m_projectionMatrixMode: 0
   m_GateFitMode: 2
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
@@ -786,6 +772,7 @@ Transform:
   - {fileID: 510837483297667566}
   - {fileID: 8345622565957638230}
   - {fileID: 5735700172449522941}
+  - {fileID: 2027083292342712874}
   - {fileID: 1207480035715895884}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -804,9 +791,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openSpeed: 10
   openAngle: 135
-  locked: 0
+  locked: 1
   interactDistance: 2
-  open: 1
+  open: 0
 --- !u!1001 &7796041443340116819
 PrefabInstance:
   m_ObjectHideFlags: 0

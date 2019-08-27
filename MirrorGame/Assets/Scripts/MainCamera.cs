@@ -45,7 +45,7 @@ public class MainCamera : MonoBehaviour
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
-            var targetPos = _target.position + Vector3.up;
+            var targetPos = _target.position + Vector3.up*1.8f;
             var ray = new Ray(targetPos, -offset);
             _dist = maxDist;
             if (alwaysShowPlayer)
