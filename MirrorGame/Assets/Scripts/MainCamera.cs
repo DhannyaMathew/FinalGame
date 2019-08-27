@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class MainCamera : MonoBehaviour
 {
-    [SerializeField] private Transform target;
     [SerializeField] private float maxDist = 5;
     [SerializeField] private float xSensitivity = 5;
     [SerializeField] private float ySensitivity = 5;
@@ -17,18 +13,21 @@ public class MainCamera : MonoBehaviour
 
     public float FlatDirection { get; private set; }
 
+    private Transform _target;
     private float _dist;
     private float _actualDist;
 
     private float _acutalTheta;
-    
     private float _phi;
     private float _acutalPhi;
-    
+
     private void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        _target = GameManager.PlayerTransform;
+        FlatDirection = 90;
+        _acutalTheta = FlatDirection;
     }
 
     // Update is called once per frame
@@ -46,9 +45,9 @@ public class MainCamera : MonoBehaviour
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
-            var targetPos = target.position + Vector3.up;
+            var targetPos = _target.position + Vector3.up;
             var ray = new Ray(targetPos, -offset);
-            
+
             if (Physics.Raycast(ray, out var intersectCheck, maxDist))
                 _dist = intersectCheck.distance - 0.01f;
             else
@@ -58,8 +57,5 @@ public class MainCamera : MonoBehaviour
             transform.position = targetPos - _actualDist * offset;
             transform.LookAt(targetPos);
         }
-
-       
     }
-    
 }
