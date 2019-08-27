@@ -2031,6 +2031,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1207480035715895884, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6515325749659690701, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: locked
@@ -2089,11 +2094,6 @@ PrefabInstance:
     - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_projectionMatrixMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1207480035715895884, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1440983037452752866, guid: 10b7cc3b310333d468ed8befe2e0ef53,
@@ -2942,6 +2942,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1207480035715895884, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2027083292342712874, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -2986,11 +2991,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_projectionMatrixMode
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1207480035715895884, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1203223633, guid: 10b7cc3b310333d468ed8befe2e0ef53, type: 3}
       propertyPath: pairPortal
@@ -3145,6 +3145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5446af122e710ca4cb06b0bc2e64b1c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RestartKey: 114
+  QuitKey: 113
 --- !u!4 &1765839933
 Transform:
   m_ObjectHideFlags: 0
