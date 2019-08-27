@@ -29,7 +29,7 @@ public class Door : MonoBehaviour
                 if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
                 {
                     _open = !_open;
-                    if (!_open)
+                    if (_open)
                     {
                         _direction =
                             (int) Mathf.Sign(Vector3.Dot(GameManager.PlayerTransform.position - transform.position,
