@@ -51,6 +51,7 @@ public class Reflectable : MonoBehaviour
     private void Start()
     {
         _material = GetComponent<Renderer>().material;
+        
         foreach (var colourSwap in colourSwaps)
         {
             colourSwap.Set(_material);

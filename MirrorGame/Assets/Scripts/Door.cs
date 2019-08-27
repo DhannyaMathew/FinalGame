@@ -7,10 +7,12 @@ public class Door : MonoBehaviour
     [SerializeField] private float openSpeed;
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
-    
-    private float _currentAngle = 0;
+    [SerializeField] private float interactDistance = 1f;
+
+    private bool _open;
+    private int _direction;
     private Transform _hinge;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,5 +22,37 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!locked)
+        {
+            if (Input.GetButtonDown("Interact"))
+            {
+                if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
+                {
+                    _open = !_open;
+                    if (_open)
+                    {
+                        _direction =
+                            (int) Mathf.Sign(Vector3.Dot(GameManager.PlayerTransform.position - transform.position,
+                                transform.right));
+                    }
+                }
+            }
+        }
+
+        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, _open ? _direction * openAngle : 0, 0),
+            openSpeed * Time.deltaTime);
+    }
+
+    public void Lock()
+    {
+        Debug.Log("Locked");
+        locked = true;
+        _open = false;
+    }
+
+    public void Unlock()
+    {
+        Debug.Log("Unlocked");
+        locked = false;
     }
 }
