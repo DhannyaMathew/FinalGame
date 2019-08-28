@@ -14,10 +14,13 @@ public class Orb : MonoBehaviour
     private bool _start;
     private AudioSource _audioSource;
 
+    private Rigidbody _rb;
+
     // Start is called before the first frame update
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -31,23 +34,43 @@ public class Orb : MonoBehaviour
 
         if (_start)
         {
-            var diff = targetObject.transform.position - transform.position;
-            var oDiff = transform.position - (GameManager.PlayerTransform.position + Vector3.up * 0.5f);
-            var dir = diff.normalized;
-            if (oDiff.magnitude < 1.5f)
-            {
-                dir += oDiff.normalized;
-            }
-
-            transform.position += speed * Time.deltaTime * dir.normalized;
-
-            if (diff.magnitude < 0.5f)
-            {
-                Instantiate(endEffect, transform.position, Quaternion.Euler(-90, 0, 0));
-                transform.Translate(0, 100, 0);
-                _start = false;
-            }
+            var seek = Seek();
+            var avoid = Avoid();
+            _rb.AddForce(seek);
+            _rb.AddForce(2 * avoid);
         }
+    }
+
+    private Vector3 Seek()
+    {
+        var desired = targetObject.transform.position - transform.position;
+        if (desired.magnitude < 0.5f)
+        {
+            Instantiate(endEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+            transform.Translate(0, 100, 0);
+            _start = false;
+            _audioSource.Stop();
+        }
+
+        desired.Normalize();
+        desired *= speed;
+
+        return Vector3.ClampMagnitude(desired - _rb.velocity, 100f);
+    }
+
+    private Vector3 Avoid()
+    {
+        var diff = transform.position - (GameManager.PlayerTransform.position + Vector3.up * 0.9f);
+        var d = diff.magnitude;
+        if (d < 1.3f)
+        {
+            diff.Normalize();
+            diff *= 2 * speed;
+            diff -= _rb.velocity;
+            return Vector3.ClampMagnitude(diff, 1000f);
+        }
+
+        return Vector3.zero;
     }
 
     public void Respawn()
@@ -55,6 +78,7 @@ public class Orb : MonoBehaviour
         if (!_start)
         {
             transform.position = startObject.transform.position;
+            _rb.velocity = Vector3.zero;
         }
     }
 }
