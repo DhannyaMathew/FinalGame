@@ -36,8 +36,8 @@ public class Orb : MonoBehaviour
         {
             var seek = Seek();
             var avoid = Avoid();
-            _rb.AddForce(seek);
-            _rb.AddForce(2 * avoid);
+            _rb.AddForce(2f*seek);
+            _rb.AddForce( avoid);
         }
     }
 
@@ -54,19 +54,22 @@ public class Orb : MonoBehaviour
 
         desired.Normalize();
         desired *= speed;
-
-        return Vector3.ClampMagnitude(desired - _rb.velocity, 100f);
+        return Vector3.ClampMagnitude(desired - _rb.velocity, 1000f);
     }
 
     private Vector3 Avoid()
     {
         var diff = transform.position - (GameManager.PlayerTransform.position + Vector3.up * 0.9f);
         var d = diff.magnitude;
-        if (d < 1.3f)
+        if (d < 2f)
         {
             diff.Normalize();
             diff *= 2 * speed;
             diff -= _rb.velocity;
+            if (diff.y < 0)
+            {
+                diff.y *= -1;
+            }
             return Vector3.ClampMagnitude(diff, 1000f);
         }
 
