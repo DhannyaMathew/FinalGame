@@ -1152,7 +1152,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409186935985327645}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -1442,6 +1442,7 @@ GameObject:
   - component: {fileID: 1409186936462023399}
   - component: {fileID: 1050206565}
   - component: {fileID: 1050206566}
+  - component: {fileID: 5493433894867106819}
   m_Layer: 0
   m_Name: Character 1
   m_TagString: Untagged
@@ -1494,7 +1495,7 @@ MonoBehaviour:
   rotateLerpSpeed: 0.085
   accelerationFactor: 1
   debug: 1
-  maxGroundAngle: 180
+  maxGroundAngle: 60
   ground:
     serializedVersion: 2
     m_Bits: 512
@@ -1528,6 +1529,14 @@ CapsuleCollider:
   m_Height: 1.81
   m_Direction: 1
   m_Center: {x: 0, y: 0.94, z: 0}
+--- !u!81 &5493433894867106819
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409186936462023401}
+  m_Enabled: 1
 --- !u!1 &1409186936542598407
 GameObject:
   m_ObjectHideFlags: 0

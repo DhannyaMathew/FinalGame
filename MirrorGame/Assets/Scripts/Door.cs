@@ -8,26 +8,31 @@ public class Door : MonoBehaviour
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
     [SerializeField] private float interactDistance = 1f;
-
     [SerializeField] private bool open;
+    [SerializeField] private AudioClip lockSound;
+    [SerializeField] private AudioClip openSound;
+
     private int _direction;
     private Transform _hinge;
 
+    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
         _hinge = transform.GetChild(0);
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!locked)
+        if (Input.GetButtonDown("Interact"))
         {
-            if (Input.GetButtonDown("Interact"))
+            if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
             {
-                if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
+                if (!locked)
                 {
+                    _audioSource.PlayOneShot(openSound);
                     open = !open;
                     if (open)
                     {
@@ -35,6 +40,10 @@ public class Door : MonoBehaviour
                             (int) Mathf.Sign(Vector3.Dot(GameManager.PlayerTransform.position - transform.position,
                                 transform.right));
                     }
+                }
+                else
+                {
+                    _audioSource.PlayOneShot(lockSound);
                 }
             }
         }

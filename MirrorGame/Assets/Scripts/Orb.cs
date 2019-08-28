@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +11,13 @@ public class Orb : MonoBehaviour
     [SerializeField] private float startDist = 1f;
     private int _currentWaypoint;
     private bool _start;
+    private AudioSource _audioSource;
 
     // Start is called before the first frame update
+    private void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -19,6 +25,7 @@ public class Orb : MonoBehaviour
         if ((GameManager.PlayerTransform.position - transform.position).magnitude < startDist)
         {
             _start = true;
+            _audioSource.Play();
         }
 
         if (_start)
