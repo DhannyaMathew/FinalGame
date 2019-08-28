@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Orb : MonoBehaviour
 {
-    [SerializeField] private GameObject path;
+    [SerializeField] private GameObject startObject;
+    [SerializeField] private GameObject targetObject;
     [SerializeField] private GameObject endEffect;
     [SerializeField] private float speed = 1f;
     [SerializeField] private float startDist = 1f;
-    private int _currentWaypoint;
+
     private bool _start;
     private AudioSource _audioSource;
 
@@ -30,21 +31,30 @@ public class Orb : MonoBehaviour
 
         if (_start)
         {
-            if (_currentWaypoint < path.transform.childCount)
+            var diff = targetObject.transform.position - transform.position;
+            var oDiff = transform.position - (GameManager.PlayerTransform.position + Vector3.up * 0.5f);
+            var dir = diff.normalized;
+            if (oDiff.magnitude < 1.5f)
             {
-                var diff = path.transform.GetChild(_currentWaypoint).position - transform.position;
-                transform.position += speed * Time.deltaTime * diff.normalized;
-                if (diff.magnitude < 0.5f)
-                {
-                    _currentWaypoint++;
-                    //Debug.Log(_currentWaypoint);
-                }
+                dir += oDiff.normalized;
             }
-            else
+
+            transform.position += speed * Time.deltaTime * dir.normalized;
+
+            if (diff.magnitude < 0.5f)
             {
                 Instantiate(endEffect, transform.position, Quaternion.Euler(-90, 0, 0));
-                Destroy(gameObject);
+                transform.Translate(0, 100, 0);
+                _start = false;
             }
+        }
+    }
+
+    public void Respawn()
+    {
+        if (!_start)
+        {
+            transform.position = startObject.transform.position;
         }
     }
 }

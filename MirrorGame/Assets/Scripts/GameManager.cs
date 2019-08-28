@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         {
             Paused = !Paused;
             Cursor.visible = !Paused;
-            Cursor.lockState = Paused ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.lockState = !Paused ? CursorLockMode.Locked : CursorLockMode.None;
         }
         if (Input.GetKeyDown(QuitKey))
         {
@@ -48,10 +48,5 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void ResetOrb()
-    {
-        
     }
 }
