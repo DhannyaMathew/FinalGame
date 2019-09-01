@@ -13,7 +13,6 @@ public class Orb : MonoBehaviour
 
     private bool _start;
     private AudioSource _audioSource;
-
     private Rigidbody _rb;
 
     // Start is called before the first frame update
@@ -51,7 +50,6 @@ public class Orb : MonoBehaviour
             _start = false;
             _audioSource.Stop();
         }
-
         desired.Normalize();
         desired *= speed;
         return Vector3.ClampMagnitude(desired - _rb.velocity, 1000f);
@@ -72,7 +70,6 @@ public class Orb : MonoBehaviour
             }
             return Vector3.ClampMagnitude(diff, 1000f);
         }
-
         return Vector3.zero;
     }
 
