@@ -18,7 +18,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   skyAmbientMode:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   fogType:
     m_OverrideState: 1
@@ -72,82 +72,6 @@ MonoBehaviour:
   hdriSky:
     m_OverrideState: 1
     m_Value: {fileID: 8900000, guid: 4113c269503ecd4498fc0f8457ba43c3, type: 3}
---- !u!114 &-3179431117389031810
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df29e7cc05fbec4aa43e06ea875565d, type: 3}
-  m_Name: ProceduralSky
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  rotation:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
-    max: 360
-  skyIntensityMode:
-    m_OverrideState: 0
-    m_Value: 0
-  exposure:
-    m_OverrideState: 1
-    m_Value: 0.62
-  multiplier:
-    m_OverrideState: 1
-    m_Value: 0.66
-    min: 0
-  upperHemisphereLuxValue:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 0
-  desiredLuxValue:
-    m_OverrideState: 0
-    m_Value: 20000
-  updateMode:
-    m_OverrideState: 0
-    m_Value: 0
-  updatePeriod:
-    m_OverrideState: 0
-    m_Value: 0
-    min: 0
-  includeSunInBaking:
-    m_OverrideState: 1
-    m_Value: 1
-  sunSize:
-    m_OverrideState: 1
-    m_Value: 0.042
-    min: 0
-    max: 1
-  sunSizeConvergence:
-    m_OverrideState: 1
-    m_Value: 7.02
-    min: 1
-    max: 10
-  atmosphereThickness:
-    m_OverrideState: 1
-    m_Value: 1.33
-    min: 0
-    max: 5
-  skyTint:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 0.7978472, b: 0, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  groundColor:
-    m_OverrideState: 1
-    m_Value: {r: 0.9056604, g: 0.42658803, b: 0.23495908, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  enableSunDisk:
-    m_OverrideState: 0
-    m_Value: 1
 --- !u!114 &-918623378430535502
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -239,7 +163,6 @@ MonoBehaviour:
   - {fileID: -8241077938926023008}
   - {fileID: 6581834650710338729}
   - {fileID: 6737804123026204349}
-  - {fileID: -3179431117389031810}
 --- !u!114 &6581834650710338729
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -252,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b00527f85bb3346a4d2cb710971587, type: 3}
   m_Name: VolumetricFog
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   colorMode:
     m_OverrideState: 1
@@ -270,20 +193,20 @@ MonoBehaviour:
     max: 1
   maxFogDistance:
     m_OverrideState: 1
-    m_Value: 151.16
+    m_Value: 255.42
     min: 0
   mipFogMaxMip:
     m_OverrideState: 1
-    m_Value: 0.441
+    m_Value: 1
     min: 0
     max: 1
   mipFogNear:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 79.6
     min: 0
   mipFogFar:
     m_OverrideState: 1
-    m_Value: 200
+    m_Value: 974.7
     min: 0
   albedo:
     m_OverrideState: 1
@@ -293,7 +216,7 @@ MonoBehaviour:
     showEyeDropper: 1
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 41.1
+    m_Value: 116.89
     min: 1
   baseHeight:
     m_OverrideState: 1
@@ -303,7 +226,7 @@ MonoBehaviour:
     m_Value: 10
   anisotropy:
     m_OverrideState: 1
-    m_Value: 0.55
+    m_Value: 0.1
     min: -1
     max: 1
   globalLightProbeDimmer:
@@ -332,8 +255,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   length:
-    m_OverrideState: 0
-    m_Value: 0.15
+    m_OverrideState: 1
+    m_Value: 1
     min: 0
     max: 1
   opacity:

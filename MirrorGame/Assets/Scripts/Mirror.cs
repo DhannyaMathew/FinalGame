@@ -33,7 +33,6 @@ public class Mirror : MonoBehaviour
         _material = GetComponentInChildren<Renderer>().material;
         _prp = GetComponentInChildren<HDProbe>();
         Debug.Log(_prp);
-
     }
 
     private void Update()
@@ -44,7 +43,6 @@ public class Mirror : MonoBehaviour
         var strength = distortion.Evaluate(dist);
         var fov = this.fov.Evaluate(dist);
         _material.SetFloat(NormalStrength, strength);
-        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -60,7 +58,8 @@ public class Mirror : MonoBehaviour
         level.transform.parent = mirrorTransform;
         mirrorTransform.localScale = new Vector3(
             -1 * mirrorTransform.localScale.x, 1, 1);
-        //transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
+        transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
+        other.transform.position -= mirrorTransform.forward;
         level.transform.parent = null;
         transform.parent = level.transform;
     }
