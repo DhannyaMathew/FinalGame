@@ -18,8 +18,8 @@ public class MainCamera : MonoBehaviour
     private float _actualDist;
 
     private float _acutalTheta;
-    private float _phi;
-    private float _acutalPhi;
+    private float _phi = -35;
+    private float _acutalPhi = -35;
 
     private void Start()
     {
@@ -45,7 +45,7 @@ public class MainCamera : MonoBehaviour
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
-            var targetPos = _target.position + Vector3.up*1.8f;
+            var targetPos = _target.position + Vector3.up * 1.8f;
             var ray = new Ray(targetPos, -offset);
             _dist = maxDist;
             if (alwaysShowPlayer)
@@ -59,6 +59,4 @@ public class MainCamera : MonoBehaviour
             transform.LookAt(targetPos);
         }
     }
-
-  
 }

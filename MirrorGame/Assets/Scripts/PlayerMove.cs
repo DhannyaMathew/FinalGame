@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour
     private RaycastHit _hitInfo;
     private float _angle;
     private Rigidbody _rigidbody;
-
+    private AudioSource _audioSource;
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int YDir = Animator.StringToHash("yDir");
     private static readonly int XDir = Animator.StringToHash("xDir");
@@ -34,6 +34,7 @@ public class PlayerMove : MonoBehaviour
         _speed = walkSpeed;
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public void GetInput()
@@ -52,6 +53,15 @@ public class PlayerMove : MonoBehaviour
         _moveDirectionRotation = _moveDirection.sqrMagnitude > Mathf.Epsilon
             ? Quaternion.LookRotation(_moveDirection)
             : Quaternion.identity;
+        if (_moveDirection.magnitude > 0.1f && !_audioSource.isPlaying)
+        {
+            _audioSource.Play();
+        }
+        else
+        {
+            _audioSource.Stop();
+
+        }
     }
 
     public void Move(float cameraFlatAngle)
