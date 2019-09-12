@@ -59,4 +59,10 @@ public class MainCamera : MonoBehaviour
             transform.LookAt(targetPos);
         }
     }
+
+    public void Mirror()
+    {
+        FlatDirection *= -1;
+        _acutalTheta *= -1;
+    }
 }

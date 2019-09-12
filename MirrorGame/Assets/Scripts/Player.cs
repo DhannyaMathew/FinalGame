@@ -21,5 +21,10 @@ public class Player : MonoBehaviour
             Movement.Move(mainCamera.FlatDirection);
     }
 
+
+    public void Mirror()
+    {
+        mainCamera.Mirror();
+    }
    
 }
