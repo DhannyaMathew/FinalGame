@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
     public static Transform PlayerTransform { get; private set; }
     public static bool Paused { get; private set; }
 
+    private Mirror[] _mirrors;
+    private bool _turnMirrorsBackOn = false;
     private void Awake()
     {
         if (_instance == null)
@@ -19,6 +22,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         PlayerTransform = FindObjectOfType<Player>().transform;
+    }
+
+    private void Start()
+    {
+        _mirrors = FindObjectsOfType<Mirror>();
     }
 
     private void Update()
@@ -37,6 +45,9 @@ public class GameManager : MonoBehaviour
         {
             RestartLevel();
         }
+
+        if (_instance._turnMirrorsBackOn)
+            TurnOnMirrors();
     }
 
     public void Quit()
@@ -48,5 +59,25 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public static void TurnOffMirrors()
+    {
+        foreach (var mirror in _instance._mirrors)
+        {
+            mirror.gameObject.SetActive(false);
+        }
+
+        _instance._turnMirrorsBackOn = true;
+    }
+    
+    public static void TurnOnMirrors()
+    {
+        foreach (var mirror in _instance._mirrors)
+        {
+            mirror.gameObject.SetActive(true);
+        }
+
+        _instance._turnMirrorsBackOn = false;
     }
 }
