@@ -59,7 +59,7 @@ public class Mirror : MonoBehaviour
         mirrorTransform.localScale = new Vector3(
             -1 * mirrorTransform.localScale.x, 1, 1);
         transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
-        other.transform.position -= mirrorTransform.forward;
+        other.transform.position += mirrorTransform.forward*2f;
         level.transform.parent = null;
         transform.parent = level.transform;
     }
