@@ -25,15 +25,13 @@ public class Mirror : MonoBehaviour
 
 
     private Material _material;
-    private HDProbe _prp;
+    private PlanarReflectionProbe _prp;
     private static readonly int NormalStrength = Shader.PropertyToID("_normalStrength");
 
     private void Awake()
     {
         _material = GetComponentInChildren<Renderer>().material;
-        _prp = GetComponentInChildren<HDProbe>();
-        Debug.Log(_prp);
-
+        _prp = GetComponentInChildren<PlanarReflectionProbe>();
     }
 
     private void Update()
@@ -44,24 +42,28 @@ public class Mirror : MonoBehaviour
         var strength = distortion.Evaluate(dist);
         var fov = this.fov.Evaluate(dist);
         _material.SetFloat(NormalStrength, strength);
-        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var level = GameObject.FindGameObjectWithTag("Level");
-        foreach (var reflectable in level.GetComponentsInChildren<Reflectable>())
+        if (other.CompareTag("Player"))
         {
-            reflectable.Reflect();
-        }
+            var level = GameObject.FindGameObjectWithTag("Level");
+            foreach (var reflectable in level.GetComponentsInChildren<Reflectable>())
+            {
+                reflectable.Reflect();
+            }
 
-        var mirrorTransform = transform;
-        mirrorTransform.parent = null;
-        level.transform.parent = mirrorTransform;
-        mirrorTransform.localScale = new Vector3(
-            -1 * mirrorTransform.localScale.x, 1, 1);
-        //transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
-        level.transform.parent = null;
-        transform.parent = level.transform;
+            var mirrorTransform = transform;
+            mirrorTransform.parent = null;
+            level.transform.parent = mirrorTransform;
+            mirrorTransform.localScale = new Vector3(
+                -1 * mirrorTransform.localScale.x, 1, 1);
+            transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
+            other.transform.position += mirrorTransform.forward * 2f;
+            level.transform.parent = null;
+            transform.parent = level.transform;
+            GameManager.TurnOffMirrors();
+        }
     }
 }
