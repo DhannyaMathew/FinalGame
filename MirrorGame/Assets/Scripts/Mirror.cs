@@ -46,21 +46,24 @@ public class Mirror : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var level = GameObject.FindGameObjectWithTag("Level");
-        foreach (var reflectable in level.GetComponentsInChildren<Reflectable>())
+        if (other.CompareTag("Player"))
         {
-            reflectable.Reflect();
-        }
+            var level = GameObject.FindGameObjectWithTag("Level");
+            foreach (var reflectable in level.GetComponentsInChildren<Reflectable>())
+            {
+                reflectable.Reflect();
+            }
 
-        var mirrorTransform = transform;
-        mirrorTransform.parent = null;
-        level.transform.parent = mirrorTransform;
-        mirrorTransform.localScale = new Vector3(
-            -1 * mirrorTransform.localScale.x, 1, 1);
-        transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
-        other.transform.position += mirrorTransform.forward * 2f;
-        level.transform.parent = null;
-        transform.parent = level.transform;
-        GameManager.TurnOffMirrors();
+            var mirrorTransform = transform;
+            mirrorTransform.parent = null;
+            level.transform.parent = mirrorTransform;
+            mirrorTransform.localScale = new Vector3(
+                -1 * mirrorTransform.localScale.x, 1, 1);
+            transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward);
+            other.transform.position += mirrorTransform.forward * 2f;
+            level.transform.parent = null;
+            transform.parent = level.transform;
+            GameManager.TurnOffMirrors();
+        }
     }
 }
