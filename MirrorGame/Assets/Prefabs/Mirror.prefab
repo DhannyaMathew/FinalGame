@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3999428486557890503}
   - component: {fileID: 7812660525981771138}
   - component: {fileID: 1083307735}
-  - component: {fileID: 8548432166126055486}
+  - component: {fileID: 5389311969126924704}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Mirror
@@ -195,7 +195,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8548432166126055486
+--- !u!114 &5389311969126924704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,7 +217,7 @@ MonoBehaviour:
       lightLayer: 1
     influence:
       m_Shape: 0
-      m_BoxSize: {x: 2, y: 3.075, z: 0.01}
+      m_BoxSize: {x: 2.0332112, y: 3.0707378, z: 0.01}
       m_BoxBlendDistancePositive: {x: 0, y: 0, z: 0}
       m_BoxBlendDistanceNegative: {x: 0, y: 0, z: 0}
       m_BoxBlendNormalDistancePositive: {x: 0, y: 0, z: 0}
@@ -253,14 +253,14 @@ MonoBehaviour:
       mirrorPositionProxySpace: {x: 0, y: 0, z: 0}
       mirrorRotationProxySpace: {x: 0, y: 0, z: 0, w: 1}
     camera:
-      customRenderingSettings: 1
+      customRenderingSettings: 0
       renderingPathCustomFrameSettings:
         bitDatas:
-          data1: 69284255671103
-          data2: 4395513236313604096
+          data1: 69284264410909
+          data2: 4539628424389459968
       renderingPathCustomFrameSettingsOverrideMask:
         mask:
-          data1: 167247678
+          data1: 0
           data2: 0
       bufferClearing:
         clearColorMode: 0
@@ -269,14 +269,14 @@ MonoBehaviour:
       volumes:
         layerMask:
           serializedVersion: 2
-          m_Bits: 4294967295
-        anchorOverride: {fileID: 345780824337469375}
+          m_Bits: 1
+        anchorOverride: {fileID: 0}
       frustum:
         mode: 0
         aspect: 1
         farClipPlane: 1000
-        nearClipPlane: 0.01
-        fieldOfView: 70
+        nearClipPlane: 0.3
+        fieldOfView: 60
         projectionMatrix:
           e00: 1
           e01: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
     useOcclusionCulling: 1
     volumeLayerMask:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 1
     volumeAnchorOverride: {fileID: 0}
     projection: 0
     nearClipPlane: 0.3
