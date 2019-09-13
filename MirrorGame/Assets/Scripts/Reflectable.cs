@@ -6,21 +6,39 @@ using UnityEngine.Events;
 [Serializable]
 public class ColourSwap
 {
+    [SerializeField]private Material material;
     [SerializeField] private string shaderReference = "_BaseColor";
     [SerializeField] private Color flippedColour;
-
-    private Material _material;
     private Color _default;
 
-    public void Set(Material material)
+    public void Set()
     {
-        _material = material;
-        _default = _material.GetColor(shaderReference);
+        _default = material.GetColor(shaderReference);
     }
 
     public void Reflect(bool isReflected)
     {
-        _material.SetColor(shaderReference, isReflected ? flippedColour : _default);
+        material.SetColor(shaderReference, isReflected ? flippedColour : _default);
+    }
+}
+
+[Serializable]
+public class MapSwap
+{
+    [SerializeField] private Material material;
+    [SerializeField] private string shaderReference;
+    [SerializeField] private Texture flippedColour;
+
+    private Texture _default;
+
+    public void Set()
+    {
+        _default = material.GetTexture(shaderReference);
+    }
+
+    public void Reflect(bool isReflected)
+    {
+        material.SetTexture(shaderReference, isReflected ? flippedColour : _default);
     }
 }
 
@@ -43,17 +61,20 @@ public class ReflectEvent
 public class Reflectable : MonoBehaviour
 {
     [SerializeField] private ColourSwap[] colourSwaps;
+    [SerializeField] private MapSwap[] mapSwaps;
     [SerializeField] private ReflectEvent reflectEvent;
-    private Material _material;
     private bool _isReflected;
 
     private void Start()
     {
-        _material = GetComponent<Renderer>().material;
-        
         foreach (var colourSwap in colourSwaps)
         {
-            colourSwap.Set(_material);
+            colourSwap.Set();
+        }
+
+        foreach (var mapSwap in mapSwaps)
+        {
+            mapSwap.Set();
         }
     }
 
@@ -64,6 +85,17 @@ public class Reflectable : MonoBehaviour
         {
             colourSwap.Reflect(_isReflected);
         }
+
+        foreach (var mapSwap in mapSwaps)
+        {
+            mapSwap.Reflect(_isReflected);
+        }
         reflectEvent.Reflect(_isReflected);
+    }
+
+    private void OnDisable()
+    {
+        if(_isReflected)
+            Reflect();
     }
 }
