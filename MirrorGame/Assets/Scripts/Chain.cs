@@ -6,21 +6,22 @@ using UnityEngine;
 
 public class Chain : MonoBehaviour
 {
-    private Link[] _links;
-
-    private Link Root => _links.Length > 0 ? _links[0] : null;
-    private int Length => _links.Length;
-
-    private void Awake()
+    [SerializeField] private float maxVelocity = 4;
+    [SerializeField] private Vector2 minMaxDrag;
+    [SerializeField] private AnimationCurve veloctiiyDrag;
+    [SerializeField] private float maxAngularVelocity=4;
+    [SerializeField] private Vector2 minMaxAngularDrag;
+    [SerializeField] private AnimationCurve angularVeloctiiyAngularDrag;
+    
+    private void Start()
     {
-        _links = GetComponentsInChildren<Link>();
-    }
-
-    private void Update()
-    {
-        for (int i = Length - 1; i >= 1; i--)
+        var dragLM = new LinearMapping{minMaxIn =  Vector2.up, minMaxOut = minMaxDrag};
+        var angularDragLM = new LinearMapping{minMaxIn =  Vector2.up, minMaxOut = minMaxAngularDrag};
+        foreach (var link in   GetComponentsInChildren<Link>())
         {
-            _links[i].transform.position = _links[i-1].Anchor.position;
+            
+            link.SetPhysics(veloctiiyDrag, angularVeloctiiyAngularDrag, dragLM, angularDragLM, maxVelocity, maxAngularVelocity);   
         }
     }
+    
 }
