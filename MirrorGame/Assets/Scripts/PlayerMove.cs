@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private bool debug;
     [SerializeField] private float maxGroundAngle;
     [SerializeField] private LayerMask ground;
+    [SerializeField] private LayerMask stairs;
 
     private float _speed;
     private float _actualSpeed;
@@ -20,7 +21,7 @@ public class PlayerMove : MonoBehaviour
     private float _angle;
     private Rigidbody _rigidbody;
 
-    
+
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int YDir = Animator.StringToHash("yDir");
     private static readonly int XDir = Animator.StringToHash("xDir");
@@ -117,7 +118,6 @@ public class PlayerMove : MonoBehaviour
                     return;
                 }
             }
-
             _grounded = false;
             Forward = transform.forward;
             GroundAngle = 0;

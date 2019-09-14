@@ -23,6 +23,7 @@ public class Door : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
+    private Quaternion rotation = Quaternion.identity;
     // Update is called once per frame
     void Update()
     {
@@ -36,9 +37,11 @@ public class Door : MonoBehaviour
                     open = !open;
                     if (open)
                     {
-                        _direction =
-                            (int) Mathf.Sign(Vector3.Dot(GameManager.PlayerTransform.position - transform.position,
-                                transform.right));
+                        rotation = _hinge.localRotation*Quaternion.Euler(0,-openAngle,0);
+                    }
+                    else
+                    {
+                        rotation = _hinge.localRotation*Quaternion.Euler(0,openAngle,0);
                     }
                 }
                 else
@@ -47,9 +50,8 @@ public class Door : MonoBehaviour
                 }
             }
         }
-
-        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, Quaternion.Euler(0, open ? -_direction * openAngle : 0, 0),
-            openSpeed * Time.deltaTime);
+        
+        _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, rotation, Time.deltaTime*openSpeed);
     }
 
     public void Lock()
