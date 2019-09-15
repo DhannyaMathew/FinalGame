@@ -2,56 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : Interactable
 {
     [SerializeField] private float openSpeed;
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
-    [SerializeField] private float interactDistance = 1f;
     [SerializeField] private bool open;
-    [SerializeField] private AudioClip lockSound;
-    [SerializeField] private AudioClip openSound;
 
     private int _direction;
     private Transform _hinge;
+    private Quaternion _targetRotation = Quaternion.identity;
 
-    private AudioSource _audioSource;
+    private Quaternion _initialRotation;
+
     // Start is called before the first frame update
     void Start()
     {
+        _initialRotation = transform.localRotation;
         _hinge = transform.GetChild(0);
-        _audioSource = GetComponent<AudioSource>();
     }
 
-    private Quaternion rotation = Quaternion.identity;
+
+
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Interact"))
-        {
-            if ((GameManager.PlayerTransform.position - transform.position).magnitude < interactDistance)
-            {
-                if (!locked)
-                {
-                    _audioSource.PlayOneShot(openSound);
-                    open = !open;
-                    if (open)
-                    {
-                        rotation = _hinge.localRotation*Quaternion.Euler(0,-openAngle,0);
-                    }
-                    else
-                    {
-                        rotation = _hinge.localRotation*Quaternion.Euler(0,openAngle,0);
-                    }
-                }
-                else
-                {
-                    _audioSource.PlayOneShot(lockSound);
-                }
-            }
-        }
-        
-        _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, rotation, Time.deltaTime*openSpeed);
+        _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
     }
 
     public void Lock()
@@ -63,5 +40,21 @@ public class Door : MonoBehaviour
     public void Unlock()
     {
         locked = false;
+    }
+
+    public override void OnInteract()
+    {
+        if (!locked)
+        {
+            open = !open;
+            if (open)
+            {
+                _targetRotation = _initialRotation * Quaternion.Euler(0, -openAngle, 0);
+            }
+            else
+            {
+                _targetRotation = _initialRotation;
+            }
+        }
     }
 }

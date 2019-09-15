@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Key : MonoBehaviour
+public class Key : Interactable
 {
 
     private bool _isHeld;
@@ -11,5 +11,10 @@ public class Key : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public override void OnInteract()
+    {
+        Debug.Log("Awe");
     }
 }

@@ -12,6 +12,7 @@ public class MainCamera : MonoBehaviour
     [SerializeField, Range(0.01f, 1f)] private float cameraDistLerpSpeed = 0.3f;
     [SerializeField] private bool alwaysShowPlayer = false;
     public float FlatDirection { get; private set; }
+    public Camera Camera { get; private set; }
 
     private Transform _target;
     private float _dist;
@@ -21,6 +22,8 @@ public class MainCamera : MonoBehaviour
     private float _phi = -35;
     private float _acutalPhi = -35;
 
+    public Vector3 Target => _target.position + Vector3.up * 1.8f;
+
     private void Start()
     {
         Cursor.visible = false;
@@ -28,6 +31,7 @@ public class MainCamera : MonoBehaviour
         _target = GameManager.PlayerTransform;
         FlatDirection = 90;
         _acutalTheta = FlatDirection;
+        Camera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -45,7 +49,7 @@ public class MainCamera : MonoBehaviour
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
-            var targetPos = _target.position + Vector3.up * 1.8f;
+            var targetPos = Target;
             var ray = new Ray(targetPos, -offset);
             _dist = maxDist;
             if (alwaysShowPlayer)
