@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private KeyCode RestartKey;
     [SerializeField] private KeyCode QuitKey;
     [SerializeField] private GameObject orb;
-    public static Transform PlayerTransform { get; private set; }
     public static bool Paused { get; private set; }
+    public static MainCamera MainCamera { get; private set; }
+    public static Player Player { get; private set; }
 
     private Mirror[] _mirrors;
     private bool _turnMirrorsBackOn = false;
@@ -21,7 +22,8 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        PlayerTransform = FindObjectOfType<Player>().transform;
+        Player = FindObjectOfType<Player>();
+        MainCamera = FindObjectOfType<MainCamera>();
     }
 
     private void Start()

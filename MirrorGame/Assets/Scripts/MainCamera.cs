@@ -28,7 +28,7 @@ public class MainCamera : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        _target = GameManager.PlayerTransform;
+        _target = GameManager.Player.transform;
         FlatDirection = 90;
         _acutalTheta = FlatDirection;
         Camera = GetComponent<Camera>();

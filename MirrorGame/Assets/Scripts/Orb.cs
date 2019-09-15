@@ -25,7 +25,7 @@ public class Orb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((GameManager.PlayerTransform.position - transform.position).magnitude < startDist)
+        if ((GameManager.Player.transform.position - transform.position).magnitude < startDist)
         {
             _start = true;
             _audioSource.Play();
@@ -57,7 +57,7 @@ public class Orb : MonoBehaviour
 
     private Vector3 Avoid()
     {
-        var diff = transform.position - (GameManager.PlayerTransform.position + Vector3.up * 0.9f);
+        var diff = transform.position - (GameManager.Player.transform.position + Vector3.up * 0.9f);
         var d = diff.magnitude;
         if (d < 2f)
         {

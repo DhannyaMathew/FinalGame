@@ -37,7 +37,7 @@ public class Mirror : MonoBehaviour
     private void Update()
     {
         //y=(y1-y0)/(x1-x0)(x-x0)+y0
-        var playerPosition = GameManager.PlayerTransform.position;
+        var playerPosition = GameManager.Player.transform.position;
         var dist = (playerPosition - transform.position).magnitude;
         var strength = distortion.Evaluate(dist);
         var fov = this.fov.Evaluate(dist);
