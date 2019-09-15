@@ -43,6 +43,26 @@ public class MapSwap
 }
 
 [Serializable]
+public class MaterialSwap
+{
+    [SerializeField] private Renderer renderer;
+    [SerializeField] private Material material;
+
+    private Material _default;
+
+    public void Set()
+    {
+        _default = renderer.material;
+    }
+
+    public void Reflect(bool isReflected)
+    {
+        renderer.material =  isReflected ? material : _default;
+    }
+}
+
+
+[Serializable]
 public class ReflectEvent
 {
     [SerializeField] private UnityEvent onReflect;
@@ -62,6 +82,7 @@ public class Reflectable : MonoBehaviour
 {
     [SerializeField] private ColourSwap[] colourSwaps;
     [SerializeField] private MapSwap[] mapSwaps;
+    [SerializeField] private MaterialSwap[] materialSwaps;
     [SerializeField] private ReflectEvent reflectEvent;
     private bool _isReflected;
 
@@ -76,6 +97,11 @@ public class Reflectable : MonoBehaviour
         {
             mapSwap.Set();
         }
+        foreach (var materialSwap in materialSwaps)
+        {
+            materialSwap.Set();
+        }
+
     }
 
     public void Reflect()
@@ -89,6 +115,10 @@ public class Reflectable : MonoBehaviour
         foreach (var mapSwap in mapSwaps)
         {
             mapSwap.Reflect(_isReflected);
+        }
+        foreach (var materialSwap in materialSwaps)
+        {
+            materialSwap.Reflect(_isReflected);
         }
         reflectEvent.Reflect(_isReflected);
     }
