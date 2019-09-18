@@ -23,7 +23,28 @@ public class GameManager : MonoBehaviour
     public static uint CurrentLevelIndex
     {
         get => _instance._currentLevelIndex;
-        private set => _instance.SetLevel(value);
+        private set
+        {
+            _instance.TurnOffLevels();
+            _instance._currentLevelIndex = value;
+            var prevLevel = GetLevel(value - 1);
+            var nextLevel = GetLevel(value + 1);
+
+            if (prevLevel != null)
+            {
+                prevLevel.Activate();
+            }
+
+            if (CurrentLevel != null)
+            {
+                CurrentLevel.Activate();
+            }
+
+            if (nextLevel != null)
+            {
+                nextLevel.Activate();
+            }
+        }
     }
 
     public static bool Paused => _instance._paused;
@@ -46,9 +67,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelIndex = 0;
-        TurnOffLevels();
         LinkLevels();
+        TurnOffLevels();
+        CurrentLevelIndex = 0;
+        CurrentLevel.Setup(Player, MainCamera, Orb);
     }
 
     public void TransitionToNextLevel()
@@ -56,27 +78,6 @@ public class GameManager : MonoBehaviour
         CurrentLevelIndex++;
     }
 
-    private void SetLevel(uint level)
-    {
-        _currentLevelIndex = level;
-        var prevLevel = GetLevel(_currentLevelIndex - 1);
-        var nextLevel = GetLevel(_currentLevelIndex + 1);
-
-        if (prevLevel != null)
-        {
-            prevLevel.Activate();
-        }
-
-        if (CurrentLevel != null)
-        {
-            CurrentLevel.Activate();
-        }
-
-        if (nextLevel != null)
-        {
-            nextLevel.Activate();
-        }
-    }
 
     private static Level GetLevel(uint level)
     {
@@ -100,21 +101,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(restartKey))
         {
             RestartLevel();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetLevel(0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetLevel(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SetLevel(2);
         }
     }
 
@@ -142,6 +128,6 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
-        SetLevel(_currentLevelIndex);
+        CurrentLevel.Setup(Player, MainCamera, Orb);
     }
 }

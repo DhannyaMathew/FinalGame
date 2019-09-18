@@ -5,8 +5,9 @@ public class Level : MonoBehaviour
 {
     [SerializeField] private Door entrance;
     [SerializeField] private Door exit;
-    [SerializeField] private bool hasOrb = true;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
+    
+    private bool _hasOrb;
     private Mirror[] _mirrors;
     private Chain[] _chains;
     private Light[] _lights;
@@ -21,7 +22,7 @@ public class Level : MonoBehaviour
     {
         _levelStart = GetComponentInChildren<StartPoint>();
         _orbPath = GetComponentInChildren<OrbPath>();
-        if (_orbPath == null) hasOrb = false;
+        if (_orbPath == null) _hasOrb = false;
         _mirrors = GetComponentsInChildren<Mirror>();
         _chains = GetComponentsInChildren<Chain>();
         _lights = GetComponentsInChildren<Light>();
@@ -122,7 +123,7 @@ public class Level : MonoBehaviour
         orb.transform.parent = transform;
         player.Setup(mainCamera);
         _levelStart.ResetPlayer(player);
-        if (hasOrb)
+        if (_hasOrb)
             orb.Set(_orbPath);
         else
             orb.gameObject.SetActive(false);

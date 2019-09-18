@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Portal : MonoBehaviour
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
     private bool _teleportPlayer, _justTeleported;
-
     private Transform RootTransform => transform;
 
     private void Update()
@@ -28,24 +28,23 @@ public class Portal : MonoBehaviour
     public void UpdatePortalCamera(Camera camera)
     {
         _exitPortalCamera.projectionMatrix = camera.projectionMatrix; // Match matrices
-        var flip = new Vector3(-1, 1, -1);
         var pairPortal = _otherPortal.RootTransform;
+        var flipx = pairPortal.lossyScale.x*RootTransform.lossyScale.x;
+        var flip = new Vector3(-1, 1, -1 );
         var relativePosition = RootTransform.InverseTransformPoint(camera.transform.position);
         var relativeForward = RootTransform.InverseTransformDirection(camera.transform.forward);
         var relativeUp = RootTransform.InverseTransformDirection(camera.transform.up);
-      
+
         relativePosition = Vector3.Scale(relativePosition, flip);
         /*relativeForward = Vector3.Scale(relativeForward, flip);
         relativeUp = Vector3.Scale(relativeUp, flip);*/
-        
+
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-        var FlipX = RootTransform.lossyScale.x * pairPortal.lossyScale.x < 0 ? 1 : 0;
-        _portalMaterial.SetInt("_FlipX", FlipX);
-        Debug.Log(FlipX);
+        _portalMaterial.SetInt("_FlipX", flipx < 0 ? 0 : 1);
     }
 
     public void SetOtherPortal(Portal other)
@@ -71,6 +70,15 @@ public class Portal : MonoBehaviour
                 _teleportPlayer = true;
                 _otherPortal._justTeleported = true;
             }
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_exitPortalCamera.targetTexture != null)
+        {
+            _exitPortalCamera.targetTexture.Release();
+            _exitPortalCamera.targetTexture = null;
         }
     }
 
