@@ -14,7 +14,7 @@ public class Door : Interactable
     private Quaternion _targetRotation = Quaternion.identity;
 
     private Portal _portal;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +35,7 @@ public class Door : Interactable
         }
 
         _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
-        
+
         if (_isLinked)
         {
             if (Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f)
@@ -48,7 +48,6 @@ public class Door : Interactable
                 _portal.gameObject.SetActive(false);
             }
         }
-
     }
 
     public void Lock()
@@ -86,9 +85,29 @@ public class Door : Interactable
         if (!connectingBack)
         {
             otherPortal.gameObject.SetActive(true);
-            otherPortal.transform.rotation *= Quaternion.Euler(0,180,0);
+            otherPortal.transform.rotation *= Quaternion.Euler(0, 180, 0);
         }
+
         _portal.SetOtherPortal(otherPortal);
-        
+    }
+
+    public void Close(bool andLock)
+    {
+        open = false;
+        locked = andLock;
+        if (_isLinked)
+        {
+            _connectedDoor.Close(andLock);
+        }
+    }
+
+    public void Open()
+    {
+        open = true;
+        locked = false;
+        if (_isLinked)
+        {
+            _connectedDoor.Open();
+        }
     }
 }

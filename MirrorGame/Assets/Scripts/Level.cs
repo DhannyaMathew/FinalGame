@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Level : MonoBehaviour
 {
@@ -118,6 +119,7 @@ public class Level : MonoBehaviour
 
     public void Setup(Player player, MainCamera mainCamera, Orb orb)
     {
+        orb.transform.parent = transform;
         player.Setup(mainCamera);
         _levelStart.ResetPlayer(player);
         if (hasOrb)
@@ -134,4 +136,21 @@ public class Level : MonoBehaviour
             level.entrance.Link(exit, true);
         }
     }
+
+    private void OnDisable()
+    {
+        reflectionAttribute.OnDisable();
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+    
+    
 }

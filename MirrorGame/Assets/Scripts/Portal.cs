@@ -43,7 +43,7 @@ public class Portal : MonoBehaviour
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-        var FlipX = RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0;
+        var FlipX = RootTransform.lossyScale.x * pairPortal.lossyScale.x < 0 ? 1 : 0;
         _portalMaterial.SetInt("_FlipX", FlipX);
         Debug.Log(FlipX);
     }
