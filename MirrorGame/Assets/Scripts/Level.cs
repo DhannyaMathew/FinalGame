@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Level : MonoBehaviour
 {
     [SerializeField] private Door entrance;
     [SerializeField] private Door exit;
+    [SerializeField] private VolumeProfile sceneSettings;
+    [SerializeField] private VolumeProfile postFX;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
-    
     private bool _hasOrb;
     private Mirror[] _mirrors;
     private Chain[] _chains;
@@ -15,8 +17,8 @@ public class Level : MonoBehaviour
     private OrbPath _orbPath;
     private bool _resetMirrors;
 
-    public Door Entrance => entrance;
-    public Door Exit => exit;
+    public VolumeProfile PostFx => postFX;
+    public VolumeProfile SceneSettings => sceneSettings;
 
     private void Awake()
     {

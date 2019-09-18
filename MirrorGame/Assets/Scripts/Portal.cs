@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    public bool debug;
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
@@ -29,22 +28,21 @@ public class Portal : MonoBehaviour
     {
         _exitPortalCamera.projectionMatrix = camera.projectionMatrix; // Match matrices
         var pairPortal = _otherPortal.RootTransform;
-        var flipx = pairPortal.lossyScale.x*RootTransform.lossyScale.x;
-        var flip = new Vector3(-1, 1, -1 );
+        var flipOtherCamera = Mathf.Sign(pairPortal.lossyScale.x);
         var relativePosition = RootTransform.InverseTransformPoint(camera.transform.position);
         var relativeForward = RootTransform.InverseTransformDirection(camera.transform.forward);
         var relativeUp = RootTransform.InverseTransformDirection(camera.transform.up);
-
-        relativePosition = Vector3.Scale(relativePosition, flip);
-        /*relativeForward = Vector3.Scale(relativeForward, flip);
-        relativeUp = Vector3.Scale(relativeUp, flip);*/
+        relativePosition = Vector3.Scale(relativePosition, new Vector3(-1, 1, -1));
+        relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
+        relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));
 
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-        _portalMaterial.SetInt("_FlipX", flipx < 0 ? 0 : 1);
+
+        _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
     }
 
     public void SetOtherPortal(Portal other)
@@ -73,7 +71,7 @@ public class Portal : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (_exitPortalCamera.targetTexture != null)
         {
