@@ -1,63 +1,69 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Door : Interactable
 {
-    [SerializeField] private Door exit;
     [SerializeField] private float openSpeed;
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
     [SerializeField] private bool open;
-    private int _direction;
+
+    private Door _connectedDoor;
+    private bool _isLinked;
     private Transform _hinge;
     private Quaternion _targetRotation = Quaternion.identity;
-    private Quaternion _initialRotation;
+
     private Portal _portal;
-
-
-    private void Awake()
-    {
-        _portal = GetComponent<Portal>();
-    }
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        
-        _initialRotation = transform.rotation;
         _hinge = transform.GetChild(0);
-        _portal.SetExitPortal(exit._portal);
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
         if (open)
         {
-            _targetRotation = _initialRotation * Quaternion.Euler(0, -openAngle, 0);
+            _targetRotation = Quaternion.Euler(0, -openAngle, 0);
         }
         else
         {
-            _targetRotation = _initialRotation;
+            _targetRotation = Quaternion.Euler(0, 0, 0);
         }
-        _hinge.rotation = Quaternion.Lerp(_hinge.rotation, _targetRotation, Time.deltaTime * openSpeed);
+
+        _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
+        
+        if (_isLinked)
+        {
+            if (Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f)
+            {
+                _portal.gameObject.SetActive(true);
+                _portal.UpdatePortalCamera(GameManager.MainCamera.Camera);
+            }
+            else
+            {
+                _portal.gameObject.SetActive(false);
+            }
+        }
+
     }
 
     public void Lock()
     {
         locked = true;
         open = false;
-        exit.Lock();
+        if (_isLinked)
+            _connectedDoor.Lock();
     }
 
     public void Unlock()
     {
         locked = false;
-        exit.Unlock();
+        if (_isLinked)
+            _connectedDoor.Unlock();
     }
 
     public override void OnInteract()
@@ -65,7 +71,24 @@ public class Door : Interactable
         if (!locked)
         {
             open = !open;
-            exit.open = open;
+            if (_isLinked)
+                _connectedDoor.open = open;
         }
+    }
+
+    public void Link(Door other, bool connectingBack)
+    {
+        _connectedDoor = other;
+        _isLinked = true;
+        _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();
+        var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
+        _portal.gameObject.SetActive(true);
+        if (!connectingBack)
+        {
+            otherPortal.gameObject.SetActive(true);
+            otherPortal.transform.rotation *= Quaternion.Euler(0,180,0);
+        }
+        _portal.SetOtherPortal(otherPortal);
+        
     }
 }

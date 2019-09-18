@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 public abstract class Interactable : MonoBehaviour
 {
     public abstract void OnInteract();

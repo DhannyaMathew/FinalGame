@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.HDPipeline;
 
-[Serializable]
-public class LinearMapping
+
+[Serializable]public class LinearMapping
 {
     public Vector2 minMaxIn;
     public Vector2 minMaxOut;
@@ -20,18 +17,17 @@ public class LinearMapping
 
 public class Mirror : MonoBehaviour
 {
-    [SerializeField] private LinearMapping distortion;
-    [SerializeField] private LinearMapping fov;
 
+    [SerializeField] private LinearMapping distortion;
 
     private Material _material;
-    private PlanarReflectionProbe _prp;
+    private Level _level;
     private static readonly int NormalStrength = Shader.PropertyToID("_normalStrength");
 
     private void Awake()
     {
         _material = GetComponentInChildren<Renderer>().material;
-        _prp = GetComponentInChildren<PlanarReflectionProbe>();
+        _level = GetComponentInParent<Level>();
     }
 
     private void Update()
@@ -40,7 +36,6 @@ public class Mirror : MonoBehaviour
         var playerPosition = GameManager.Player.transform.position;
         var dist = (playerPosition - transform.position).magnitude;
         var strength = distortion.Evaluate(dist);
-        var fov = this.fov.Evaluate(dist);
         _material.SetFloat(NormalStrength, strength);
     }
 
@@ -48,22 +43,17 @@ public class Mirror : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            var level = GameObject.FindGameObjectWithTag("Level");
-            foreach (var reflectable in level.GetComponentsInChildren<Reflectable>())
-            {
-                reflectable.Reflect();
-            }
-
+            _level.Reflect();
             var mirrorTransform = transform;
             mirrorTransform.parent = null;
-            level.transform.parent = mirrorTransform;
+            _level.transform.parent = mirrorTransform;
             mirrorTransform.localScale = new Vector3(
                 -1 * mirrorTransform.localScale.x, 1, 1);
             transform.localRotation = Quaternion.LookRotation(-1f * mirrorTransform.forward, mirrorTransform.up);
-            other.transform.position += mirrorTransform.forward * 2f;
-            level.transform.parent = null;
-            transform.parent = level.transform;
-            GameManager.TurnOffMirrors();
+            other.transform.position += mirrorTransform.forward*2f;
+            _level.transform.parent = null;
+            transform.parent = _level.transform;
+            _level.ResetMirrors();
         }
     }
 }
