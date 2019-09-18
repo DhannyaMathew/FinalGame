@@ -32,6 +32,7 @@ public class MainCamera : MonoBehaviour
         FlatDirection = 90;
         _acutalTheta = FlatDirection;
         Camera = GetComponent<Camera>();
+        Debug.Log(Camera.gameObject.name);
     }
 
     // Update is called once per frame
@@ -62,11 +63,5 @@ public class MainCamera : MonoBehaviour
             transform.position = targetPos - _actualDist * offset;
             transform.LookAt(targetPos);
         }
-    }
-
-    public void Mirror()
-    {
-        FlatDirection *= -1;
-        _acutalTheta *= -1;
     }
 }

@@ -1,59 +1,58 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.Rendering;
-using RenderPipeline = UnityEngine.Experimental.Rendering.RenderPipeline;
-
+﻿using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    private Portal _exitPortal;
+    public bool debug;
+    private Portal _otherPortal;
     private Material _portalMaterial;
-    private Transform _mainCameraTransform;
     private Camera _exitPortalCamera;
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
-    public Vector3 PlayerToPortalOffset => _mainCameraTransform.position - transform.position;
     private bool _teleportPlayer, _justTeleported;
+
+    private Transform RootTransform => transform;
 
     private void Update()
     {
-        UpdatePortalCamera();
         if (_teleportPlayer)
         {
-            var portalToPlayer = GameManager.Player.transform.position - transform.position;
-            var dp = Vector3.Dot(transform.up, portalToPlayer);
-            if (dp < 0f)
-            {
-                var rd = Quaternion.Angle(transform.rotation, _exitPortal.transform.rotation);
-                rd += 180;
-                GameManager.Player.transform.Rotate(Vector3.up, rd);
-                var po = Quaternion.Euler(0, rd, 0) * portalToPlayer;
-                GameManager.Player.transform.position = _exitPortal.transform.position + po;
-                _teleportPlayer = false;
-            }
+            TeleportPlayer();
         }
     }
 
-    private void UpdatePortalCamera()
+    private void TeleportPlayer()
     {
-        var angularDifference = transform.eulerAngles - _exitPortal.transform.eulerAngles;
-        var portalRotationalDiff = Quaternion.Euler(angularDifference.x, -angularDifference.y, angularDifference.z);
-        _exitPortalCamera.transform.position =
-            _exitPortal.transform.position + portalRotationalDiff * PlayerToPortalOffset;
-        var forward = _mainCameraTransform.forward;
-        var newCamDir = portalRotationalDiff * forward;
-        _exitPortalCamera.transform.rotation = Quaternion.LookRotation(newCamDir);
+        _teleportPlayer = !GameManager.Player.Teleport(transform, _otherPortal.transform);
     }
 
-    public void SetExitPortal(Portal exit)
+    public void UpdatePortalCamera(Camera camera)
     {
-        _exitPortal = exit;
-        _portalMaterial = transform.GetChild(transform.childCount - 1).GetComponent<Renderer>().material;
-        _mainCameraTransform = GameManager.MainCamera.transform;
-        _exitPortalCamera = transform.GetChild(transform.childCount - 2).GetComponent<Camera>();
+        _exitPortalCamera.projectionMatrix = camera.projectionMatrix; // Match matrices
+        var flip = new Vector3(-1, 1, -1);
+        var pairPortal = _otherPortal.RootTransform;
+        var relativePosition = RootTransform.InverseTransformPoint(camera.transform.position);
+        var relativeForward = RootTransform.InverseTransformDirection(camera.transform.forward);
+        var relativeUp = RootTransform.InverseTransformDirection(camera.transform.up);
+      
+        relativePosition = Vector3.Scale(relativePosition, flip);
+        /*relativeForward = Vector3.Scale(relativeForward, flip);
+        relativeUp = Vector3.Scale(relativeUp, flip);*/
+        
+        var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
+        relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
+        relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
+        _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
+        _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
+        var FlipX = RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0;
+        _portalMaterial.SetInt("_FlipX", FlipX);
+        Debug.Log(FlipX);
+    }
+
+    public void SetOtherPortal(Portal other)
+    {
+        _otherPortal = other;
+        _exitPortalCamera = transform.GetChild(0).GetComponent<Camera>();
+        _portalMaterial = transform.GetChild(1).GetComponent<Renderer>().material;
         if (_exitPortalCamera.targetTexture != null)
         {
             _exitPortalCamera.targetTexture.Release();
@@ -70,7 +69,7 @@ public class Portal : MonoBehaviour
             if (!_justTeleported)
             {
                 _teleportPlayer = true;
-                _exitPortal._justTeleported = true;
+                _otherPortal._justTeleported = true;
             }
         }
     }
@@ -84,6 +83,5 @@ public class Portal : MonoBehaviour
                 _justTeleported = false;
             }
         }
-        
     }
 }

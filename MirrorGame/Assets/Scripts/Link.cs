@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Link : MonoBehaviour
@@ -29,7 +25,6 @@ public class Link : MonoBehaviour
         _rb.angularDrag = _angularDragLM.Evaluate(Mathf.Clamp01(_angularDrag.Evaluate(av)));
         _rb.velocity = _rb.velocity.normalized * (v * _maxVelocity);
         _rb.angularVelocity = _rb.angularVelocity.normalized * (av * _maxAngularVelocity);
-
     }
 
 
