@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -10,9 +11,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private GameObject orbPrefab;
+    [SerializeField] private Volume sceneSettings;
+    [SerializeField] private Volume postFX;
     [SerializeField] private Level[] _levels;
-
-    private uint _currentLevelIndex;
+    private int _currentLevelIndex = 0;
 
 
     private bool _paused;
@@ -20,15 +22,16 @@ public class GameManager : MonoBehaviour
     private MainCamera _mainCamera;
     private Orb _orb;
 
-    public static uint CurrentLevelIndex
+    public static int CurrentLevelIndex
     {
         get => _instance._currentLevelIndex;
         private set
         {
+            _instance._currentLevelIndex = Mathf.Clamp(value, 0, _instance._levels.Length - 1);
             _instance.TurnOffLevels();
-            _instance._currentLevelIndex = value;
-            var prevLevel = GetLevel(value - 1);
-            var nextLevel = GetLevel(value + 1);
+            var prevLevel = GetLevel(_instance._currentLevelIndex - 1);
+            var current = GetLevel(_instance._currentLevelIndex);
+            var nextLevel = GetLevel(_instance._currentLevelIndex + 1);
 
             if (prevLevel != null)
             {
@@ -37,13 +40,16 @@ public class GameManager : MonoBehaviour
 
             if (CurrentLevel != null)
             {
-                CurrentLevel.Activate();
+                current.Activate();
             }
 
             if (nextLevel != null)
             {
                 nextLevel.Activate();
             }
+
+            _instance.sceneSettings.profile = current.SceneSettings;
+            _instance.postFX.profile = current.PostFx;
         }
     }
 
@@ -73,15 +79,20 @@ public class GameManager : MonoBehaviour
         CurrentLevel.Setup(Player, MainCamera, Orb);
     }
 
-    public void TransitionToNextLevel()
+    public static void TransitionToNextLevel()
     {
         CurrentLevelIndex++;
     }
 
-
-    private static Level GetLevel(uint level)
+    public static void TransitionToPreviousLevel()
     {
-        return level < _instance._levels.Length ? _instance._levels[level] : null;
+        CurrentLevelIndex--;
+    }
+
+
+    private static Level GetLevel(int level)
+    {
+        return level < _instance._levels.Length && level >= 0 ? _instance._levels[level] : null;
     }
 
     private void Update()
