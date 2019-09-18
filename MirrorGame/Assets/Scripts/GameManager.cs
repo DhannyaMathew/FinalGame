@@ -35,19 +35,24 @@ public class GameManager : MonoBehaviour
             if (prevLevel != null)
             {
                 prevLevel.Activate();
+                prevLevel.TurnOffDirectionalLights();
             }
 
             if (CurrentLevel != null)
             {
                 current.Activate();
+                current.TurnOnDirectionalLights();
             }
 
             if (nextLevel != null)
             {
                 nextLevel.Activate();
+                nextLevel.TurnOffDirectionalLights();
             }
 
+            _instance.sceneSettings.isGlobal = true;
             _instance.sceneSettings.profile = current.SceneSettings;
+            _instance.postFX.isGlobal = true;
             _instance.postFX.profile = current.PostFx;
         }
     }

@@ -50,54 +50,7 @@ public class Level : MonoBehaviour
             _resetMirrors = false;
         }
     }
-
-    public void TurnOffAllExpensiveObjects()
-    {
-        TurnOffChains();
-        TurnOffLights();
-        TurnOffMirrors();
-    }
-
-    public void TurnOnAllExpensiveObjects()
-    {
-        TurnOnChains();
-        TurnOnLights();
-        TurnOnMirrors();
-    }
-
-    public void TurnOffChains()
-    {
-        foreach (var chain in _chains)
-        {
-            chain.gameObject.SetActive(false);
-        }
-    }
-
-    public void TurnOnChains()
-    {
-        foreach (var chain in _chains)
-        {
-            chain.gameObject.SetActive(true);
-        }
-    }
-
-
-    public void TurnOffLights()
-    {
-        foreach (var light in _lights)
-        {
-            light.gameObject.SetActive(false);
-        }
-    }
-
-    public void TurnOnLights()
-    {
-        foreach (var light in _lights)
-        {
-            light.gameObject.SetActive(true);
-        }
-    }
-
+    
     public void TurnOffMirrors()
     {
         foreach (var mirror in _mirrors)
@@ -154,6 +107,27 @@ public class Level : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-    
-    
+
+    public void TurnOffDirectionalLights()
+    {
+        foreach (var light in _lights)
+        {
+            if (light.type == LightType.Directional)
+            {
+                light.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void TurnOnDirectionalLights()
+    {
+        foreach (var light in _lights)
+        {
+            if (light.type == LightType.Directional)
+            {
+                Debug.Log(light.gameObject.name);
+                light.gameObject.SetActive(true);
+            }
+        }
+    }
 }

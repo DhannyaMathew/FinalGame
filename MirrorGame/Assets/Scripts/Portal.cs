@@ -29,12 +29,13 @@ public class Portal : MonoBehaviour
         _teleportPlayer = !GameManager.Player.Teleport(transform, _otherPortal.transform);
         if (_door.IsEntrance)
         {
-            _door.Open();
             GameManager.TransitionToPreviousLevel();
+            _door.Open();
         }
         else
         {
             GameManager.TransitionToNextLevel();
+            _door.Open();
         }
     }
 
