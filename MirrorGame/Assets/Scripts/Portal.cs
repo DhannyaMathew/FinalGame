@@ -10,6 +10,11 @@ public class Portal : MonoBehaviour
 
     private bool _teleportPlayer, _justTeleported;
     private Transform RootTransform => transform;
+    private Door _door;
+    private void Start()
+    {
+        _door = GetComponentInParent<Door>();
+    }
 
     private void Update()
     {
@@ -22,6 +27,15 @@ public class Portal : MonoBehaviour
     private void TeleportPlayer()
     {
         _teleportPlayer = !GameManager.Player.Teleport(transform, _otherPortal.transform);
+        if (_door.IsEntrance)
+        {
+            _door.Open();
+            GameManager.TransitionToPreviousLevel();
+        }
+        else
+        {
+            GameManager.TransitionToNextLevel();
+        }
     }
 
     public void UpdatePortalCamera(Camera camera)

@@ -12,8 +12,9 @@ public class Door : Interactable
     private bool _isLinked;
     private Transform _hinge;
     private Quaternion _targetRotation = Quaternion.identity;
-
+    private bool _isEntrance;
     private Portal _portal;
+    public bool IsEntrance => _isEntrance;
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +81,7 @@ public class Door : Interactable
 
     public void Link(Door other, bool connectingBack)
     {
+        _isEntrance = connectingBack;
         _connectedDoor = other;
         _isLinked = true;
         _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();

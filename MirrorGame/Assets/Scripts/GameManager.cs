@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
             var prevLevel = GetLevel(_instance._currentLevelIndex - 1);
             var current = GetLevel(_instance._currentLevelIndex);
             var nextLevel = GetLevel(_instance._currentLevelIndex + 1);
-
             if (prevLevel != null)
             {
                 prevLevel.Activate();
