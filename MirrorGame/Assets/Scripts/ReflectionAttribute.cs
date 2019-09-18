@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-[Serializable] public class ReflectionAttribute
+[Serializable]
+public class ReflectionAttribute
 {
     [SerializeField] private ColourSwap[] colourSwaps;
     [SerializeField] private MapSwap[] mapSwaps;

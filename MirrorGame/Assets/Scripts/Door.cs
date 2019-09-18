@@ -55,14 +55,17 @@ public class Door : Interactable
         locked = true;
         open = false;
         if (_isLinked)
-            _connectedDoor.Lock();
+        {
+            _connectedDoor.locked = true;
+            _connectedDoor.open = false;
+        }
     }
 
     public void Unlock()
     {
         locked = false;
         if (_isLinked)
-            _connectedDoor.Unlock();
+            _connectedDoor.locked = false;
     }
 
     public override void OnInteract()
@@ -84,6 +87,10 @@ public class Door : Interactable
         _portal.gameObject.SetActive(true);
         if (!connectingBack)
         {
+            other.openAngle = openAngle;
+            other.openSpeed = openSpeed;
+            other.locked = locked;
+            other.open = open;
             otherPortal.gameObject.SetActive(true);
             otherPortal.transform.rotation *= Quaternion.Euler(0, 180, 0);
         }
@@ -97,7 +104,8 @@ public class Door : Interactable
         locked = andLock;
         if (_isLinked)
         {
-            _connectedDoor.Close(andLock);
+            _connectedDoor.open = false;
+            _connectedDoor.locked = andLock;
         }
     }
 
@@ -107,7 +115,8 @@ public class Door : Interactable
         locked = false;
         if (_isLinked)
         {
-            _connectedDoor.Open();
+            _connectedDoor.open = true;
+            _connectedDoor.locked = false;
         }
     }
 }
