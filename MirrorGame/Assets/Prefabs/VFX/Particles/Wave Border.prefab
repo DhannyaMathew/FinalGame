@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6968906867671266352}
   - component: {fileID: 3823299788105608371}
   m_Layer: 0
-  m_Name: Wave
+  m_Name: Wave Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6968906867671266355}
   serializedVersion: 6
-  lengthInSec: 6
+  lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -976,7 +976,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 150
+        scalar: 200
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -1042,38 +1042,20 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 1
-          inSlope: -0.11601941
-          outSlope: -0.11601941
+          inSlope: -1
+          outSlope: -1
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.40687338
-          value: 0.9527948
-          inSlope: -0.6012076
-          outSlope: -0.6012076
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.80547327
-          value: 0.5197575
-          inSlope: -1.8791518
-          outSlope: -1.8791518
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 0
-          inSlope: -2.671908
-          outSlope: -2.671908
+          inSlope: -1
+          outSlope: -1
           tangentMode: 34
           weightedMode: 0
-          inWeight: 0.33333334
+          inWeight: 0
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -2590,7 +2572,7 @@ ParticleSystem:
     magnitude:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3.45
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2644,11 +2626,11 @@ ParticleSystem:
     inWorldSpace: 0
     multiplyDragByParticleSize: 1
     multiplyDragByParticleVelocity: 1
-    dampen: 0.6
+    dampen: 0.5
     drag:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.4
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4785,7 +4767,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea949392fab6cf84881a8f191ec7752a, type: 2}
+  - {fileID: 2100000, guid: 281ff9a2015743b4d9e0c8f5998b7236, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4839,7 +4821,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 63c4126563e1e864e85cfba5dda5b9b2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b1e8783a8d54c3b4199e42c756b25f9f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.267
   m_Pitch: 1
