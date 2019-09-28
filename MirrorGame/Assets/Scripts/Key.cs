@@ -26,7 +26,8 @@ public class Key : Interactable
 
     private void Update()
     {
-        transform.localPosition = Vector3.zero;
+        if(_isHeld)
+            transform.localPosition = Vector3.zero;
     }
 
     public void ChildTo(Transform keyHold)
@@ -41,7 +42,6 @@ public class Key : Interactable
 
     public void Unchild()
     {
-        if(_isHeld)
-            transform.parent = GameManager.CurrentLevel.transform;
+        transform.parent = GameManager.CurrentLevel.transform;
     }
 }
