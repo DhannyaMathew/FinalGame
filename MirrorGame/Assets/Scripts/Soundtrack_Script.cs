@@ -11,6 +11,7 @@ public class Soundtrack_Script : MonoBehaviour
     {
 		Soundtrack_Source = this.GetComponent <AudioSource> () ;
 		Soundtrack_Source.clip = Clip01 ;
+		Soundtrack_Source.Play () ;
     }
 
     // Update is called once per frame
