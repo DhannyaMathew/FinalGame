@@ -23,11 +23,11 @@ public class ReflectionAttribute
         {
             mapSwap.Set();
         }
+
         foreach (var materialSwap in materialSwaps)
         {
             materialSwap.Set();
         }
-
     }
 
     internal void Reflect()
@@ -42,22 +42,25 @@ public class ReflectionAttribute
         {
             mapSwap.Reflect(_isReflected);
         }
+
         foreach (var materialSwap in materialSwaps)
         {
             materialSwap.Reflect(_isReflected);
         }
+
         reflectEvent.Reflect(_isReflected);
     }
 
     internal void OnDisable()
     {
-        if(_isReflected)
+        if (_isReflected)
             Reflect();
     }
 }
 
 
-[Serializable] public class ColourSwap
+[Serializable]
+public class ColourSwap
 {
     [SerializeField] private Material material;
     [SerializeField] private string shaderReference = "_BaseColor";
@@ -76,7 +79,8 @@ public class ReflectionAttribute
 }
 
 
-[Serializable] public class MapSwap
+[Serializable]
+public class MapSwap
 {
     [SerializeField] private Material material;
     [SerializeField] private string shaderReference;
@@ -96,7 +100,8 @@ public class ReflectionAttribute
 }
 
 
-[Serializable] public class MaterialSwap
+[Serializable]
+public class MaterialSwap
 {
     [SerializeField] private Renderer renderer;
     [SerializeField] private Material material;
@@ -110,12 +115,13 @@ public class ReflectionAttribute
 
     public void Reflect(bool isReflected)
     {
-        renderer.material =  isReflected ? material : _default;
+        renderer.material = isReflected ? material : _default;
     }
 }
 
 
-[Serializable] public class ReflectEvent
+[Serializable]
+public class ReflectEvent
 {
     [SerializeField] private UnityEvent onReflect;
     [SerializeField] private UnityEvent onRevert;
@@ -128,5 +134,3 @@ public class ReflectionAttribute
             onRevert.Invoke();
     }
 }
-
-

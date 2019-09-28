@@ -1,24 +1,17 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
 
 public class Level : MonoBehaviour
 {
     [SerializeField] private Door entrance;
     [SerializeField] private Door exit;
-    [SerializeField] private VolumeProfile sceneSettings;
-    [SerializeField] private VolumeProfile postFX;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
     private bool _hasOrb;
     private Mirror[] _mirrors;
-    private Chain[] _chains;
     private Light[] _lights;
     private StartPoint _levelStart;
     private OrbPath _orbPath;
     private bool _resetMirrors;
 
-    public VolumeProfile PostFx => postFX;
-    public VolumeProfile SceneSettings => sceneSettings;
 
     private void Awake()
     {
@@ -26,7 +19,6 @@ public class Level : MonoBehaviour
         _orbPath = GetComponentInChildren<OrbPath>();
         if (_orbPath == null) _hasOrb = false;
         _mirrors = GetComponentsInChildren<Mirror>();
-        _chains = GetComponentsInChildren<Chain>();
         _lights = GetComponentsInChildren<Light>();
         reflectionAttribute.Set();
     }
@@ -50,7 +42,7 @@ public class Level : MonoBehaviour
             _resetMirrors = false;
         }
     }
-    
+
     public void TurnOffMirrors()
     {
         foreach (var mirror in _mirrors)
@@ -101,6 +93,7 @@ public class Level : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
+        TurnOnOtherLights();
     }
 
     public void Deactivate()
@@ -114,7 +107,7 @@ public class Level : MonoBehaviour
         {
             if (light.type == LightType.Directional)
             {
-                light.gameObject.SetActive(false);
+                light.enabled = false;
             }
         }
     }
@@ -125,8 +118,29 @@ public class Level : MonoBehaviour
         {
             if (light.type == LightType.Directional)
             {
-                Debug.Log(light.gameObject.name);
-                light.gameObject.SetActive(true);
+                light.enabled = true;
+            }
+        }
+    }
+
+    public void TurnOnOtherLights()
+    {
+        foreach (var light in _lights)
+        {
+            if (light.type != LightType.Directional)
+            {
+                light.enabled = true;
+            }
+        }
+    }
+
+    public void TurnOffOtherLights()
+    {
+        foreach (var light in _lights)
+        {
+            if (light.type != LightType.Directional)
+            {
+                light.enabled = false;
             }
         }
     }

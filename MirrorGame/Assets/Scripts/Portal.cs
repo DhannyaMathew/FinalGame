@@ -30,12 +30,12 @@ public class Portal : MonoBehaviour
         if (_door.IsEntrance)
         {
             GameManager.TransitionToPreviousLevel();
-            _door.Open();
+            _door.ForceOpen();
         }
         else
         {
             GameManager.TransitionToNextLevel();
-            _door.Open();
+            _door.ForceOpen();
         }
     }
 
