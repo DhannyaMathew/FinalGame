@@ -24,9 +24,16 @@ public class Key : Interactable
         }
     }
 
+    private void Update()
+    {
+        transform.localPosition = Vector3.zero;
+    }
+
     public void ChildTo(Transform keyHold)
     {
         _rb.isKinematic = true;
+        _rb.drag = 0;
+        _rb.angularDrag = 0;
         transform.parent = keyHold;
         transform.localPosition = Vector3.zero;
         transform.rotation = keyHold.rotation;
@@ -34,6 +41,7 @@ public class Key : Interactable
 
     public void Unchild()
     {
-        transform.parent = GameManager.CurrentLevel.transform;
+        if(_isHeld)
+            transform.parent = GameManager.CurrentLevel.transform;
     }
 }

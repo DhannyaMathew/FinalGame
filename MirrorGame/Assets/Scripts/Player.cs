@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
 
     private void OnDoorInteract(Door door)
     {
-        Debug.Log("hello");
         if (HasKey)
         {
             door.Unlock();
