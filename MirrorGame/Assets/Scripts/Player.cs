@@ -9,11 +9,11 @@ public class Player : MonoBehaviour
 
     [CanBeNull] private Key _key;
 
-    private bool HasKey => _key != null;
     private Transform _keyHold;
 
     private MainCamera _mainCamera;
-    private PlayerMove Movement { get; set; }
+    public PlayerMove Movement { get; private set; }
+    public bool HasKey => _key != null;
 
     public void Setup(MainCamera mainCamera)
     {
@@ -44,8 +44,7 @@ public class Player : MonoBehaviour
         _keyHold = GameObject.FindWithTag("KeyHold").transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!GameManager.Paused)
             Movement.Move(_mainCamera.FlatDirection);
@@ -54,28 +53,7 @@ public class Player : MonoBehaviour
         ray.origin = _mainCamera.Target - Vector3.up * 0.9f;
         if (Input.GetButtonDown("Interact"))
         {
-            if (Physics.Raycast(ray, out var hit, interactDistance, interactables))
-            {
-                var interactable = hit.transform.gameObject.GetComponent<Interactable>();
-                if (interactable == null)
-                {
-                    interactable = hit.transform.gameObject.GetComponentInChildren<Interactable>();
-                }
-
-                if (interactable == null)
-                {
-                    interactable = hit.transform.gameObject.GetComponentInParent<Interactable>();
-                }
-
-                if (interactable != null)
-                {
-                    interactable.OnInteract();
-                }
-                else
-                {
-                    Debug.LogWarning("Object on interactable layer is not interactable");
-                }
-            }
+            Interactable.Interact(GameManager.CurrentLevel.Interactables, transform);
         }
     }
 

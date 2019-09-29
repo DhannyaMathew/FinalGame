@@ -2,6 +2,14 @@
 
 public class Level : MonoBehaviour
 {
+    public enum Transition
+    {
+        NONE,
+        PREV,
+        NEXT,
+        RANDOM
+    }
+
     [SerializeField] private Door entrance;
     [SerializeField] private Door exit;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
@@ -11,7 +19,9 @@ public class Level : MonoBehaviour
     private StartPoint _levelStart;
     private OrbPath _orbPath;
     private bool _resetMirrors;
+    private Interactable[] _interactables;
 
+    public Interactable[] Interactables => _interactables;
 
     private void Awake()
     {
@@ -20,6 +30,7 @@ public class Level : MonoBehaviour
         if (_orbPath == null) _hasOrb = false;
         _mirrors = GetComponentsInChildren<Mirror>();
         _lights = GetComponentsInChildren<Light>();
+        _interactables = GetComponentsInChildren<Interactable>();
         reflectionAttribute.Set();
     }
 
@@ -43,7 +54,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    public void TurnOffMirrors()
+    private void TurnOffMirrors()
     {
         foreach (var mirror in _mirrors)
         {
@@ -51,7 +62,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    public void TurnOnMirrors()
+    private void TurnOnMirrors()
     {
         foreach (var mirror in _mirrors)
         {

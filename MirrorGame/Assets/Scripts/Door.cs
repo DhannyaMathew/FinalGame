@@ -124,7 +124,7 @@ public class Door : Interactable
         }
     }
 
-    public override void OnInteract()
+    protected override void OnInteract()
     {
         if(EventHandler.OnDoorInteract != null)
             EventHandler.OnDoorInteract(this);
