@@ -4,13 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMove))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private LayerMask interactables;
-    [SerializeField] private float interactDistance = 1.5f;
-
     [CanBeNull] private Key _key;
-
     private Transform _keyHold;
-
     private MainCamera _mainCamera;
     public PlayerMove Movement { get; private set; }
     public bool HasKey => _key != null;
@@ -47,7 +42,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (!GameManager.Paused)
-            Movement.Move(_mainCamera.FlatDirection);
+            Movement.Move(_mainCamera.Theta);
 
         var ray = _mainCamera.Camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         ray.origin = _mainCamera.Target - Vector3.up * 0.9f;
@@ -57,19 +52,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    public bool Teleport(Transform teleporter, Transform target)
+    public void Teleport(Transform teleporter, Transform target, bool flipForward = false)
     {
         var portalToPlayer = transform.position - teleporter.position;
-        var dp = Vector3.Dot(teleporter.up, portalToPlayer);
+
+        var dp = Vector3.Dot((flipForward ? -1 : 1) * teleporter.forward, portalToPlayer);
         if (dp < 0)
         {
-            var rd = Quaternion.Angle(teleporter.rotation, target.rotation) + 180;
-            transform.Rotate(Vector3.up, rd);
-            var po = Quaternion.Euler(0, rd, 0) * portalToPlayer;
-            transform.position = target.position + po;
-            return true;
-        }
+            var newRot = target.TransformDirection(
+                Quaternion.AngleAxis(180f, teleporter.up) *
+                teleporter.InverseTransformDirection(transform.forward));
 
-        return false;
+            var cameraRot = target.TransformDirection(
+                Quaternion.AngleAxis(180f, teleporter.up) *
+                teleporter.InverseTransformDirection(_mainCamera.transform.forward));
+
+
+            transform.forward = newRot;
+            _mainCamera.transform.forward = cameraRot;
+            transform.position = target.position + (flipForward ? 1 : -1) * target.forward;
+        }
     }
 }

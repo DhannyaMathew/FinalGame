@@ -8,38 +8,28 @@ public class Portal : MonoBehaviour
     private Camera _exitPortalCamera;
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
-    private bool _teleportPlayer, _justTeleported;
+    private bool _justTeleported;
     private Transform RootTransform => transform;
     private Door _door;
+    private Timer _portalResetTimer;
 
     private void Start()
     {
         _door = GetComponentInParent<Door>();
+        _portalResetTimer = new Timer(1f, false, ResetTeleporter);
     }
 
-    private void Update()
+    private void ResetTeleporter()
     {
-        if (_teleportPlayer)
-        {
-            TeleportPlayer();
-        }
+        _justTeleported = true;
     }
 
     private void TeleportPlayer()
     {
-        Level.Transition transition = Level.Transition.NONE;
-        _teleportPlayer = !GameManager.Player.Teleport(transform, _otherPortal.transform);
-        if (_door.IsEntrance)
-        {
-            transition = Level.Transition.PREV;
-            _door.ForceOpen();
-        }
-        else
-        {
-            transition = Level.Transition.NEXT;
-            _door.ForceOpen();
-        }
-        EventHandler.OnDoorWalkThrough(transition);
+        GameManager.Player.Teleport(RootTransform, _otherPortal.RootTransform, !_door.IsEntrance);
+        _justTeleported = true;
+        _portalResetTimer.StartTimer();
+        EventHandler.OnDoorWalkThrough(_door.IsEntrance ? Level.Transition.PREV : Level.Transition.NEXT);
     }
 
     public void UpdatePortalCamera(Camera camera)
@@ -81,10 +71,9 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!_justTeleported)
+            if (!_otherPortal._justTeleported)
             {
-                _teleportPlayer = true;
-                _otherPortal._justTeleported = true;
+                TeleportPlayer();
             }
         }
     }
@@ -95,17 +84,6 @@ public class Portal : MonoBehaviour
         {
             _exitPortalCamera.targetTexture.Release();
             _exitPortalCamera.targetTexture = null;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (_justTeleported)
-            {
-                _justTeleported = false;
-            }
         }
     }
 }
