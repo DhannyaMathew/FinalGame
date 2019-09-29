@@ -14,7 +14,7 @@ public class Key : Interactable
         _rb = GetComponent<Rigidbody>();
     }
 
-    public override void OnInteract()
+    protected override void OnInteract()
     {
         if (!_isHeld)
         {

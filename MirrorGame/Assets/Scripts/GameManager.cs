@@ -4,11 +4,6 @@ using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class GameManager : MonoBehaviour
 {
-    public enum LevelTransition
-    {
-        NONE, PREV, NEXT, RANDOM
-    } 
-    
     private static GameManager _instance;
 
     [SerializeField] private KeyCode restartKey;
@@ -24,13 +19,13 @@ public class GameManager : MonoBehaviour
     private MainCamera _mainCamera;
     private Orb _orb;
 
-    public static int PrevLevelIndex => _instance._currentLevelIndex - 1;
-    public static int NextLevelIndex => _instance._currentLevelIndex + 1;
+    private static int PrevLevelIndex => _instance._currentLevelIndex - 1;
+    private static int NextLevelIndex => _instance._currentLevelIndex + 1;
 
-    public static int CurrentLevelIndex
+    private static int CurrentLevelIndex
     {
         get => _instance._currentLevelIndex;
-        private set
+        set
         {
             var nextLevelIndex = Mathf.Clamp(value, 0, _instance.levels.Length - 1);
             var diff = nextLevelIndex - CurrentLevelIndex;
@@ -107,17 +102,20 @@ public class GameManager : MonoBehaviour
         TurnOffLevels();
         CurrentLevelIndex = 0;
         CurrentLevel.Setup(Player, MainCamera, Orb);
+        EventHandler.OnDoorWalkThrough += transition =>
+        {
+            switch (transition)
+            {
+                case Level.Transition.NEXT:
+                    CurrentLevelIndex++;
+                    break;
+                case Level.Transition.PREV:
+                    CurrentLevelIndex--;
+                    break;
+            }
+        };
     }
 
-    public static void TransitionToNextLevel()
-    {
-        CurrentLevelIndex++;
-    }
-
-    public static void TransitionToPreviousLevel()
-    {
-        CurrentLevelIndex--;
-    }
 
     private static Level GetLevel(int level)
     {
@@ -144,30 +142,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void TurnOffLevels()
-    {
-        foreach (var level in levels)
-        {
-            level.Deactivate();
-        }
-    }
-
-    private void TurnOffLevel(int index)
-    {
-        if (index >= 0 && index < levels.Length)
-        {
-            levels[index].Deactivate();
-        }
-    }
-
-    private void LinkLevels()
-    {
-        for (var i = 0; i < levels.Length - 1; i++)
-        {
-            levels[i].Link(levels[i + 1]);
-        }
-    }
-
     public void Quit()
     {
 #if UNITY_EDITOR
@@ -181,5 +155,29 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         CurrentLevel.Setup(Player, MainCamera, Orb);
+    }
+
+    private void LinkLevels()
+    {
+        for (var i = 0; i < levels.Length - 1; i++)
+        {
+            levels[i].Link(levels[i + 1]);
+        }
+    }
+
+    private void TurnOffLevel(int index)
+    {
+        if (index >= 0 && index < levels.Length)
+        {
+            levels[index].Deactivate();
+        }
+    }
+
+    private void TurnOffLevels()
+    {
+        foreach (var level in levels)
+        {
+            level.Deactivate();
+        }
     }
 }

@@ -18,7 +18,11 @@ public class LightManager : MonoBehaviour
 
     private void UpdateScene(Camera camera)
     {
+#if UNITY_EDITOR
         if (camera.cameraType != CameraType.SceneView || EditorApplication.isPlaying) return;
+#else
+      if (camera.cameraType != CameraType.SceneView) return;
+#endif
         var type = FindObjectsOfType<Light>();
         foreach (var light in type)
         {
