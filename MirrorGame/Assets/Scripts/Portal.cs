@@ -8,35 +8,41 @@ public class Portal : MonoBehaviour
     private Camera _exitPortalCamera;
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
-    private bool _teleportPlayer, _justTeleported;
+    private bool _justTeleported;
     private Transform RootTransform => transform;
+    public Camera Camera { get; private set; }
+
     private Door _door;
+    private Timer _portalResetTimer;
+
+
     private void Start()
     {
         _door = GetComponentInParent<Door>();
+        Camera = GetComponentInChildren<Camera>();
+        if (_portalResetTimer == null)
+        {
+            _portalResetTimer = new Timer(0.1f, false, ResetTeleporter);
+            _otherPortal._portalResetTimer = new Timer(0.1f, false, _otherPortal.ResetTeleporter);
+        }
     }
 
     private void Update()
     {
-        if (_teleportPlayer)
-        {
-            TeleportPlayer();
-        }
+        _otherPortal._portalResetTimer.Tick(Time.deltaTime);
+    }
+
+    private void ResetTeleporter()
+    {
+        _otherPortal._justTeleported = false;
     }
 
     private void TeleportPlayer()
     {
-        _teleportPlayer = !GameManager.Player.Teleport(transform, _otherPortal.transform);
-        if (_door.IsEntrance)
-        {
-            GameManager.TransitionToPreviousLevel();
-            _door.Open();
-        }
-        else
-        {
-            GameManager.TransitionToNextLevel();
-            _door.Open();
-        }
+        _justTeleported = true;
+        GameManager.Player.Teleport(RootTransform, _otherPortal.RootTransform);
+        _otherPortal._portalResetTimer.StartTimer();
+        EventHandler.OnDoorWalkThrough(_door.IsEntrance ? Level.Transition.PREV : Level.Transition.NEXT);
     }
 
     public void UpdatePortalCamera(Camera camera)
@@ -50,13 +56,11 @@ public class Portal : MonoBehaviour
         relativePosition = Vector3.Scale(relativePosition, new Vector3(-1, 1, -1));
         relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
         relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));
-
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-
         _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
     }
 
@@ -78,10 +82,9 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!_justTeleported)
+            if (!_otherPortal._justTeleported)
             {
-                _teleportPlayer = true;
-                _otherPortal._justTeleported = true;
+                TeleportPlayer();
             }
         }
     }
@@ -92,17 +95,6 @@ public class Portal : MonoBehaviour
         {
             _exitPortalCamera.targetTexture.Release();
             _exitPortalCamera.targetTexture = null;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (_justTeleported)
-            {
-                _justTeleported = false;
-            }
         }
     }
 }

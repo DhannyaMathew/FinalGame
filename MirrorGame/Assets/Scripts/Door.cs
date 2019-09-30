@@ -15,67 +15,37 @@ public class Door : Interactable
     private bool _isEntrance;
     private Portal _portal;
     public bool IsEntrance => _isEntrance;
+    public Transform KeyHole { get; private set; }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _hinge = transform.GetChild(0);
+        KeyHole = GameObject.FindWithTag("KeyHole").transform;
     }
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (open)
-        {
-            _targetRotation = Quaternion.Euler(0, -openAngle, 0);
-        }
-        else
-        {
-            _targetRotation = Quaternion.Euler(0, 0, 0);
-        }
-
+        _targetRotation = open ? Quaternion.Euler(0, -openAngle, 0) : Quaternion.Euler(0, 0, 0);
         _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
+        UpdatePortals(GameManager.MainCamera.Camera);
+    }
 
+    private void UpdatePortals(Camera camera)
+    {
         if (_isLinked)
         {
-            if (Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f)
+            if (IsOpen() && InRange(camera) && InFrontOf(camera))
             {
-                _portal.gameObject.SetActive(true);
-                _portal.UpdatePortalCamera(GameManager.MainCamera.Camera);
+                _portal.Camera.gameObject.SetActive(true);
+                _portal.UpdatePortalCamera(camera);
             }
             else
             {
-                _portal.gameObject.SetActive(false);
+                _portal.Camera.gameObject.SetActive(false);
             }
-        }
-    }
-
-    public void Lock()
-    {
-        locked = true;
-        open = false;
-        if (_isLinked)
-        {
-            _connectedDoor.locked = true;
-            _connectedDoor.open = false;
-        }
-    }
-
-    public void Unlock()
-    {
-        locked = false;
-        if (_isLinked)
-            _connectedDoor.locked = false;
-    }
-
-    public override void OnInteract()
-    {
-        if (!locked)
-        {
-            open = !open;
-            if (_isLinked)
-                _connectedDoor.open = open;
         }
     }
 
@@ -100,6 +70,39 @@ public class Door : Interactable
         _portal.SetOtherPortal(otherPortal);
     }
 
+    private bool IsOpen()
+    {
+        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f;
+    }
+
+    private bool InRange(Camera camera)
+    {
+        return Vector3.Distance(camera.transform.position, transform.position) < 50;
+    }
+
+    private bool InFrontOf(Camera camera)
+    {
+        return Vector3.Dot(camera.transform.forward, _portal.transform.forward) < 0;
+    }
+
+    public void Lock()
+    {
+        locked = true;
+        open = false;
+        if (_isLinked)
+        {
+            _connectedDoor.locked = true;
+            _connectedDoor.open = false;
+        }
+    }
+
+    public void Unlock()
+    {
+        locked = false;
+        if (_isLinked)
+            _connectedDoor.locked = false;
+    }
+
     public void Close(bool andLock)
     {
         open = false;
@@ -111,7 +114,24 @@ public class Door : Interactable
         }
     }
 
-    public void Open()
+    private void TryOpen()
+    {
+        if (!locked)
+        {
+            open = !open;
+            if (_isLinked)
+                _connectedDoor.open = open;
+        }
+    }
+
+    protected override void OnInteract()
+    {
+        if (EventHandler.OnDoorInteract != null)
+            EventHandler.OnDoorInteract(this);
+        TryOpen();
+    }
+
+    public void ForceOpen()
     {
         open = true;
         locked = false;

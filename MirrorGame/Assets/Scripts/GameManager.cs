@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
+﻿using UnityEditor;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,37 +11,62 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private GameObject orbPrefab;
-    [SerializeField] private Volume sceneSettings;
-    [SerializeField] private Volume postFX;
-    [SerializeField] private Level[] _levels;
-    private int _currentLevelIndex = 0;
+    [SerializeField] private Level[] levels;
 
-
+    private int _currentLevelIndex;
     private bool _paused;
     private Player _player;
     private MainCamera _mainCamera;
     private Orb _orb;
 
-    public static int CurrentLevelIndex
+    private static int PrevLevelIndex => _instance._currentLevelIndex - 1;
+    private static int NextLevelIndex => _instance._currentLevelIndex + 1;
+
+    private static int CurrentLevelIndex
     {
         get => _instance._currentLevelIndex;
-        private set
+        set
         {
-            _instance._currentLevelIndex = Mathf.Clamp(value, 0, _instance._levels.Length - 1);
-            _instance.TurnOffLevels();
-            var prevLevel = GetLevel(_instance._currentLevelIndex - 1);
-            var current = GetLevel(_instance._currentLevelIndex);
-            var nextLevel = GetLevel(_instance._currentLevelIndex + 1);
-            if (prevLevel != null)
+            var nextLevelIndex = Mathf.Clamp(value, 0, _instance.levels.Length - 1);
+            var diff = nextLevelIndex - CurrentLevelIndex;
+            switch (diff)
             {
-                prevLevel.Activate();
-                prevLevel.TurnOffDirectionalLights();
+                case -2:
+                    _instance.TurnOffLevel(CurrentLevelIndex);
+                    _instance.TurnOffLevel(NextLevelIndex);
+                    break;
+                case 2:
+                    _instance.TurnOffLevel(CurrentLevelIndex);
+                    _instance.TurnOffLevel(PrevLevelIndex);
+                    break;
+                case -1:
+                    _instance.TurnOffLevel(NextLevelIndex);
+                    break;
+                case 1:
+                    _instance.TurnOffLevel(PrevLevelIndex);
+                    break;
+                case 0:
+                    break;
+                default:
+                    _instance.TurnOffLevels();
+                    break;
             }
 
+            _instance._currentLevelIndex = nextLevelIndex;
+            var prevLevel = GetLevel(PrevLevelIndex);
+            var current = GetLevel(CurrentLevelIndex);
+            var nextLevel = GetLevel(NextLevelIndex);
             if (CurrentLevel != null)
             {
                 current.Activate();
                 current.TurnOnDirectionalLights();
+                MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
+            }
+
+            if (prevLevel != null)
+            {
+                prevLevel.Activate();
+                prevLevel.TurnOffDirectionalLights();
             }
 
             if (nextLevel != null)
@@ -49,11 +74,6 @@ public class GameManager : MonoBehaviour
                 nextLevel.Activate();
                 nextLevel.TurnOffDirectionalLights();
             }
-
-            _instance.sceneSettings.isGlobal = true;
-            _instance.sceneSettings.profile = current.SceneSettings;
-            _instance.postFX.isGlobal = true;
-            _instance.postFX.profile = current.PostFx;
         }
     }
 
@@ -70,6 +90,7 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+
         _player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         _mainCamera = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity).GetComponent<MainCamera>();
         _orb = Instantiate(orbPrefab, Vector3.zero, Quaternion.identity).GetComponent<Orb>();
@@ -81,22 +102,24 @@ public class GameManager : MonoBehaviour
         TurnOffLevels();
         CurrentLevelIndex = 0;
         CurrentLevel.Setup(Player, MainCamera, Orb);
-    }
-
-    public static void TransitionToNextLevel()
-    {
-        CurrentLevelIndex++;
-    }
-
-    public static void TransitionToPreviousLevel()
-    {
-        CurrentLevelIndex--;
+        EventHandler.OnDoorWalkThrough += transition =>
+        {
+            switch (transition)
+            {
+                case Level.Transition.NEXT:
+                    CurrentLevelIndex++;
+                    break;
+                case Level.Transition.PREV:
+                    CurrentLevelIndex--;
+                    break;
+            }
+        };
     }
 
 
     private static Level GetLevel(int level)
     {
-        return level < _instance._levels.Length && level >= 0 ? _instance._levels[level] : null;
+        return level < _instance.levels.Length && level >= 0 ? _instance.levels[level] : null;
     }
 
     private void Update()
@@ -119,30 +142,42 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void TurnOffLevels()
-    {
-        foreach (var level in _levels)
-        {
-            level.gameObject.SetActive(false);
-        }
-    }
-
-    private void LinkLevels()
-    {
-        for (var i = 0; i < _levels.Length - 1; i++)
-        {
-            _levels[i].Link(_levels[i + 1]);
-        }
-    }
-
     public void Quit()
     {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
         Application.Quit();
+#endif
     }
 
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         CurrentLevel.Setup(Player, MainCamera, Orb);
+    }
+
+    private void LinkLevels()
+    {
+        for (var i = 0; i < levels.Length - 1; i++)
+        {
+            levels[i].Link(levels[i + 1]);
+        }
+    }
+
+    private void TurnOffLevel(int index)
+    {
+        if (index >= 0 && index < levels.Length)
+        {
+            levels[index].Deactivate();
+        }
+    }
+
+    private void TurnOffLevels()
+    {
+        foreach (var level in levels)
+        {
+            level.Deactivate();
+        }
     }
 }

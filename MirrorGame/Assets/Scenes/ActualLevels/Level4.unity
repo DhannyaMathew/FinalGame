@@ -158,8 +158,7 @@ MonoBehaviour:
     type: 3}
   orbPrefab: {fileID: 3121013672419861751, guid: fceb71f2d9ef4d445b9912b735242243,
     type: 3}
-  _levels:
-  - {fileID: 1796216003}
+  levels: []
 --- !u!4 &152075566
 Transform:
   m_ObjectHideFlags: 0
@@ -577,7 +576,7 @@ Transform:
   m_GameObject: {fileID: 1942573335}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 15}
+  m_LocalScale: {x: 8.83, y: 1, z: 4.61}
   m_Children: []
   m_Father: {fileID: 1796216002}
   m_RootOrder: 0
@@ -593,7 +592,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.92, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1942573338
 MeshRenderer:
@@ -612,7 +611,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6bfac2e87e02f7940a1e329799235d8b, type: 2}
+  - {fileID: 2100000, guid: fd4d2ddf3dd61054d97d5e890deb7d33, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -673,7 +672,7 @@ MonoBehaviour:
   priority: -1
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: f727b65604af76f4daff79efea26703c, type: 2}
+  sharedProfile: {fileID: 0}
 --- !u!4 &1964202450
 Transform:
   m_ObjectHideFlags: 0
