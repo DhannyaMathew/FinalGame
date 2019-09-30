@@ -10,25 +10,38 @@ public class Portal : MonoBehaviour
 
     private bool _justTeleported;
     private Transform RootTransform => transform;
+    public Camera Camera { get; private set; }
+
     private Door _door;
     private Timer _portalResetTimer;
+
 
     private void Start()
     {
         _door = GetComponentInParent<Door>();
-        _portalResetTimer = new Timer(1f, false, ResetTeleporter);
+        Camera = GetComponentInChildren<Camera>();
+        if (_portalResetTimer == null)
+        {
+            _portalResetTimer = new Timer(0.1f, false, ResetTeleporter);
+            _otherPortal._portalResetTimer = new Timer(0.1f, false, _otherPortal.ResetTeleporter);
+        }
+    }
+
+    private void Update()
+    {
+        _otherPortal._portalResetTimer.Tick(Time.deltaTime);
     }
 
     private void ResetTeleporter()
     {
-        _justTeleported = true;
+        _otherPortal._justTeleported = false;
     }
 
     private void TeleportPlayer()
     {
-        GameManager.Player.Teleport(RootTransform, _otherPortal.RootTransform, !_door.IsEntrance);
         _justTeleported = true;
-        _portalResetTimer.StartTimer();
+        GameManager.Player.Teleport(RootTransform, _otherPortal.RootTransform);
+        _otherPortal._portalResetTimer.StartTimer();
         EventHandler.OnDoorWalkThrough(_door.IsEntrance ? Level.Transition.PREV : Level.Transition.NEXT);
     }
 
@@ -43,13 +56,11 @@ public class Portal : MonoBehaviour
         relativePosition = Vector3.Scale(relativePosition, new Vector3(-1, 1, -1));
         relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
         relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));
-
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-
         _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
     }
 

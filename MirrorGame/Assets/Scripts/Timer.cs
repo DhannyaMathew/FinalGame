@@ -17,20 +17,25 @@ public class Timer
         this.onCountDown = onCountDown;
     }
 
-    public void Tick()
+    public void Tick(float dt)
     {
-        if (_countingDown)
-            _timer -= Time.deltaTime;
         if (_timer <= 0)
         {
             onCountDown();
-            var diff = _timer;
             if (_loop)
+            {
+                var diff = _timer;
                 _timer = Length + diff;
+            }
             else
             {
+                _timer = Length;
                 _countingDown = false;
             }
+        }
+        else if (_countingDown)
+        {
+            _timer -= dt;
         }
     }
 

@@ -9,6 +9,7 @@ public class ReflectionAttribute
     [SerializeField] private ColourSwap[] colourSwaps;
     [SerializeField] private MapSwap[] mapSwaps;
     [SerializeField] private MaterialSwap[] materialSwaps;
+    [SerializeField] private SwapGameObject[] gameObjectSwaps;
     [SerializeField] private ReflectEvent reflectEvent;
     private bool _isReflected;
 
@@ -28,6 +29,10 @@ public class ReflectionAttribute
         {
             materialSwap.Set();
         }
+        foreach (var obj in gameObjectSwaps)
+        {
+            obj.Set();
+        }
     }
 
     internal void Reflect()
@@ -46,6 +51,11 @@ public class ReflectionAttribute
         foreach (var materialSwap in materialSwaps)
         {
             materialSwap.Reflect(_isReflected);
+        }
+
+        foreach (var obj in gameObjectSwaps)
+        {
+            obj.Reflect(_isReflected);
         }
 
         reflectEvent.Reflect(_isReflected);
@@ -132,5 +142,25 @@ public class ReflectEvent
             onReflect.Invoke();
         else
             onRevert.Invoke();
+    }
+}
+
+[Serializable]
+public class SwapGameObject
+{
+    [SerializeField] private GameObject normal;
+    [SerializeField] private GameObject reflected;
+
+    public void Set()
+    {
+        normal.SetActive(true);
+        reflected.SetActive(false);
+    }
+    
+    
+    public void Reflect(bool isReflected)
+    {
+        normal.SetActive(!isReflected);
+        reflected.SetActive(isReflected);
     }
 }

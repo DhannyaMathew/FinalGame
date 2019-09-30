@@ -52,25 +52,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Teleport(Transform teleporter, Transform target, bool flipForward = false)
+    public void Teleport(Transform teleporter, Transform target)
     {
-        var portalToPlayer = transform.position - teleporter.position;
-
-        var dp = Vector3.Dot((flipForward ? -1 : 1) * teleporter.forward, portalToPlayer);
-        if (dp < 0)
-        {
-            var newRot = target.TransformDirection(
-                Quaternion.AngleAxis(180f, teleporter.up) *
-                teleporter.InverseTransformDirection(transform.forward));
-
-            var cameraRot = target.TransformDirection(
-                Quaternion.AngleAxis(180f, teleporter.up) *
-                teleporter.InverseTransformDirection(_mainCamera.transform.forward));
-
-
-            transform.forward = newRot;
-            _mainCamera.transform.forward = cameraRot;
-            transform.position = target.position + (flipForward ? 1 : -1) * target.forward;
-        }
+        var angleDiff = target.eulerAngles - teleporter.eulerAngles;
+        angleDiff.y += 180;
+        _mainCamera.SetRotation(_mainCamera.Theta + angleDiff.y, _mainCamera.Phi + angleDiff.x);
+        transform.Rotate(angleDiff);
+        transform.position = target.position;
     }
 }

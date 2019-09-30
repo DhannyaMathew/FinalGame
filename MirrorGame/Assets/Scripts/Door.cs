@@ -39,12 +39,12 @@ public class Door : Interactable
         {
             if (IsOpen() && InRange(camera) && InFrontOf(camera))
             {
-                _portal.gameObject.SetActive(true);
+                _portal.Camera.gameObject.SetActive(true);
                 _portal.UpdatePortalCamera(camera);
             }
             else
             {
-                _portal.gameObject.SetActive(false);
+                _portal.Camera.gameObject.SetActive(false);
             }
         }
     }
@@ -126,7 +126,7 @@ public class Door : Interactable
 
     protected override void OnInteract()
     {
-        if(EventHandler.OnDoorInteract != null)
+        if (EventHandler.OnDoorInteract != null)
             EventHandler.OnDoorInteract(this);
         TryOpen();
     }
