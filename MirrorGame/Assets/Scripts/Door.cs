@@ -6,7 +6,7 @@ public class Door : Interactable
     [SerializeField] private float openSpeed;
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
-    [SerializeField] private bool open;
+    [SerializeField] internal bool open;
 
     private Door _connectedDoor;
     private bool _isLinked;
@@ -40,10 +40,12 @@ public class Door : Interactable
             if (IsOpen() && InRange(camera) && InFrontOf(camera))
             {
                 _portal.Camera.gameObject.SetActive(true);
+                _portal.PortalTarget.SetActive(true);
                 _portal.UpdatePortalCamera(camera);
             }
             else
             {
+                _portal.PortalTarget.SetActive(false);
                 _portal.Camera.gameObject.SetActive(false);
             }
         }
@@ -72,7 +74,7 @@ public class Door : Interactable
 
     private bool IsOpen()
     {
-        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f;
+        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 45f;
     }
 
     private bool InRange(Camera camera)

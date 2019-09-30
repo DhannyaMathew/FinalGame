@@ -6,12 +6,13 @@ public class Portal : MonoBehaviour
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
+
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
     private bool _justTeleported;
     private Transform RootTransform => transform;
     public Camera Camera { get; private set; }
-
+    public GameObject PortalTarget { get; private set; }
     private Door _door;
     private Timer _portalResetTimer;
 
@@ -20,6 +21,7 @@ public class Portal : MonoBehaviour
     {
         _door = GetComponentInParent<Door>();
         Camera = GetComponentInChildren<Camera>();
+        PortalTarget = transform.GetChild(1).gameObject;
         if (_portalResetTimer == null)
         {
             _portalResetTimer = new Timer(0.1f, false, ResetTeleporter);
@@ -82,7 +84,7 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!_otherPortal._justTeleported)
+            if (!_otherPortal._justTeleported && _door.open)
             {
                 TeleportPlayer();
             }
