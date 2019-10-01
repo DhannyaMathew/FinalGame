@@ -29,6 +29,7 @@ public class ReflectionAttribute
         {
             materialSwap.Set();
         }
+
         foreach (var obj in gameObjectSwaps)
         {
             obj.Set();
@@ -60,8 +61,9 @@ public class ReflectionAttribute
 
         reflectEvent.Reflect(_isReflected);
     }
+    
 
-    internal void OnDisable()
+    public void SetDefault()
     {
         if (_isReflected)
             Reflect();
@@ -156,8 +158,8 @@ public class SwapGameObject
         normal.SetActive(true);
         reflected.SetActive(false);
     }
-    
-    
+
+
     public void Reflect(bool isReflected)
     {
         normal.SetActive(!isReflected);

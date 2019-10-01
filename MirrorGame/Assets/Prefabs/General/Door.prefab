@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 17138760230566952}
   - component: {fileID: 1627220804951799120}
   - component: {fileID: 396838517183543715}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 2027083292342712874}
   - component: {fileID: 2258705432770033639}
   - component: {fileID: 3250490937393273322}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: PortalTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 8540447977876917223}
   - component: {fileID: 4034113610794435445}
   - component: {fileID: 5333539288370475693}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9222334474422813409}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8253463789005518681}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: Rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7959980487702602089}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: GameObject
   m_TagString: KeyHole
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 6161627767779863058}
   - component: {fileID: 1282220515056902429}
   - component: {fileID: 1519121139325721386}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 3448436886077054220}
   - component: {fileID: 7561128450834812014}
   - component: {fileID: 4405864635174514832}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82ce7e7399e9cf4d9f12e224e818273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateBy180: 0
 --- !u!1 &7261663327179059451
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +528,7 @@ GameObject:
   - component: {fileID: 8475242304783925339}
   - component: {fileID: 2483302284299333656}
   - component: {fileID: 1440983037452752866}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PortalCamera
   m_TagString: Portal Camera
   m_Icon: {fileID: 0}
@@ -695,7 +696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7796041442738153548}
   - component: {fileID: 6515325749659690701}
-  m_Layer: 12
+  m_Layer: 2
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,17 +753,17 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3990036101274998414, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7355505931988635916, guid: d3edeb122e6382444b63927c98186606,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d3edeb122e6382444b63927c98186606,
         type: 3}

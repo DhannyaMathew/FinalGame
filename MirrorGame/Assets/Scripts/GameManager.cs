@@ -1,9 +1,19 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    public enum PauseMenuState
+    {
+        Off,
+        MainPauseMenu,
+        Settings
+    }
+
+
     private static GameManager _instance;
 
     [SerializeField] private KeyCode restartKey;
@@ -14,21 +24,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int startLevel;
     [SerializeField] private Level[] levels;
 
+    //Menu UI
+    [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private GameObject settingsScreen;
+    [SerializeField] private GameObject mainMenuButton;
+
     private int _currentLevelIndex;
     private bool _paused;
     private Player _player;
     private MainCamera _mainCamera;
     private Orb _orb;
-
+    private PauseMenuState _pauseState = PauseMenuState.Off;
     private static int PrevLevelIndex => _instance._currentLevelIndex - 1;
     private static int NextLevelIndex => _instance._currentLevelIndex + 1;
-
-    //Menu UI
-    public GameObject PauseScreen;
-    public GameObject SettingsScreen;
-    public GameObject MainMenuButton;
-    private bool GamePaused = false, SettingsOpen = false;
-    //Restart Game Option?? In menu or mention R is to restart level?
 
     private static int CurrentLevelIndex
     {
@@ -70,6 +78,7 @@ public class GameManager : MonoBehaviour
                 current.TurnOnparticleSystems();
                 current.TurnOnDirectionalLight();
                 MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
+                MainCamera.settings = current.cameraSettings;
             }
 
             if (prevLevel != null)
@@ -88,11 +97,51 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static bool Paused => _instance._paused;
+    public static bool Paused
+    {
+        get => _instance._paused;
+        private set
+        {
+            Cursor.visible = value;
+            Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
+            _instance.pauseScreen.SetActive(value);
+            _instance._paused = value;
+            Time.timeScale = value ? 0f : 1f;
+        }
+    }
+
+
     public static Level CurrentLevel => GetLevel(_instance._currentLevelIndex);
     public static Player Player => _instance._player;
     public static MainCamera MainCamera => _instance._mainCamera;
     public static Orb Orb => _instance._orb;
+
+    private static PauseMenuState PauseState
+    {
+        get => _instance._pauseState;
+        set
+        {
+            _instance._pauseState = value;
+            switch (value)
+            {
+                case PauseMenuState.Off:
+                    Paused = false;
+                    _instance.settingsScreen.SetActive(false);
+                    _instance.pauseScreen.SetActive(false);
+                    return;
+                case PauseMenuState.MainPauseMenu:
+                    Paused = true;
+                    _instance.settingsScreen.SetActive(false);
+                    _instance.pauseScreen.SetActive(true);
+                    _instance.mainMenuButton.SetActive(CurrentLevelIndex != 1);
+                    return;
+                case PauseMenuState.Settings:
+                    _instance.settingsScreen.SetActive(true);
+                    _instance.pauseScreen.SetActive(false);
+                    return;
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -100,7 +149,6 @@ public class GameManager : MonoBehaviour
             _instance = this;
         else
             Destroy(gameObject);
-
 
         _player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         _mainCamera = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity).GetComponent<MainCamera>();
@@ -114,7 +162,7 @@ public class GameManager : MonoBehaviour
         TurnOffLevels();
         CurrentLevelIndex = startLevel;
         CurrentLevel.Setup(Player, MainCamera, Orb);
-        EventHandler.OnDoorWalkThrough += transition =>
+        EventHandler.OnDoorWalkThrough += (door, transition) =>
         {
             switch (transition)
             {
@@ -126,40 +174,14 @@ public class GameManager : MonoBehaviour
                     break;
             }
         };
-    }
-
-    void Pause()
-    {
-        PauseScreen.SetActive(true);
-        Time.timeScale = 0f;
-        GamePaused = true;
-    }
-
-    public void Resume()
-    {
-        PauseScreen.SetActive(false);
-        Time.timeScale = 1f;
-        GamePaused = false;
+        EventHandler.OnFallOutOfMap += () => { Player.FallOffMap(CurrentLevel); };
     }
 
     public void MainMenu()
     {
-        Resume();
-        //For Blake to take character to main menu -Dhannya
-    }
-    
-    public void OpenSettingsMenu()
-    {
-        SettingsScreen.SetActive(true);
-        PauseScreen.SetActive(false);
-        SettingsOpen = true;
-    }
-
-    public void CloseSettingsMenu()
-    {
-        SettingsScreen.SetActive(false);
-        PauseScreen.SetActive(true);
-        SettingsOpen = false;
+        Paused = false;
+        CurrentLevelIndex = 1;
+        RestartLevel();
     }
 
     private static Level GetLevel(int level)
@@ -169,35 +191,22 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _paused = !_paused;
-            Cursor.visible = !Paused;
-            Cursor.lockState = !Paused ? CursorLockMode.Locked : CursorLockMode.None;
-        }
         if (Input.GetKeyDown(EscapeKey))
         {
-            if (!GamePaused)
+            switch (PauseState)
             {
-                Pause();
-                if (_currentLevelIndex == 1)
-                {
-                    MainMenuButton.SetActive(false);
-                }
-                else
-                {
-                    MainMenuButton.SetActive(true);
-                }
-            }
-            else if (GamePaused && !SettingsOpen)
-            {
-                Resume();
-            }
-            else if (GamePaused && SettingsOpen)
-            {
-                CloseSettingsMenu();
+                case PauseMenuState.Off:
+                    PauseState = PauseMenuState.MainPauseMenu;
+                    break;
+                case PauseMenuState.MainPauseMenu:
+                    PauseState = PauseMenuState.Off;
+                    break;
+                case PauseMenuState.Settings:
+                    PauseState = PauseMenuState.MainPauseMenu;
+                    break;
             }
         }
+
         if (Input.GetKeyDown(restartKey))
         {
             RestartLevel();
@@ -241,5 +250,10 @@ public class GameManager : MonoBehaviour
         {
             level.Deactivate();
         }
+    }
+
+    public static void DisablePrevLevel()
+    {
+        _instance.levels[PrevLevelIndex].Deactivate();
     }
 }

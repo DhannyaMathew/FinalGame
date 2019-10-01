@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private bool debug;
     [SerializeField] private float maxGroundAngle;
     [SerializeField] private LayerMask ground;
+    [SerializeField] private LayerMask ladder;
 
     private float _speed;
     private float _actualSpeed;
@@ -102,8 +103,11 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionStay(Collision other)
     {
-        if ((1 << other.gameObject.layer & ground.value) != 0)
+        if (CheckLayer(other.gameObject.layer, ground))
         {
+            _grounded = false;
+            Forward = transform.forward;
+            GroundAngle = 0;
             foreach (var otherContact in other.contacts)
             {
                 if (Vector3.Angle(otherContact.normal, _moveDirectionRotation * transform.forward) -
@@ -115,22 +119,38 @@ public class PlayerMove : MonoBehaviour
                     GroundAngle = Vector3.Angle(otherContact.normal,
                                       _moveDirectionRotation * transform.forward) -
                                   90;
-                    return;
+                    Debug.DrawLine(otherContact.point, otherContact.point + otherContact.normal * 0.3f, Color.yellow);
+                    break;
                 }
             }
+        }
+
+        if (CheckLayer(other.gameObject.layer, ladder))
+        {
+            foreach (var otherContact in other.contacts)
+            {
+                _grounded = true;
+                Forward = Vector3.Cross(otherContact.normal,
+                    _moveDirectionRotation * -transform.right);
+                GroundAngle = Vector3.Angle(otherContact.normal,
+                                  _moveDirectionRotation * transform.forward) - 90;
+                Debug.DrawLine(otherContact.point, otherContact.point + otherContact.normal * 0.3f, Color.red);
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (CheckLayer(other.gameObject.layer, ground))
+        {
             _grounded = false;
             Forward = transform.forward;
             GroundAngle = 0;
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private bool CheckLayer(LayerMask input, LayerMask compare)
     {
-        if ((1 << other.gameObject.layer & ground.value) != 0)
-        {
-            _grounded = false;
-            Forward = transform.forward;
-            GroundAngle = 0;
-        }
+        return (1 << input.value & compare.value) != 0;
     }
 }

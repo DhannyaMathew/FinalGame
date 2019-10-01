@@ -361,6 +361,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entrance: {fileID: 0}
   exit: {fileID: 6693391975027160594}
+  mainDirectionalLight: {fileID: 0}
+  ambientLighting: {fileID: 0}
+  ambientLightEnabled: 0
+  ambientLight: {r: 0, g: 0, b: 0, a: 0}
+  intensity: 1
   reflectionAttribute:
     colourSwaps: []
     mapSwaps: []
@@ -377,6 +382,7 @@ MonoBehaviour:
           m_Calls: []
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
+  cameraSettings: {fileID: 11400000, guid: 1f17280f8755ac540893e45a81c80e34, type: 2}
 --- !u!114 &470805065507586150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,7 +725,7 @@ PrefabInstance:
     - target: {fileID: 9127292570591172661, guid: 83dca574b2eb5cf48a59748a4956a352,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.9
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 9127292570591172661, guid: 83dca574b2eb5cf48a59748a4956a352,
         type: 3}
@@ -729,7 +735,7 @@ PrefabInstance:
     - target: {fileID: 9127292570591172661, guid: 83dca574b2eb5cf48a59748a4956a352,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.38
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 9127292570591172661, guid: 83dca574b2eb5cf48a59748a4956a352,
         type: 3}

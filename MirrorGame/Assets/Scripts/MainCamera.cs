@@ -3,14 +3,9 @@
 
 public class MainCamera : MonoBehaviour
 {
-    [SerializeField] private float maxDist = 5;
     [SerializeField] private float xSensitivity = 5;
-    [SerializeField] private float ySensitivity = 5;
-    [SerializeField] private float minAngle = -35f;
-    [SerializeField] private float maxAngle = 45f;
-    [SerializeField] private float rotateLerpSpeed = 1f;
-    [SerializeField] private float cameraDistLerpSpeed = 3f;
-    [SerializeField] private bool alwaysShowPlayer;
+    [SerializeField] private float ySensitivity = 5; 
+    public MainCameraSettings settings;
     public float Theta { get; private set; }
     public float Phi { get; private set; }
     public Camera Camera { get; private set; }
@@ -26,12 +21,9 @@ public class MainCamera : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         _target = GameManager.Player.transform;
-        Theta = 90;
-        Phi = -35;
-        _acutalTheta = Theta;
+        Theta = _acutalTheta = settings.startRotation.x;
+        Phi = _acutalPhi= settings.startRotation.y;
         Camera = GetComponent<Camera>();
     }
 
@@ -43,7 +35,8 @@ public class MainCamera : MonoBehaviour
     }
 
     public void SetCameraSensitivityY(float Yval)
-    { //Camera Sensitivity Y
+    {
+        //Camera Sensitivity Y
         ySensitivity = Yval;
     }
 
@@ -55,23 +48,23 @@ public class MainCamera : MonoBehaviour
             var diff = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             Theta += diff.x * xSensitivity;
             Phi += diff.y * ySensitivity;
-            Phi = Mathf.Clamp(Phi, minAngle, maxAngle);
-            _acutalPhi = Mathf.Lerp(_acutalPhi, Phi, rotateLerpSpeed * Time.deltaTime);
-            _acutalTheta = Mathf.Lerp(_acutalTheta, Theta, rotateLerpSpeed * Time.deltaTime);
+            Phi = Mathf.Clamp(Phi, settings.minAngle, settings.maxAngle);
+            _acutalPhi = Mathf.Lerp(_acutalPhi, Phi, settings.rotateLerpSpeed * Time.deltaTime);
+            _acutalTheta = Mathf.Lerp(_acutalTheta, Theta, settings.rotateLerpSpeed * Time.deltaTime);
             var offset = Quaternion.AngleAxis(_acutalTheta, Vector3.up) *
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
 
             var targetPos = Target;
             var ray = new Ray(targetPos, -offset);
-            _dist = maxDist;
-            if (alwaysShowPlayer)
+            _dist = settings.maxDist;
+            if (settings.alwaysShowPlayer)
             {
-                if (Physics.Raycast(ray, out var intersectCheck, maxDist))
+                if (Physics.Raycast(ray, out var intersectCheck, settings.maxDist))
                     _dist = intersectCheck.distance - 0.01f;
             }
 
-            _actualDist = Mathf.Lerp(_actualDist, _dist, cameraDistLerpSpeed * Time.deltaTime);
+            _actualDist = Mathf.Lerp(_actualDist, _dist, settings.cameraDistLerpSpeed * Time.deltaTime);
             transform.position = targetPos - _actualDist * offset;
             transform.LookAt(targetPos);
         }

@@ -3540,6 +3540,7 @@ MonoBehaviour:
             m_CallState: 2
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
+  cameraSettings: {fileID: 11400000, guid: 3322de7ad3627594e9fecb8debbe354e, type: 2}
 --- !u!114 &2793088003481924804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7727,6 +7728,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0d011ec0b936c4b4fa21a269f690fca2, type: 2}
     - target: {fileID: 2027083292342712874, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -7742,11 +7748,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 0d011ec0b936c4b4fa21a269f690fca2, type: 2}
     - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_CullingMask.m_Bits

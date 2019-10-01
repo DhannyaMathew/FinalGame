@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Level : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Level : MonoBehaviour
     [SerializeField] private Color ambientLight;
     [SerializeField] private float intensity = 1;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
+    public MainCameraSettings cameraSettings;
     private bool _hasOrb;
     private Mirror[] _mirrors;
     private Light[] _lights;
@@ -26,7 +28,10 @@ public class Level : MonoBehaviour
     private bool _resetMirrors;
     private Interactable[] _interactables;
     private ParticleSystem[] _particleSystems;
+    private Quaternion _intialRotation;
+    private Vector3 _initialPosition;
 
+    public StartPoint StartPoint => _levelStart;
     public Interactable[] Interactables => _interactables;
 
     private void Awake()
@@ -39,6 +44,8 @@ public class Level : MonoBehaviour
         _lights = GetComponentsInChildren<Light>();
         _interactables = GetComponentsInChildren<Interactable>();
         reflectionAttribute.Set();
+        _initialPosition = transform.position;
+        _intialRotation = transform.rotation;
     }
 
     private void Update()
@@ -85,6 +92,7 @@ public class Level : MonoBehaviour
 
     public void Setup(Player player, MainCamera mainCamera, Orb orb)
     {
+        SetDefaultState();
         orb.transform.parent = transform;
         player.Setup(mainCamera);
         _levelStart.ResetPlayer(player);
@@ -101,11 +109,6 @@ public class Level : MonoBehaviour
             exit.Link(level.entrance, false);
             level.entrance.Link(exit, true);
         }
-    }
-
-    private void OnDisable()
-    {
-        reflectionAttribute.OnDisable();
     }
 
     public void Activate()
@@ -151,7 +154,7 @@ public class Level : MonoBehaviour
             system.gameObject.SetActive(false);
         }
     }
-    
+
     public void TurnOnparticleSystems()
     {
         foreach (var system in _particleSystems)
@@ -175,5 +178,17 @@ public class Level : MonoBehaviour
     {
         if (ambientLighting != null)
             ambientLighting.SetValues(ambientLight, intensity, ambientLightEnabled);
+    }
+
+    public void SetDefaultState()
+    {
+        transform.position = _initialPosition;
+        transform.rotation = _intialRotation;
+        reflectionAttribute.SetDefault();
+    }
+
+    private void OnDestroy()
+    {
+        SetDefaultState();
     }
 }

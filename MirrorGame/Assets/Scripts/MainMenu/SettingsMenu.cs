@@ -8,21 +8,21 @@ public class SettingsMenu : MonoBehaviour {
 
 	public AudioMixer AudioMixerMusic;
 	public AudioMixer AudioMixerSFX;
-	Resolution[] resolutions;
+	private Resolution[] _resolutions;
 	public Dropdown resolutionDropDown;
 
 	void Start(){
-		resolutions = Screen.resolutions;
+		_resolutions = Screen.resolutions;
 		resolutionDropDown.ClearOptions ();
 
 		List<string> options = new List<string> ();
 
 		int currentResolutionIndex = 0;
 
-		for (int i = 0; i < resolutions.Length; i++) {
-			string option = resolutions[i].width + " x " + resolutions[i].height;	
+		for (int i = 0; i < _resolutions.Length; i++) {
+			string option = _resolutions[i].width + " x " + _resolutions[i].height;	
 			options.Add (option);
-			if (resolutions [i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height) {
+			if (_resolutions [i].width == Screen.currentResolution.width && _resolutions[i].height == Screen.currentResolution.height) {
 				currentResolutionIndex = i;
 			}
 		}
@@ -38,7 +38,7 @@ public class SettingsMenu : MonoBehaviour {
 	}
 
 	public void SetResolution(int resolutionIndex){
-		Resolution res = resolutions[resolutionIndex];
+		Resolution res = _resolutions[resolutionIndex];
 		Screen.SetResolution (res.width,res.height,Screen.fullScreen);
 	}
 

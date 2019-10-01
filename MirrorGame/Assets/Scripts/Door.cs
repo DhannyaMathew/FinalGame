@@ -13,6 +13,7 @@ public class Door : Interactable
     private Transform _hinge;
     private Quaternion _targetRotation = Quaternion.identity;
     private Portal _portal;
+    private bool _triggerLockAndClose;
     public bool IsEntrance { get; private set; }
     public Transform KeyHole { get; private set; }
     public bool IsLocked => locked;
@@ -28,6 +29,15 @@ public class Door : Interactable
         _targetRotation = open ? Quaternion.Euler(0, -openAngle, 0) : Quaternion.Euler(0, 0, 0);
         _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
         UpdatePortals(GameManager.MainCamera.Camera);
+        if (_triggerLockAndClose)
+        {
+            if ((GameManager.Player.transform.position - transform.position).sqrMagnitude > 1.5f * 1.5f)
+            {
+                Close(true);
+                GameManager.DisablePrevLevel();
+                _triggerLockAndClose = false;
+            }
+        }
     }
 
     private void UpdatePortals(Camera camera)
@@ -139,5 +149,10 @@ public class Door : Interactable
             _connectedDoor.open = true;
             _connectedDoor.locked = false;
         }
+    }
+
+    public void TriggerLockAndClose()
+    {
+        _triggerLockAndClose = true;
     }
 }

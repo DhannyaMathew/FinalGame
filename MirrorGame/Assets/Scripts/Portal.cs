@@ -47,7 +47,8 @@ public class Portal : MonoBehaviour
         _justTeleported = true;
         GameManager.Player.Teleport(RootTransform, _otherPortal.RootTransform);
         _otherPortal._portalResetTimer.StartTimer();
-        EventHandler.OnDoorWalkThrough(_door.IsEntrance ? Level.Transition.PREV : Level.Transition.NEXT);
+        EventHandler.OnDoorWalkThrough(_otherPortal._door,
+            _door.IsEntrance ? Level.Transition.PREV : Level.Transition.NEXT);
     }
 
     public void UpdatePortalCamera(Camera camera)
@@ -68,9 +69,10 @@ public class Portal : MonoBehaviour
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         if (rotateBy180)
         {
-            relativeForward =Vector3.Scale(relativeForward, flip);
+            relativeForward = Vector3.Scale(relativeForward, flip);
             relativeUp = Vector3.Scale(relativeUp, flip);
         }
+
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
         _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
     }
