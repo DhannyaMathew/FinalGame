@@ -10,11 +10,23 @@ public class Player : MonoBehaviour
     public PlayerMove Movement { get; private set; }
     public bool HasKey => _key != null;
 
+    private Animator _animator;
+    private static readonly int Interact = Animator.StringToHash("Interact");
+    private Timer _interactAnimationTimer;
+
     public void Setup(MainCamera mainCamera)
     {
         _mainCamera = mainCamera;
         EventHandler.OnKeyPickUp += OnKeyPickUp;
         EventHandler.OnDoorInteract += OnDoorInteract;
+        EventHandler.OnInteract += OnInteract;
+        _interactAnimationTimer = new Timer(19f / 24f, false, () => { _animator.SetBool(Interact, false); });
+    }
+
+    private void OnInteract()
+    {
+        _animator.SetBool(Interact, true);
+        _interactAnimationTimer.StartTimer();
     }
 
     private void OnKeyPickUp(Key key)
@@ -37,6 +49,7 @@ public class Player : MonoBehaviour
     {
         Movement = GetComponent<PlayerMove>();
         _keyHold = GameObject.FindWithTag("KeyHold").transform;
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -50,6 +63,8 @@ public class Player : MonoBehaviour
         {
             Interactable.Interact(GameManager.CurrentLevel.Interactables, transform);
         }
+
+        _interactAnimationTimer.Tick(Time.deltaTime);
     }
 
     public void Teleport(Transform teleporter, Transform target)
