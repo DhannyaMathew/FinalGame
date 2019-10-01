@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private GameObject orbPrefab;
+    [SerializeField] private int startLevel;
     [SerializeField] private Level[] levels;
 
     private int _currentLevelIndex;
@@ -100,7 +101,7 @@ public class GameManager : MonoBehaviour
     {
         LinkLevels();
         TurnOffLevels();
-        CurrentLevelIndex = 0;
+        CurrentLevelIndex = startLevel;
         CurrentLevel.Setup(Player, MainCamera, Orb);
         EventHandler.OnDoorWalkThrough += transition =>
         {
@@ -142,7 +143,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Quit()
+    public static void Quit()
     {
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();

@@ -6,19 +6,21 @@ public class Portal : MonoBehaviour
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
+    private Door _door;
+    private Exit _exit;
+    private Timer _portalResetTimer;
+    private bool _justTeleported;
+    
+    public Camera Camera { get; private set; }
+    public GameObject PortalTarget { get; private set; }
+    private Transform RootTransform => transform;
+    private bool Exit => _exit != null;
 
     private static readonly int PortalTexture = Shader.PropertyToID("_PortalTexture");
 
-    private bool _justTeleported;
-    private Transform RootTransform => transform;
-    public Camera Camera { get; private set; }
-    public GameObject PortalTarget { get; private set; }
-    private Door _door;
-    private Timer _portalResetTimer;
-
-
     private void Start()
     {
+        _exit = GetComponent<Exit>();
         _door = GetComponentInParent<Door>();
         Camera = GetComponentInChildren<Camera>();
         PortalTarget = transform.GetChild(1).gameObject;
@@ -49,7 +51,7 @@ public class Portal : MonoBehaviour
 
     public void UpdatePortalCamera(Camera camera)
     {
-        _exitPortalCamera.projectionMatrix = camera.projectionMatrix; // Match matrices
+        _exitPortalCamera.projectionMatrix = camera.projectionMatrix;
         var pairPortal = _otherPortal.RootTransform;
         var flipOtherCamera = Mathf.Sign(pairPortal.lossyScale.x);
         var relativePosition = RootTransform.InverseTransformPoint(camera.transform.position);
@@ -72,10 +74,7 @@ public class Portal : MonoBehaviour
         _exitPortalCamera = transform.GetChild(0).GetComponent<Camera>();
         _portalMaterial = transform.GetChild(1).GetComponent<Renderer>().material;
         if (_exitPortalCamera.targetTexture != null)
-        {
             _exitPortalCamera.targetTexture.Release();
-        }
-
         _exitPortalCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
         _portalMaterial.SetTexture(PortalTexture, _exitPortalCamera.targetTexture);
     }
@@ -84,10 +83,8 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!_otherPortal._justTeleported && _door.open)
-            {
+            if (!_otherPortal._justTeleported && _door.open && !Exit)
                 TeleportPlayer();
-            }
         }
     }
 

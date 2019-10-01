@@ -10,7 +10,6 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private bool debug;
     [SerializeField] private float maxGroundAngle;
     [SerializeField] private LayerMask ground;
-    [SerializeField] private LayerMask stairs;
 
     private float _speed;
     private float _actualSpeed;
@@ -41,11 +40,11 @@ public class PlayerMove : MonoBehaviour
 
     public void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        /*if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed = runSpeed;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        }*/
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _speed = walkSpeed;
         }
