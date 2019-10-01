@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
 
     private void OnInteract()
     {
-        _animator.SetBool(Interact, true);
-        _interactAnimationTimer.StartTimer();
+        //_animator.SetBool(Interact, true);
+        //_interactAnimationTimer.StartTimer();
     }
 
     private void OnKeyPickUp(Key key)
@@ -71,11 +71,7 @@ public class Player : MonoBehaviour
 
         var ray = _mainCamera.Camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         ray.origin = _mainCamera.Target - Vector3.up * 0.9f;
-        if (Input.GetButtonDown("Interact"))
-        {
-            Interactable.Interact(GameManager.CurrentLevel.Interactables, transform);
-        }
-
+        Interactable.Interact(GameManager.CurrentLevel.Interactables, transform);
         _interactAnimationTimer.Tick(Time.deltaTime);
 
         if (transform.position.y < -30f)

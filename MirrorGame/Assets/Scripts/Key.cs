@@ -3,10 +3,8 @@ using JetBrains.Annotations;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Key : Interactable
+public class Key : Pickupable
 {
-    private bool _isHeld;
-    [SerializeField] private bool allowPickup = true;
     [CanBeNull] private Joint _joint;
     private Rigidbody _rb;
 
@@ -16,18 +14,6 @@ public class Key : Interactable
         _rb = GetComponent<Rigidbody>();
     }
 
-    protected override void OnInteract()
-    {
-        if (allowPickup)
-        {
-            if (!_isHeld)
-            {
-                if (_joint != null) Destroy(_joint);
-                _isHeld = true;
-                EventHandler.OnKeyPickUp(this);
-            }
-        }
-    }
 
     private void Update()
     {
@@ -45,9 +31,10 @@ public class Key : Interactable
         transform.rotation = keyHold.rotation;
     }
 
-    public void Unchild()
+    protected override void OnPickup()
     {
-        transform.parent = GameManager.CurrentLevel.transform;
+        if (_joint != null) Destroy(_joint);
+        EventHandler.OnKeyPickUp(this);
     }
 
     public void Freeze()

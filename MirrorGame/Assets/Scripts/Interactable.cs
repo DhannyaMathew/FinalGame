@@ -34,11 +34,23 @@ public abstract class Interactable : MonoBehaviour
                 }
             }
         }
+
         if (i != null)
         {
-            i.OnInteract();
-            if (EventHandler.OnInteract != null)
-                EventHandler.OnInteract();
+            if (Input.GetButtonDown("Interact"))
+            {
+                i.OnInteract();
+                if (EventHandler.OnInteract != null)
+                    EventHandler.OnInteract();
+            }
+            else
+            {
+                GameManager.ShowInteractUI();
+            }
+        }
+        else
+        {
+            GameManager.HideInteractUI();
         }
     }
 }

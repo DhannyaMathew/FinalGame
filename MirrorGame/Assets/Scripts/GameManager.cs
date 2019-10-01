@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private GameObject settingsScreen;
     [SerializeField] private GameObject mainMenuButton;
-
+    [SerializeField] private GameObject interactUi;
     private int _currentLevelIndex;
     private bool _paused;
     private Player _player;
@@ -255,5 +255,15 @@ public class GameManager : MonoBehaviour
     public static void DisablePrevLevel()
     {
         _instance.levels[PrevLevelIndex].Deactivate();
+    }
+
+    public static void ShowInteractUI()
+    {
+        _instance.interactUi.SetActive(true);
+    }
+
+    public static void HideInteractUI()
+    {
+        _instance.interactUi.SetActive(false);
     }
 }
