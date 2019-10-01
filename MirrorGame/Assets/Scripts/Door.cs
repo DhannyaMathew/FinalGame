@@ -6,26 +6,23 @@ public class Door : Interactable
     [SerializeField] private float openSpeed;
     [SerializeField] private float openAngle;
     [SerializeField] private bool locked;
-    [SerializeField] private bool open;
+    [SerializeField] internal bool open;
 
     private Door _connectedDoor;
     private bool _isLinked;
     private Transform _hinge;
     private Quaternion _targetRotation = Quaternion.identity;
-    private bool _isEntrance;
     private Portal _portal;
-    public bool IsEntrance => _isEntrance;
+    public bool IsEntrance { get; private set; }
     public Transform KeyHole { get; private set; }
+    public bool IsLocked => locked;
 
-    // Start is called before the first frame update
     private void Start()
     {
         _hinge = transform.GetChild(0);
         KeyHole = GameObject.FindWithTag("KeyHole").transform;
     }
 
-
-    // Update is called once per frame
     private void Update()
     {
         _targetRotation = open ? Quaternion.Euler(0, -openAngle, 0) : Quaternion.Euler(0, 0, 0);
@@ -40,10 +37,12 @@ public class Door : Interactable
             if (IsOpen() && InRange(camera) && InFrontOf(camera))
             {
                 _portal.Camera.gameObject.SetActive(true);
+                _portal.PortalTarget.SetActive(true);
                 _portal.UpdatePortalCamera(camera);
             }
             else
             {
+                _portal.PortalTarget.SetActive(false);
                 _portal.Camera.gameObject.SetActive(false);
             }
         }
@@ -51,7 +50,7 @@ public class Door : Interactable
 
     public void Link(Door other, bool connectingBack)
     {
-        _isEntrance = connectingBack;
+        IsEntrance = connectingBack;
         _connectedDoor = other;
         _isLinked = true;
         _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();
@@ -72,7 +71,7 @@ public class Door : Interactable
 
     private bool IsOpen()
     {
-        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0.01f;
+        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0f;
     }
 
     private bool InRange(Camera camera)
@@ -82,7 +81,7 @@ public class Door : Interactable
 
     private bool InFrontOf(Camera camera)
     {
-        return Vector3.Dot(camera.transform.forward, _portal.transform.forward) < 0;
+        return Vector3.Angle(camera.transform.forward, _portal.transform.forward) > -30;
     }
 
     public void Lock()

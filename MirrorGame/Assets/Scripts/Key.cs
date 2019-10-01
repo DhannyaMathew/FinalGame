@@ -6,6 +6,7 @@ using UnityEngine;
 public class Key : Interactable
 {
     private bool _isHeld;
+    [SerializeField] private bool allowPickup = true;
     [CanBeNull] private Joint _joint;
     private Rigidbody _rb;
 
@@ -17,17 +18,20 @@ public class Key : Interactable
 
     protected override void OnInteract()
     {
-        if (!_isHeld)
+        if (allowPickup)
         {
-            if (_joint != null) Destroy(_joint);
-            _isHeld = true;
-            EventHandler.OnKeyPickUp(this);
+            if (!_isHeld)
+            {
+                if (_joint != null) Destroy(_joint);
+                _isHeld = true;
+                EventHandler.OnKeyPickUp(this);
+            }
         }
     }
 
     private void Update()
     {
-        if(_isHeld)
+        if (_isHeld)
             transform.localPosition = Vector3.zero;
     }
 
@@ -44,5 +48,17 @@ public class Key : Interactable
     public void Unchild()
     {
         transform.parent = GameManager.CurrentLevel.transform;
+    }
+
+    public void Freeze()
+    {
+        allowPickup = false;
+        _rb.isKinematic = true;
+    }
+
+    public void Unfreeze()
+    {
+        allowPickup = true;
+        _rb.isKinematic = false;
     }
 }

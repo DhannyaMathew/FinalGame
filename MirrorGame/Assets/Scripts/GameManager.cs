@@ -7,10 +7,11 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     [SerializeField] private KeyCode restartKey;
-    [SerializeField] private KeyCode quitKey;
+    [SerializeField] private KeyCode EscapeKey;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject mainCameraPrefab;
     [SerializeField] private GameObject orbPrefab;
+    [SerializeField] private int startLevel;
     [SerializeField] private Level[] levels;
 
     private int _currentLevelIndex;
@@ -21,6 +22,13 @@ public class GameManager : MonoBehaviour
 
     private static int PrevLevelIndex => _instance._currentLevelIndex - 1;
     private static int NextLevelIndex => _instance._currentLevelIndex + 1;
+
+    //Menu UI
+    public GameObject PauseScreen;
+    public GameObject SettingsScreen;
+    public GameObject MainMenuButton;
+    private bool GamePaused = false, SettingsOpen = false;
+    //Restart Game Option?? In menu or mention R is to restart level?
 
     private static int CurrentLevelIndex
     {
@@ -59,20 +67,23 @@ public class GameManager : MonoBehaviour
             if (CurrentLevel != null)
             {
                 current.Activate();
-                current.TurnOnDirectionalLights();
+                current.TurnOnparticleSystems();
+                current.TurnOnDirectionalLight();
                 MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
             }
 
             if (prevLevel != null)
             {
                 prevLevel.Activate();
-                prevLevel.TurnOffDirectionalLights();
+                prevLevel.TurnOffparticleSystems();
+                prevLevel.TurnOffDirectionalLight();
             }
 
             if (nextLevel != null)
             {
                 nextLevel.Activate();
-                nextLevel.TurnOffDirectionalLights();
+                nextLevel.TurnOffparticleSystems();
+                nextLevel.TurnOffDirectionalLight();
             }
         }
     }
@@ -98,9 +109,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //Setup sensitivity for mouse from settings, volume etc - Dhannya
         LinkLevels();
         TurnOffLevels();
-        CurrentLevelIndex = 0;
+        CurrentLevelIndex = startLevel;
         CurrentLevel.Setup(Player, MainCamera, Orb);
         EventHandler.OnDoorWalkThrough += transition =>
         {
@@ -116,6 +128,39 @@ public class GameManager : MonoBehaviour
         };
     }
 
+    void Pause()
+    {
+        PauseScreen.SetActive(true);
+        Time.timeScale = 0f;
+        GamePaused = true;
+    }
+
+    public void Resume()
+    {
+        PauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+        GamePaused = false;
+    }
+
+    public void MainMenu()
+    {
+        Resume();
+        //For Blake to take character to main menu -Dhannya
+    }
+    
+    public void OpenSettingsMenu()
+    {
+        SettingsScreen.SetActive(true);
+        PauseScreen.SetActive(false);
+        SettingsOpen = true;
+    }
+
+    public void CloseSettingsMenu()
+    {
+        SettingsScreen.SetActive(false);
+        PauseScreen.SetActive(true);
+        SettingsOpen = false;
+    }
 
     private static Level GetLevel(int level)
     {
@@ -130,19 +175,36 @@ public class GameManager : MonoBehaviour
             Cursor.visible = !Paused;
             Cursor.lockState = !Paused ? CursorLockMode.Locked : CursorLockMode.None;
         }
-
-        if (Input.GetKeyDown(quitKey))
+        if (Input.GetKeyDown(EscapeKey))
         {
-            Quit();
+            if (!GamePaused)
+            {
+                Pause();
+                if (_currentLevelIndex == 1)
+                {
+                    MainMenuButton.SetActive(false);
+                }
+                else
+                {
+                    MainMenuButton.SetActive(true);
+                }
+            }
+            else if (GamePaused && !SettingsOpen)
+            {
+                Resume();
+            }
+            else if (GamePaused && SettingsOpen)
+            {
+                CloseSettingsMenu();
+            }
         }
-
         if (Input.GetKeyDown(restartKey))
         {
             RestartLevel();
         }
     }
 
-    public void Quit()
+    public static void Quit()
     {
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
