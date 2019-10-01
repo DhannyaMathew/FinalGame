@@ -12,6 +12,11 @@ public class Level : MonoBehaviour
 
     [SerializeField] private Door entrance;
     [SerializeField] private Door exit;
+    [SerializeField] private Light mainDirectionalLight;
+    [SerializeField] private AmbientLighting ambientLighting;
+    [SerializeField] private bool ambientLightEnabled;
+    [SerializeField] private Color ambientLight;
+    [SerializeField] private float intensity = 1;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
     private bool _hasOrb;
     private Mirror[] _mirrors;
@@ -20,11 +25,13 @@ public class Level : MonoBehaviour
     private OrbPath _orbPath;
     private bool _resetMirrors;
     private Interactable[] _interactables;
+    private ParticleSystem[] _particleSystems;
 
     public Interactable[] Interactables => _interactables;
 
     private void Awake()
     {
+        _particleSystems = GetComponentsInChildren<ParticleSystem>();
         _levelStart = GetComponentInChildren<StartPoint>();
         _orbPath = GetComponentInChildren<OrbPath>();
         if (_orbPath == null) _hasOrb = false;
@@ -112,26 +119,18 @@ public class Level : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void TurnOffDirectionalLights()
+    public void TurnOffDirectionalLight()
     {
-        foreach (var light in _lights)
-        {
-            if (light.type == LightType.Directional)
-            {
-                light.enabled = false;
-            }
-        }
+        if (mainDirectionalLight != null)
+            mainDirectionalLight.enabled = false;
     }
 
-    public void TurnOnDirectionalLights()
+    public void TurnOnDirectionalLight()
     {
-        foreach (var light in _lights)
-        {
-            if (light.type == LightType.Directional)
-            {
-                light.enabled = true;
-            }
-        }
+        if (ambientLighting != null)
+            ambientLighting.SetValues(ambientLight, intensity, ambientLightEnabled);
+        if (mainDirectionalLight != null)
+            mainDirectionalLight.enabled = true;
     }
 
     public void TurnOnOtherLights()
@@ -145,6 +144,22 @@ public class Level : MonoBehaviour
         }
     }
 
+    public void TurnOffparticleSystems()
+    {
+        foreach (var system in _particleSystems)
+        {
+            system.gameObject.SetActive(false);
+        }
+    }
+    
+    public void TurnOnparticleSystems()
+    {
+        foreach (var system in _particleSystems)
+        {
+            system.gameObject.SetActive(true);
+        }
+    }
+
     public void TurnOffOtherLights()
     {
         foreach (var light in _lights)
@@ -154,5 +169,11 @@ public class Level : MonoBehaviour
                 light.enabled = false;
             }
         }
+    }
+
+    public void UpdateAmbientLights()
+    {
+        if (ambientLighting != null)
+            ambientLighting.SetValues(ambientLight, intensity, ambientLightEnabled);
     }
 }

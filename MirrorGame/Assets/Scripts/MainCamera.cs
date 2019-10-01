@@ -8,8 +8,8 @@ public class MainCamera : MonoBehaviour
     [SerializeField] private float ySensitivity = 5;
     [SerializeField] private float minAngle = -35f;
     [SerializeField] private float maxAngle = 45f;
-    [SerializeField, Range(0.01f, 1f)] private float rotateLerpSpeed = 0.085f;
-    [SerializeField, Range(0.01f, 1f)] private float cameraDistLerpSpeed = 0.3f;
+    [SerializeField] private float rotateLerpSpeed = 1f;
+    [SerializeField] private float cameraDistLerpSpeed = 3f;
     [SerializeField] private bool alwaysShowPlayer;
     public float Theta { get; private set; }
     public float Phi { get; private set; }
@@ -44,8 +44,8 @@ public class MainCamera : MonoBehaviour
             Theta += diff.x * xSensitivity;
             Phi += diff.y * ySensitivity;
             Phi = Mathf.Clamp(Phi, minAngle, maxAngle);
-            _acutalPhi = Mathf.Lerp(_acutalPhi, Phi, rotateLerpSpeed);
-            _acutalTheta = Mathf.Lerp(_acutalTheta, Theta, rotateLerpSpeed);
+            _acutalPhi = Mathf.Lerp(_acutalPhi, Phi, rotateLerpSpeed * Time.deltaTime);
+            _acutalTheta = Mathf.Lerp(_acutalTheta, Theta, rotateLerpSpeed * Time.deltaTime);
             var offset = Quaternion.AngleAxis(_acutalTheta, Vector3.up) *
                          Quaternion.AngleAxis(-_acutalPhi, Vector3.right) *
                          Vector3.forward;
@@ -59,7 +59,7 @@ public class MainCamera : MonoBehaviour
                     _dist = intersectCheck.distance - 0.01f;
             }
 
-            _actualDist = Mathf.Lerp(_actualDist, _dist, cameraDistLerpSpeed);
+            _actualDist = Mathf.Lerp(_actualDist, _dist, cameraDistLerpSpeed * Time.deltaTime);
             transform.position = targetPos - _actualDist * offset;
             transform.LookAt(targetPos);
         }

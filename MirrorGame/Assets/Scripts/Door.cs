@@ -15,6 +15,7 @@ public class Door : Interactable
     private Portal _portal;
     public bool IsEntrance { get; private set; }
     public Transform KeyHole { get; private set; }
+    public bool IsLocked => locked;
 
     private void Start()
     {

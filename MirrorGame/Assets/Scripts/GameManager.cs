@@ -60,20 +60,23 @@ public class GameManager : MonoBehaviour
             if (CurrentLevel != null)
             {
                 current.Activate();
-                current.TurnOnDirectionalLights();
+                current.TurnOnparticleSystems();
+                current.TurnOnDirectionalLight();
                 MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
             }
 
             if (prevLevel != null)
             {
                 prevLevel.Activate();
-                prevLevel.TurnOffDirectionalLights();
+                prevLevel.TurnOffparticleSystems();
+                prevLevel.TurnOffDirectionalLight();
             }
 
             if (nextLevel != null)
             {
                 nextLevel.Activate();
-                nextLevel.TurnOffDirectionalLights();
+                nextLevel.TurnOffparticleSystems();
+                nextLevel.TurnOffDirectionalLight();
             }
         }
     }
