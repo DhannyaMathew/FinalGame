@@ -245,10 +245,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entrance: {fileID: 840652354}
   exit: {fileID: 0}
+  mainDirectionalLight: {fileID: 0}
+  ambientLighting: {fileID: 0}
+  ambientLightEnabled: 0
+  ambientLight: {r: 0, g: 0, b: 0, a: 0}
+  intensity: 1
   reflectionAttribute:
     colourSwaps: []
     mapSwaps: []
     materialSwaps: []
+    gameObjectSwaps: []
     reflectEvent:
       onReflect:
         m_PersistentCalls:
@@ -1179,10 +1185,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entrance: {fileID: 0}
   exit: {fileID: 1581790613}
+  mainDirectionalLight: {fileID: 0}
+  ambientLighting: {fileID: 0}
+  ambientLightEnabled: 0
+  ambientLight: {r: 0, g: 0, b: 0, a: 0}
+  intensity: 1
   reflectionAttribute:
     colourSwaps: []
     mapSwaps: []
     materialSwaps: []
+    gameObjectSwaps: []
     reflectEvent:
       onReflect:
         m_PersistentCalls:
@@ -1396,12 +1408,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   restartKey: 114
   quitKey: 113
-  playerPrefab: {fileID: 1409186936462023401, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4,
+  playerPrefab: {fileID: 3758529182986350816, guid: c428103a36f92664fb8adae4a2a88c88,
     type: 3}
   mainCameraPrefab: {fileID: 434846954374948625, guid: 2dcd8fc29ecc1ea4ca651be4ae1ae54b,
     type: 3}
   orbPrefab: {fileID: 3121013672419861751, guid: fceb71f2d9ef4d445b9912b735242243,
     type: 3}
+  startLevel: 0
   levels:
   - {fileID: 1596445587}
   - {fileID: 831206912}

@@ -20,8 +20,8 @@ public class Soundtrack_Script : MonoBehaviour
     {
         _backgroundSource = GetComponent<AudioSource>();
         _soundtrackSources = GetComponentsInChildren<AudioSource>();
-        _loopPointMin = barsLength * timeSignature / (float) musicBpm;
-        Debug.Log(_loopPointMin*60);
+        _loopPointMin = barsLength * timeSignature / musicBpm;
+        Debug.Log(_loopPointMin * 60);
         _loopPointSec = _loopPointMin * 60;
         _time = AudioSettings.dspTime;
     }
