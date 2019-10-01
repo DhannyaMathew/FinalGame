@@ -164,16 +164,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restartKey: 114
-  quitKey: 0
+  EscapeKey: 0
   playerPrefab: {fileID: 1409186936462023401, guid: f7af4e19b3fc87c47aa5695bbeb6c7f4,
     type: 3}
   mainCameraPrefab: {fileID: 434846954374948625, guid: 2dcd8fc29ecc1ea4ca651be4ae1ae54b,
     type: 3}
   orbPrefab: {fileID: 3121013672419861751, guid: fceb71f2d9ef4d445b9912b735242243,
     type: 3}
+  startLevel: 0
   levels:
   - {fileID: 25007725}
-  - {fileID: 0}
+  PauseScreen: {fileID: 0}
+  SettingsScreen: {fileID: 0}
+  MainMenuButton: {fileID: 0}
 --- !u!4 &685669231
 Transform:
   m_ObjectHideFlags: 0
