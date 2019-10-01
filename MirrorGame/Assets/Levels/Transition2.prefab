@@ -964,6 +964,7 @@ Transform:
   - {fileID: 5396063475437858204}
   - {fileID: 8118007995732753239}
   - {fileID: 7568965709659473616}
+  - {fileID: 6638287752002284343}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5145,6 +5146,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a101b225f28d0cc4d9d6384c9c4bacd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1556630506830921055
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2427764372977957131}
+    m_Modifications:
+    - target: {fileID: 5297830446583600747, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_Name
+      value: Rain (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3fb2a601351d10745b755c5879d023ef, type: 3}
+--- !u!4 &6638287752002284343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5297830446583600744, guid: 3fb2a601351d10745b755c5879d023ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 1556630506830921055}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2427764372839781847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5392,11 +5468,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2427764372977957131}
     m_Modifications:
-    - target: {fileID: 169199699350277896, guid: 83dca574b2eb5cf48a59748a4956a352,
-        type: 3}
-      propertyPath: m_Name
-      value: LevelStart
-      objectReference: {fileID: 0}
     - target: {fileID: 9127292570591172661, guid: 83dca574b2eb5cf48a59748a4956a352,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5461,6 +5532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2.1100018
+      objectReference: {fileID: 0}
+    - target: {fileID: 169199699350277896, guid: 83dca574b2eb5cf48a59748a4956a352,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelStart
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83dca574b2eb5cf48a59748a4956a352, type: 3}
@@ -5785,11 +5861,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2427764372977957131}
     m_Modifications:
-    - target: {fileID: 3989624920411683910, guid: ae459c8e194d4bc47a2df45f67951496,
-        type: 3}
-      propertyPath: m_Name
-      value: Rain
-      objectReference: {fileID: 0}
     - target: {fileID: 3987386528777610360, guid: ae459c8e194d4bc47a2df45f67951496,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5843,6 +5914,16 @@ PrefabInstance:
     - target: {fileID: 3987386528777610360, guid: ae459c8e194d4bc47a2df45f67951496,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3989624920411683910, guid: ae459c8e194d4bc47a2df45f67951496,
+        type: 3}
+      propertyPath: m_Name
+      value: Rain
+      objectReference: {fileID: 0}
+    - target: {fileID: 3989624920411683910, guid: ae459c8e194d4bc47a2df45f67951496,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3862078469693642632, guid: ae459c8e194d4bc47a2df45f67951496,
@@ -5987,11 +6068,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2427764372977957131}
     m_Modifications:
-    - target: {fileID: 72636316422072381, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
-        type: 3}
-      propertyPath: m_Name
-      value: FakeSkyBox
-      objectReference: {fileID: 0}
     - target: {fileID: 3988315154993879598, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6061,6 +6137,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 72636316422072381, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
+        type: 3}
+      propertyPath: m_Name
+      value: FakeSkyBox
       objectReference: {fileID: 0}
     - target: {fileID: 1819129159015947489, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
         type: 3}
