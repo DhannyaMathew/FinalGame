@@ -6,6 +6,9 @@ using RenderPipeline = UnityEngine.Experimental.Rendering.RenderPipeline;
 [ExecuteInEditMode]
 public class LightManager : MonoBehaviour
 {
+    [SerializeField] private AmbientLighting ambientLighting;
+    [SerializeField] private Level[] levels;
+
     private void OnEnable()
     {
         RenderPipeline.beginCameraRendering += UpdateScene;
@@ -21,19 +24,23 @@ public class LightManager : MonoBehaviour
 #if UNITY_EDITOR
         if (camera.cameraType != CameraType.SceneView || EditorApplication.isPlaying) return;
 #else
-      if (camera.cameraType != CameraType.SceneView) return;
+        if (camera.cameraType != CameraType.SceneView) return;
 #endif
-        var type = FindObjectsOfType<Light>();
-        foreach (var light in type)
+        ambientLighting.transform.position = camera.transform.position;
+        if (levels != null)
         {
-            if (Mathf.Abs(camera.transform.position.x - light.transform.position.x) < 300 &&
-                Mathf.Abs(camera.transform.position.z - light.transform.position.z) < 300)
+            foreach (var level in levels)
             {
-                light.enabled = true;
-            }
-            else
-            {
-                light.enabled = false;
+                if (Mathf.Abs(camera.transform.position.x - level.transform.position.x) < 300 &&
+                    Mathf.Abs(camera.transform.position.z - level.transform.position.z) < 300)
+                {
+                    level.TurnOnDirectionalLight();
+                    level.UpdateAmbientLights();
+                }
+                else
+                {
+                    level.TurnOffDirectionalLight();
+                }
             }
         }
     }

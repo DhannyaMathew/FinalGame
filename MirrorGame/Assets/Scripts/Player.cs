@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void OnDoorInteract(Door door)
     {
-        if (HasKey)
+        if (HasKey && door.IsLocked)
         {
             door.Unlock();
             _key.ChildTo(door.KeyHole);

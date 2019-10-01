@@ -1,39 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
     [SerializeField] protected float successAngle;
     [SerializeField] protected float successDistance;
-    [SerializeField] protected bool debug;
     protected abstract void OnInteract();
 
-    public static void Interact(Interactable[] interactables, Transform player)
+    public static void Interact(IEnumerable<Interactable> interactables, Transform player)
     {
         var minDist = float.PositiveInfinity;
         var forward = player.forward;
         Interactable i = null;
         foreach (var interactable in interactables)
         {
-            if (interactable.gameObject.activeSelf)
+            if (interactable.gameObject.activeInHierarchy)
             {
                 var ab = interactable.transform.position - player.position;
-                if (ab.y >= 0 && ab.y < 1.8f)
+                if (ab.y >= -0.3f && ab.y < 1.8f)
                 {
                     forward = Vector3.Scale(forward, new Vector3(1, 0, 1));
                     ab = Vector3.Scale(ab, new Vector3(1, 0, 1));
                     var angle = Vector3.Angle(ab, forward);
-                    if (interactable.debug)
-                    {
-                        Debug.Log(interactable.gameObject.name + ": " + angle);
-                    }
-
                     if (angle < interactable.successAngle)
                     {
-                        if (interactable.debug)
-                        {
-                            Debug.Log(interactable.gameObject.name);
-                        }
-
                         var dist = ab.magnitude;
                         if (dist < minDist && dist < interactable.successDistance)
                         {
@@ -44,8 +34,6 @@ public abstract class Interactable : MonoBehaviour
                 }
             }
         }
-
-
         if (i != null)
         {
             i.OnInteract();
