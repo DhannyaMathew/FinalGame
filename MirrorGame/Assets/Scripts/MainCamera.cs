@@ -35,6 +35,18 @@ public class MainCamera : MonoBehaviour
         Camera = GetComponent<Camera>();
     }
 
+    //Should be in Settings Menu but was unsure if the fields should be made public - Dhannya
+    public void SetCameraSensitivityX(float Xval)
+    {
+        //Camera Sensitivity X
+        xSensitivity = Xval;
+    }
+
+    public void SetCameraSensitivityY(float Yval)
+    { //Camera Sensitivity Y
+        ySensitivity = Yval;
+    }
+
     // Update is called once per frame
     void Update()
     {
