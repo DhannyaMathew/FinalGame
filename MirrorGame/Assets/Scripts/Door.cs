@@ -22,10 +22,22 @@ public class Door : Interactable
     public Transform KeyHole { get; private set; }
     public bool IsLocked => locked;
 
+    private AudioSource[] _soundsDoor;
+    private AudioSource _soundOpening;
+    private AudioSource _soundClosing;
+    private AudioSource _soundLocked;
+
+
+
     private void Start()
     {
         _hinge = transform.GetChild(0);
         KeyHole = GameObject.FindWithTag("KeyHole").transform;
+
+        _soundsDoor = GetComponents<AudioSource>();
+        _soundOpening = _soundsDoor[0];
+        _soundClosing = _soundsDoor[1];
+        _soundLocked = _soundsDoor[2];
         _initialOpen = open;
         _initialLocked = locked;
     }
@@ -120,6 +132,7 @@ public class Door : Interactable
 
     public void Close(bool andLock)
     {
+        _soundClosing.Play();
         open = false;
         locked = andLock;
         if (_isLinked)
@@ -133,10 +146,20 @@ public class Door : Interactable
     {
         if (!locked)
         {
+
+            if(!open)
+                _soundOpening.Play();
+            else
+                _soundClosing.Play();
             open = !open;
             if (_isLinked)
                 _connectedDoor.open = open;
         }
+        else
+        {
+            _soundLocked.Play();
+        }
+       
     }
 
     protected override void OnInteract()

@@ -38,8 +38,13 @@ public class Mirror : Interactable
     private int _direction = 0;
     private static readonly int DissolveAmountID = Shader.PropertyToID("_dissolveAmount");
 
+    private AudioSource[] _soundsMirror;
+    private AudioSource _soundReverse;
+
     private void Awake()
     {
+        _soundsMirror = GetComponents<AudioSource>();
+        _soundReverse = _soundsMirror[1];
         _material = GetComponentInChildren<Renderer>().material;
     }
 
@@ -106,6 +111,7 @@ public class Mirror : Interactable
     {
         if (other.CompareTag("Player"))
         {
+            _soundReverse.Play();
             Level.Reflect();
             var mirrorTransform = transform;
             mirrorTransform.parent = null;

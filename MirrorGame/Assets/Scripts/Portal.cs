@@ -28,8 +28,8 @@ public class Portal : MonoBehaviour
         if (_portalResetTimer == null)
         {
             _portalResetTimer = new Timer(0.1f, false, ResetTeleporter);
-            if(_otherPortal != null)
-                _otherPortal._portalResetTimer = new Timer(0.1f, false, _otherPortal.ResetTeleporter);
+           
+            _otherPortal._portalResetTimer = new Timer(0.1f, false, _otherPortal.ResetTeleporter);
         }
     }
 
