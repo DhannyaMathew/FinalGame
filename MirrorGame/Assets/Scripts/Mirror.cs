@@ -24,8 +24,13 @@ public class Mirror : MonoBehaviour
     private Level _level;
     private static readonly int NormalStrength = Shader.PropertyToID("_normalStrength");
 
+    private AudioSource[] _soundsMirror;
+    private AudioSource _soundReverse;
+
     private void Awake()
     {
+        _soundsMirror = GetComponents<AudioSource>();
+        _soundReverse = _soundsMirror[1];
         _material = GetComponentInChildren<Renderer>().material;
         _level = GetComponentInParent<Level>();
     }
@@ -43,6 +48,7 @@ public class Mirror : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            _soundReverse.Play();
             _level.Reflect();
             var mirrorTransform = transform;
             mirrorTransform.parent = null;

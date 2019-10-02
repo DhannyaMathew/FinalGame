@@ -8,8 +8,12 @@ public class Chain : MonoBehaviour
     [SerializeField] private float maxAngularVelocity=4;
     [SerializeField] private Vector2 minMaxAngularDrag;
     [SerializeField] private AnimationCurve angularVeloctiiyAngularDrag;
+
+    private AudioSource[] _soundsChain;
+    private AudioSource _soundFalling;
     private void Start()
     {
+  
         var dragLm = new LinearMapping{minMaxIn =  Vector2.up, minMaxOut = minMaxDrag};
         var angularDragLm = new LinearMapping{minMaxIn =  Vector2.up, minMaxOut = minMaxAngularDrag};
         foreach (var link in   GetComponentsInChildren<Link>())
@@ -21,6 +25,8 @@ public class Chain : MonoBehaviour
     public void Disable()
     {
     }
+
     
-    
+
+
 }
