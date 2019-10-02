@@ -42,7 +42,6 @@ public class Level : MonoBehaviour
         _orbPath = GetComponentInChildren<OrbPath>();
         if (_orbPath == null) hasOrb = false;
         _lights = GetComponentsInChildren<Light>();
-        reflectionAttribute.Set();
         _initialPosition = transform.position;
         _intialRotation = transform.rotation;
         _mirrors = new List<Mirror>();
@@ -60,6 +59,7 @@ public class Level : MonoBehaviour
         {
             _interactables.Add(interactable);
         }
+        reflectionAttribute.Set();
     }
 
     private void Update()

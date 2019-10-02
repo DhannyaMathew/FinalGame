@@ -29,11 +29,12 @@ public class Door : Interactable
 
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _hinge = transform.GetChild(0);
         KeyHole = GameObject.FindWithTag("KeyHole").transform;
-
+        
         _soundsDoor = GetComponents<AudioSource>();
         _soundOpening = _soundsDoor[0];
         _soundClosing = _soundsDoor[1];

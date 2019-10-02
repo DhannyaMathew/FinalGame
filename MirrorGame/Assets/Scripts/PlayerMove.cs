@@ -21,13 +21,16 @@ public class PlayerMove : MonoBehaviour
     private RaycastHit _hitInfo;
     private float _angle;
     private Rigidbody _rigidbody;
-
+    private AudioSource _audioSource;
+    private float _timer;
+    private float _delay;
 
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int YDir = Animator.StringToHash("yDir");
     private static readonly int XDir = Animator.StringToHash("xDir");
 
     private Quaternion _moveDirectionRotation;
+    [SerializeField] private float walkSoundScale = 0.1f;
 
     public Vector3 Forward { get; private set; }
     public float GroundAngle { get; private set; }
@@ -37,6 +40,7 @@ public class PlayerMove : MonoBehaviour
         _speed = walkSpeed;
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public void GetInput()
@@ -45,6 +49,7 @@ public class PlayerMove : MonoBehaviour
         {
             _speed = runSpeed;
         }
+
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _speed = walkSpeed;
@@ -60,13 +65,31 @@ public class PlayerMove : MonoBehaviour
     public void Move(float cameraFlatAngle)
     {
         GetInput();
-        //CalculateGroundAngle();
         DrawDebugLines();
         CalculateSpeed();
+        Sounds();
         UpdateAnimator();
         Rotate(cameraFlatAngle);
-        //  CalculateForward();
         Move();
+    }
+
+    private void Sounds()
+    {
+        var s = 1f/_rigidbody.velocity.magnitude;
+        _delay = s * walkSoundScale;
+        if (_timer < 0 && s > 0)
+        {
+            if (_audioSource.isPlaying)
+            {
+                _audioSource.time = 0f;
+            }
+            _audioSource.Play();
+            _timer += _delay;
+        }
+        else
+        {
+            _timer -= Time.deltaTime;
+        }
     }
 
     private void UpdateAnimator()
@@ -124,8 +147,6 @@ public class PlayerMove : MonoBehaviour
                 }
             }
         }
-
-    
     }
 
     private void OnCollisionExit(Collision other)

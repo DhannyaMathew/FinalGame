@@ -7,7 +7,7 @@ public abstract class Interactable : LevelObject
     [SerializeField] protected float successAngle;
     [SerializeField] protected float successDistance;
 
-    public bool CanBeInteractedWith { get; set; }
+    public bool CanBeInteractedWith;
 
     protected override void Start()
     {
@@ -32,7 +32,8 @@ public abstract class Interactable : LevelObject
                     forward = Vector3.Scale(forward, new Vector3(1, 0, 1));
                     ab = Vector3.Scale(ab, new Vector3(1, 0, 1));
                     var angle = Vector3.Angle(ab, forward);
-                    if (angle < interactable.successAngle)
+                    var angle1 = Vector3.Angle(ab, -forward);
+                    if (angle < interactable.successAngle || angle1 < interactable.successAngle)
                     {
                         var dist = ab.magnitude;
                         if (dist < minDist && dist < interactable.successDistance)
