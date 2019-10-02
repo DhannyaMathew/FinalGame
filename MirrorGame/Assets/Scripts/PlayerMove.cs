@@ -41,10 +41,10 @@ public class PlayerMove : MonoBehaviour
 
     public void GetInput()
     {
-        /*if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed = runSpeed;
-        }*/
+        }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _speed = walkSpeed;

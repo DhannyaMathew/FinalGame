@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Level : MonoBehaviour
@@ -21,7 +22,7 @@ public class Level : MonoBehaviour
     [SerializeField] private ReflectionAttribute reflectionAttribute;
     public MainCameraSettings cameraSettings;
     private bool _hasOrb;
-    private Mirror[] _mirrors;
+    private List<Mirror> _mirrors;
     private Light[] _lights;
     private StartPoint _levelStart;
     private OrbPath _orbPath;
@@ -40,7 +41,12 @@ public class Level : MonoBehaviour
         _levelStart = GetComponentInChildren<StartPoint>();
         _orbPath = GetComponentInChildren<OrbPath>();
         if (_orbPath == null) _hasOrb = false;
-        _mirrors = GetComponentsInChildren<Mirror>();
+        _mirrors = new List<Mirror>();
+        foreach (var mirror in GetComponentsInChildren<Mirror>())
+        {
+            _mirrors.Add(mirror);
+        }
+
         _lights = GetComponentsInChildren<Light>();
         _interactables = GetComponentsInChildren<Interactable>();
         reflectionAttribute.Set();
@@ -184,11 +190,17 @@ public class Level : MonoBehaviour
     {
         transform.position = _initialPosition;
         transform.rotation = _intialRotation;
+        transform.localScale = new Vector3(1, 1, 1);
         reflectionAttribute.SetDefault();
     }
 
     private void OnDestroy()
     {
         SetDefaultState();
+    }
+
+    public void AddMirror(Mirror mirror)
+    {
+        _mirrors.Add(mirror);
     }
 }
