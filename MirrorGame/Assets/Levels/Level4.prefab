@@ -512,6 +512,7 @@ GameObject:
   - component: {fileID: 169287334866235679}
   - component: {fileID: 169287334866236128}
   - component: {fileID: 1065935979}
+  - component: {fileID: 8901027283582748610}
   m_Layer: 0
   m_Name: Penseive (1)
   m_TagString: Untagged
@@ -580,6 +581,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!114 &1065935979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169287334866236130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9cadea20bedaa74e8d2a31d92e60c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  successAngle: 0
+  successDistance: 0
+  allowPickup: 1
+  mirrors: 1
+--- !u!114 &8901027283582748610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1163,9 +1180,20 @@ MonoBehaviour:
   ambientLight: {r: 1, g: 1, b: 1, a: 1}
   intensity: 0.5
   reflectionAttribute:
-    colourSwaps: []
+    colourSwaps:
+    - material: {fileID: 2100000, guid: cb72a11358c2a97409c7d406182484c8, type: 2}
+      shaderReference: _BaseColor
+      flippedColour: {r: 0.6862745, g: 0.6862745, b: 0.6862745, a: 0}
+    - material: {fileID: 2100000, guid: 28312b1eb6b67dd4e96be24adddf2963, type: 2}
+      shaderReference: _BaseColor
+      flippedColour: {r: 0.6862745, g: 0.6862745, b: 0.6862745, a: 0}
+    - material: {fileID: 2100000, guid: 6bfac2e87e02f7940a1e329799235d8b, type: 2}
+      shaderReference: _BaseColor
+      flippedColour: {r: 1, g: 1, b: 1, a: 0}
     mapSwaps: []
-    materialSwaps: []
+    materialSwaps:
+    - renderer: {fileID: 1974746780142126681}
+      material: {fileID: 2100000, guid: 47d53974466b66244864330557b7a39d, type: 2}
     gameObjectSwaps:
     - normal: {fileID: 2022613009400327081}
       reflected: {fileID: 1355693524630779202}
@@ -4320,12 +4348,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10b7cc3b310333d468ed8befe2e0ef53, type: 3}
---- !u!4 &7955740185175322677 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-    type: 3}
-  m_PrefabInstance: {fileID: 169287334771906681}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6355278161590533812 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6515325749659690701, guid: 10b7cc3b310333d468ed8befe2e0ef53,
@@ -4338,6 +4360,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a101b225f28d0cc4d9d6384c9c4bacd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &7955740185175322677 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+    type: 3}
+  m_PrefabInstance: {fileID: 169287334771906681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &169287334847344782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4609,9 +4637,15 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0722f00acfdc96344b10a4ddaa7c81bc, type: 2}
+      objectReference: {fileID: 2100000, guid: ac10f1ff10378a547ad05ca17754c0fe, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2, type: 3}
+--- !u!23 &1974746780142126681 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1819129159015947489, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
+    type: 3}
+  m_PrefabInstance: {fileID: 169287334871997112}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3819116734669062294 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3988315154993879598, guid: 5b91c5c14bf2fa34daa81fc117ff5eb2,
@@ -6002,6 +6036,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10b7cc3b310333d468ed8befe2e0ef53, type: 3}
+--- !u!4 &7955740186494534679 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+    type: 3}
+  m_PrefabInstance: {fileID: 169287335575235675}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6355278160233548438 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6515325749659690701, guid: 10b7cc3b310333d468ed8befe2e0ef53,
@@ -6014,12 +6054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a101b225f28d0cc4d9d6384c9c4bacd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &7955740186494534679 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-    type: 3}
-  m_PrefabInstance: {fileID: 169287335575235675}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &169287335591931025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7784,15 +7818,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9ced07a75b47ca478f28fe2fbcf602a, type: 3}
---- !u!1 &2022613009400327081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 544322800933709543, guid: e9ced07a75b47ca478f28fe2fbcf602a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1989484260069690702}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6191563136970025571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5652238236361107245, guid: e9ced07a75b47ca478f28fe2fbcf602a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1989484260069690702}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2022613009400327081 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 544322800933709543, guid: e9ced07a75b47ca478f28fe2fbcf602a,
     type: 3}
   m_PrefabInstance: {fileID: 1989484260069690702}
   m_PrefabAsset: {fileID: 0}
@@ -7954,8 +7988,7 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6971121385684235108, guid: 10460501b9af19b42adc7aa330efcf00, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10460501b9af19b42adc7aa330efcf00, type: 3}
 --- !u!4 &5698224074636353417 stripped
 Transform:
