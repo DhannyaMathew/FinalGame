@@ -67,28 +67,35 @@ public class PlayerMove : MonoBehaviour
         GetInput();
         DrawDebugLines();
         CalculateSpeed();
-        Sounds();
         UpdateAnimator();
         Rotate(cameraFlatAngle);
         Move();
+        Sounds();
     }
 
     private void Sounds()
     {
-        var s = 1f/_rigidbody.velocity.magnitude;
-        _delay = s * walkSoundScale;
-        if (_timer < 0 && s > 0)
+        var mag = _moveDirection.magnitude > 0.01f ? _speed : 0;
+        float s = 0;
+        if (mag > 0.01f)
         {
-            if (_audioSource.isPlaying)
-            {
-                _audioSource.time = 0f;
-            }
-            _audioSource.Play();
-            _timer += _delay;
+            s = 1f / mag;
         }
-        else
+
+        _timer -= Time.deltaTime;
+        if (_timer < 0)
         {
-            _timer -= Time.deltaTime;
+            if (mag > 0)
+            {
+                if (_audioSource.isPlaying)
+                {
+                    _audioSource.time = 0f;
+                }
+
+                _audioSource.Play();
+            }
+
+            _timer = s * walkSoundScale;
         }
     }
 

@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   successAngle: 20
   successDistance: 2.5
+  CanBeInteractedWith: 0
   distortion:
     minMaxIn: {x: 4, y: 10}
     minMaxOut: {x: 0, y: 0.125}
@@ -540,7 +541,8 @@ AudioSource:
   m_GameObject: {fileID: 4966884897796369444}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 920ea37fc2bfb6745a2a33a90e3a57e7,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: fb237b92db6de0b448eab26161c4fc0d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.779

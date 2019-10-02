@@ -6,7 +6,7 @@ public class Exit : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Quit();
+            GameManager.QuitStatic();
         }
     }
 }

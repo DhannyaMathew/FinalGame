@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
     public static Player Player => _instance._player;
     public static MainCamera MainCamera => _instance._mainCamera;
     public static Orb Orb => _instance._orb;
+    public static bool CanPickupMirrors => CurrentLevelIndex >= 7;
 
     private static PauseMenuState PauseState
     {
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
         EventHandler.OnFallOutOfMap += () => { Player.FallOffMap(CurrentLevel); };
     }
 
-    public void MainMenu()
+    public void BackToMainMenu()
     {
         Paused = false;
         CurrentLevelIndex = 1;
@@ -213,7 +214,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void Quit()
+    public void Quit()
     {
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
@@ -267,5 +268,36 @@ public class GameManager : MonoBehaviour
         _instance.interactUi.SetActive(false);
     }
 
-    public static bool CanPickupMirrors => CurrentLevelIndex >= 7;
+    public void Resume()
+    {
+        PauseState = PauseMenuState.Off;
+    }
+    
+    
+
+    public void Settings()
+    {
+        PauseState = PauseMenuState.Settings;
+    }
+
+    public void MainMenu()
+    {
+        PauseState = PauseMenuState.MainPauseMenu;
+    }
+
+    public static void QuitStatic()
+    {
+        _instance.Quit();
+    }
+
+    public void SetCameraXSensitivity(float val)
+    {
+        MainCamera.SetCameraSensitivityX(val);
+    }
+    
+    public void SetCameraYSensitivity(float val)
+    {
+        MainCamera.SetCameraSensitivityY(val);
+    }
+    
 }

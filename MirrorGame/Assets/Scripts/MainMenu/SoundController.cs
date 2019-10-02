@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundController : MonoBehaviour
 {
@@ -17,7 +19,7 @@ public class SoundController : MonoBehaviour
 		} else if (instance != null) {
 			Destroy (gameObject);
 		}
-        if (AudioListener.volume == 0)
+        if (Math.Abs(AudioListener.volume) < 0.001f)
         {
             AudioListener.volume = 1;
         }
