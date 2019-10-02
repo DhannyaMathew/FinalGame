@@ -120,23 +120,12 @@ public class PlayerMove : MonoBehaviour
                                       _moveDirectionRotation * transform.forward) -
                                   90;
                     Debug.DrawLine(otherContact.point, otherContact.point + otherContact.normal * 0.3f, Color.yellow);
-                    break;
+                    return;
                 }
             }
         }
 
-        if (CheckLayer(other.gameObject.layer, ladder))
-        {
-            foreach (var otherContact in other.contacts)
-            {
-                _grounded = true;
-                Forward = Vector3.Cross(otherContact.normal,
-                    _moveDirectionRotation * -transform.right);
-                GroundAngle = Vector3.Angle(otherContact.normal,
-                                  _moveDirectionRotation * transform.forward) - 90;
-                Debug.DrawLine(otherContact.point, otherContact.point + otherContact.normal * 0.3f, Color.red);
-            }
-        }
+    
     }
 
     private void OnCollisionExit(Collision other)

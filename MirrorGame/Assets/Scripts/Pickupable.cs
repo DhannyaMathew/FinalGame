@@ -18,5 +18,6 @@ public abstract class Pickupable:Interactable
         }
     }
 
+    
     protected abstract void OnPickup();
 }

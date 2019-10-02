@@ -20,38 +20,46 @@ public class Level : MonoBehaviour
     [SerializeField] private Color ambientLight;
     [SerializeField] private float intensity = 1;
     [SerializeField] private ReflectionAttribute reflectionAttribute;
+    [SerializeField] private bool hasOrb;
     public MainCameraSettings cameraSettings;
-    private bool _hasOrb;
     private List<Mirror> _mirrors;
     private Light[] _lights;
     private StartPoint _levelStart;
     private OrbPath _orbPath;
     private bool _resetMirrors;
-    private Interactable[] _interactables;
+    private List<Interactable> _interactables;
     private ParticleSystem[] _particleSystems;
     private Quaternion _intialRotation;
     private Vector3 _initialPosition;
 
     public StartPoint StartPoint => _levelStart;
-    public Interactable[] Interactables => _interactables;
+    public List<Interactable> Interactables => _interactables;
 
     private void Awake()
     {
         _particleSystems = GetComponentsInChildren<ParticleSystem>();
         _levelStart = GetComponentInChildren<StartPoint>();
         _orbPath = GetComponentInChildren<OrbPath>();
-        if (_orbPath == null) _hasOrb = false;
+        if (_orbPath == null) hasOrb = false;
+        _lights = GetComponentsInChildren<Light>();
+        reflectionAttribute.Set();
+        _initialPosition = transform.position;
+        _intialRotation = transform.rotation;
         _mirrors = new List<Mirror>();
+        _interactables = new List<Interactable>();
+    }
+
+    private void Start()
+    {
         foreach (var mirror in GetComponentsInChildren<Mirror>())
         {
             _mirrors.Add(mirror);
         }
 
-        _lights = GetComponentsInChildren<Light>();
-        _interactables = GetComponentsInChildren<Interactable>();
-        reflectionAttribute.Set();
-        _initialPosition = transform.position;
-        _intialRotation = transform.rotation;
+        foreach (var interactable in GetComponentsInChildren<Interactable>())
+        {
+            _interactables.Add(interactable);
+        }
     }
 
     private void Update()
@@ -102,7 +110,7 @@ public class Level : MonoBehaviour
         orb.transform.parent = transform;
         player.Setup(mainCamera);
         _levelStart.ResetPlayer(player);
-        if (_hasOrb)
+        if (hasOrb)
             orb.Set(_orbPath);
         else
             orb.gameObject.SetActive(false);
@@ -202,5 +210,12 @@ public class Level : MonoBehaviour
     public void AddMirror(Mirror mirror)
     {
         _mirrors.Add(mirror);
+        _interactables.Add(mirror);
+    }
+
+    public void RemoveMirror(Mirror mirror)
+    {
+        _mirrors.Remove(mirror);
+        _interactables.Remove(mirror);
     }
 }

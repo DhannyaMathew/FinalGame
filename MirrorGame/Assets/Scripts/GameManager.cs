@@ -266,4 +266,6 @@ public class GameManager : MonoBehaviour
     {
         _instance.interactUi.SetActive(false);
     }
+
+    public static bool CanPickupMirrors => CurrentLevelIndex >= 7;
 }

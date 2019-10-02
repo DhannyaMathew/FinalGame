@@ -4,12 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMove))]
 public class Player : MonoBehaviour
 {
-    [CanBeNull] private Key _key;
-    private Transform _keyHold;
+    private GameObject _tempKey;
     private MainCamera _mainCamera;
     private Rigidbody _rigidbody;
     public PlayerMove Movement { get; private set; }
-    public bool HasKey => _key != null;
+    public Shoot Shoot { get; private set; }
+    public bool HasKey => _tempKey.activeSelf;
 
     private Animator _animator;
     private static readonly int Interact = Animator.StringToHash("Interact");
@@ -18,10 +18,11 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        Shoot = GetComponent<Shoot>();
         Movement = GetComponent<PlayerMove>();
-        _keyHold = GameObject.FindWithTag("KeyHold").transform;
         _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _tempKey = transform.GetChild(1).gameObject;
     }
 
     public void Setup(MainCamera mainCamera)
@@ -50,8 +51,8 @@ public class Player : MonoBehaviour
 
     private void OnKeyPickUp(Key key)
     {
-        _key = key;
-        key.ChildTo(_keyHold);
+        key.gameObject.SetActive(false);
+        _tempKey.SetActive(true);
     }
 
     private void OnDoorInteract(Door door)
@@ -59,8 +60,7 @@ public class Player : MonoBehaviour
         if (HasKey && door.IsLocked)
         {
             door.Unlock();
-            _key.ChildTo(door.KeyHole);
-            _key = null;
+            _tempKey.SetActive(false);
         }
     }
 

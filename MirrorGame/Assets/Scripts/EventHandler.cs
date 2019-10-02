@@ -11,7 +11,9 @@ public class EventHandler
     public static KeyPickupEvent OnKeyPickUp;
     public static DoorEvent OnDoorInteract;
     public static LevelTransitionEvent OnDoorWalkThrough;
-    public static InteractEvent OnInteract;
     public static FallOutOfMapEvent OnFallOutOfMap;
     public static DoorEvent OnPortalTeleport;
+    public static InteractEvent OnInteract;
+    public static InteractEvent OnMirrorPickup;
+    public static InteractEvent OnMirrorAbsorb;
 }

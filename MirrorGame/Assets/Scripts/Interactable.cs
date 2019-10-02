@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public abstract class Interactable : LevelObject
 {
     [SerializeField] protected float successAngle;
     [SerializeField] protected float successDistance;
+
+    public bool CanBeInteractedWith { get; set; }
+
+    protected override void Start()
+    {
+        base.Start();
+        CanBeInteractedWith = true;
+    }
+
     protected abstract void OnInteract();
 
     public static void Interact(IEnumerable<Interactable> interactables, Transform player)
@@ -14,7 +24,7 @@ public abstract class Interactable : MonoBehaviour
         Interactable i = null;
         foreach (var interactable in interactables)
         {
-            if (interactable.gameObject.activeInHierarchy)
+            if (interactable.gameObject.activeInHierarchy && interactable.CanBeInteractedWith)
             {
                 var ab = interactable.transform.position - player.position;
                 if (ab.y >= -0.3f && ab.y < 1.8f)

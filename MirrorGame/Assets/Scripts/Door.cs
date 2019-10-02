@@ -8,6 +8,10 @@ public class Door : Interactable
     [SerializeField] private bool locked;
     [SerializeField] internal bool open;
 
+    private bool _initialOpen;
+    private bool _initialLocked;
+
+
     private Door _connectedDoor;
     private bool _isLinked;
     private Transform _hinge;
@@ -22,6 +26,8 @@ public class Door : Interactable
     {
         _hinge = transform.GetChild(0);
         KeyHole = GameObject.FindWithTag("KeyHole").transform;
+        _initialOpen = open;
+        _initialLocked = locked;
     }
 
     private void Update()
@@ -138,6 +144,12 @@ public class Door : Interactable
         if (EventHandler.OnDoorInteract != null)
             EventHandler.OnDoorInteract(this);
         TryOpen();
+    }
+
+    protected override void ResetObject()
+    {
+        open = _initialOpen;
+        locked = _initialLocked;
     }
 
     public void ForceOpen()

@@ -1,18 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    [SerializeField] private GameObject mirror;
-    [SerializeField] private float hitOffset = 0.1f;
+    private bool _hasMirror;
+    private MirrorProjectile _mirrorProjectile;
 
-    private bool _hasMirror = false;
+    private void Awake()
+    {
+        _mirrorProjectile = GetComponentInChildren<MirrorProjectile>();
+        _mirrorProjectile.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        EventHandler.OnMirrorPickup += () =>
+        {
+            _mirrorProjectile.Load();
+            _hasMirror = true;
+        };
+        EventHandler.OnMirrorAbsorb += () =>
+        {
+            _mirrorProjectile.gameObject.SetActive(true);
+            _mirrorProjectile.Grow();
+            _hasMirror = true;
+        };
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && _hasMirror)
         {
-            _hasMirror = false;
             RaycastHit hit;
             var ray = GameManager.MainCamera.Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             // Does the ray intersect any objects excluding the player layer
@@ -20,11 +39,8 @@ public class Shoot : MonoBehaviour
                 ray.direction, out hit,
                 Mathf.Infinity))
             {
-                var m = Instantiate(mirror, GameManager.CurrentLevel.transform);
-                m.transform.forward = hit.normal;
-                GameManager.CurrentLevel.AddMirror(m.GetComponent<Mirror>());
-                m.transform.position = hit.point + hit.normal * hitOffset;
-                m.transform.rotation = Quaternion.LookRotation(hit.normal);
+                _hasMirror = false;
+                _mirrorProjectile.Shoot(hit.point, hit.normal);
                 GameManager.CurrentLevel.ResetMirrors();
             }
         }
