@@ -100,13 +100,10 @@ MonoBehaviour:
   rotateLerpSpeed: 0.085
   accelerationFactor: 1
   debug: 1
-  maxGroundAngle: 45
+  maxGroundAngle: 180
   ground:
     serializedVersion: 2
-    m_Bits: 1051136
-  ladder:
-    serializedVersion: 2
-    m_Bits: 1048576
+    m_Bits: 2564
 --- !u!114 &8144460266781313620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,26 +150,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_
       objectReference: {fileID: 0}
-    - target: {fileID: -3990036101274998414, guid: 12597a06e922aa547b058b199b805920,
+    - target: {fileID: -9097722404526321079, guid: 12597a06e922aa547b058b199b805920,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6363996889033569525, guid: 12597a06e922aa547b058b199b805920,
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3081662412bea9b44b60fa7e41df79b4, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 12597a06e922aa547b058b199b805920,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -5035501536308390874, guid: 12597a06e922aa547b058b199b805920,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6535356882128987833, guid: 12597a06e922aa547b058b199b805920,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4a57f79f379f7174b87455e8b3686b62, type: 2}
     - target: {fileID: -4216859302048453862, guid: 12597a06e922aa547b058b199b805920,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -243,16 +230,26 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5918
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 12597a06e922aa547b058b199b805920,
+    - target: {fileID: 6535356882128987833, guid: 12597a06e922aa547b058b199b805920,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 4a57f79f379f7174b87455e8b3686b62, type: 2}
-    - target: {fileID: -9097722404526321079, guid: 12597a06e922aa547b058b199b805920,
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6363996889033569525, guid: 12597a06e922aa547b058b199b805920,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3081662412bea9b44b60fa7e41df79b4, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5035501536308390874, guid: 12597a06e922aa547b058b199b805920,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3990036101274998414, guid: 12597a06e922aa547b058b199b805920,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12597a06e922aa547b058b199b805920, type: 3}
 --- !u!4 &4968091266485308022 stripped
