@@ -154,6 +154,8 @@ public class GameManager : MonoBehaviour
         _player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         _mainCamera = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity).GetComponent<MainCamera>();
         _orb = Instantiate(orbPrefab, Vector3.zero, Quaternion.identity).GetComponent<Orb>();
+        
+        
     }
 
     private void Start()
@@ -163,6 +165,7 @@ public class GameManager : MonoBehaviour
         TurnOffLevels();
         CurrentLevelIndex = startLevel;
         CurrentLevel.Setup(Player, MainCamera, Orb);
+        PauseState = PauseMenuState.Off;
         EventHandler.OnDoorWalkThrough += (door, transition) =>
         {
             switch (transition)

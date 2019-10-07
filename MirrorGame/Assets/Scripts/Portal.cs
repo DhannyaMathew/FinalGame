@@ -83,10 +83,7 @@ public class Portal : MonoBehaviour
         _otherPortal = other;
         _exitPortalCamera = transform.GetChild(0).GetComponent<Camera>();
         _portalMaterial = transform.GetChild(1).GetComponent<Renderer>().material;
-        if (_exitPortalCamera.targetTexture != null)
-            _exitPortalCamera.targetTexture.Release();
-        _exitPortalCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        _portalMaterial.SetTexture(PortalTexture, _exitPortalCamera.targetTexture);
+        _portalMaterial.SetTexture(PortalTexture,_exitPortalCamera.targetTexture);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -95,15 +92,6 @@ public class Portal : MonoBehaviour
         {
             if (!_otherPortal._justTeleported && _door.open && !Exit)
                 TeleportPlayer();
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (_exitPortalCamera.targetTexture != null)
-        {
-            _exitPortalCamera.targetTexture.Release();
-            _exitPortalCamera.targetTexture = null;
         }
     }
 }

@@ -33,15 +33,16 @@ public class Shoot : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && _hasMirror)
         {
             RaycastHit hit;
-            var ray = GameManager.MainCamera.Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
             // Does the ray intersect any objects excluding the player layer
-            if (Physics.Raycast(transform.position + Vector3.up,
-                ray.direction, out hit,
+            if (Physics.Raycast(_mirrorProjectile.transform.position,
+                GameManager.MainCamera.transform.forward, out hit,
                 Mathf.Infinity))
             {
                 _hasMirror = false;
-                _mirrorProjectile.Shoot(hit.point, hit.normal);
-                GameManager.CurrentLevel.ResetMirrors();
+                
+                _mirrorProjectile.Shoot(hit.point, hit.normal, GameManager.MainCamera.transform.forward);
+                //GameManager.CurrentLevel.ResetMirrors();
             }
         }
     }

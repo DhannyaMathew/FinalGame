@@ -8,8 +8,9 @@ public class MirrorProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private GameObject mirrorPrefab;
-    private Vector3 target = Vector3.zero;
-    private Vector3 normal = Vector3.forward;
+    private Vector3 _target = Vector3.zero;
+    private Vector3 _normal = Vector3.forward;
+    private Vector3 _forward;
     private bool _shot, _grow;
     private Vector3 _initialPosition;
     private Vector3 _initialScale;
@@ -26,13 +27,14 @@ public class MirrorProjectile : MonoBehaviour
         if (_shot)
         {
             transform.parent = GameManager.CurrentLevel.transform;
-            transform.position = Vector3.Lerp(transform.position, target, speed * Time.deltaTime);
-            if ((transform.position - target).sqrMagnitude < 0.2f * 0.2f)
+            transform.position = Vector3.Lerp(transform.position, _target, speed * Time.deltaTime);
+            if ((transform.position - _target).sqrMagnitude < 0.2f * 0.2f)
             {
                 var mirrorObj = Instantiate(mirrorPrefab, GameManager.CurrentLevel.transform);
                 var mirror = mirrorObj.GetComponent<Mirror>();
-                mirror.transform.position = target + normal * 0.001f;
-                mirror.transform.forward = normal;
+                mirror.transform.position = _target + _normal * 0.001f;
+                mirror.transform.rotation = Quaternion.LookRotation(_normal,
+                    _forward);
                 mirror.CanBeInteractedWith = GameManager.CanPickupMirrors;
                 mirror.SetLevel(GameManager.CurrentLevel);
                 mirror.Level.ResetMirrors();
@@ -56,10 +58,12 @@ public class MirrorProjectile : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector3 target, Vector3 normal)
+    public void Shoot(Vector3 target, Vector3 normal, Vector3 forward)
     {
-        this.target = target;
-        this.normal = normal;
+        _target = target;
+        _normal = normal;
+        _forward = Vector3.Lerp(Vector3.ProjectOnPlane(forward, normal), Vector3.up,
+            Mathf.Abs(Vector3.Dot(Vector3.forward, normal)));
         _shot = true;
     }
 

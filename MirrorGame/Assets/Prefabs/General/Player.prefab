@@ -1440,10 +1440,10 @@ GameObject:
   - component: {fileID: 1409186936462023400}
   - component: {fileID: 1409186936462023398}
   - component: {fileID: 1409186936462023399}
+  - component: {fileID: -6965109325804845293}
   - component: {fileID: 1050206565}
   - component: {fileID: 1050206566}
   - component: {fileID: 5493433894867106819}
-  - component: {fileID: -6965109325804845293}
   - component: {fileID: 4237114338625588201}
   m_Layer: 0
   m_Name: Player
@@ -1506,6 +1506,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1048576
   walkSoundScale: 1
+--- !u!114 &-6965109325804845293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409186936462023401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845bc857b68f7eb47af71eca06f1b847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0
 --- !u!54 &1050206565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1544,18 +1557,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409186936462023401}
   m_Enabled: 1
---- !u!114 &-6965109325804845293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409186936462023401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 845bc857b68f7eb47af71eca06f1b847, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &4237114338625588201
 AudioSource:
   m_ObjectHideFlags: 0

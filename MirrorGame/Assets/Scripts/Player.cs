@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         Interactable.Interact(GameManager.CurrentLevel.Interactables, transform);
         _interactAnimationTimer.Tick(Time.deltaTime);
 
-        if (transform.position.y < -30f)
+        if (transform.position.y < -50f)
         {
             if (EventHandler.OnFallOutOfMap != null)
                 EventHandler.OnFallOutOfMap();
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
     public void FallOffMap(Level level)
     {
         level.SetDefaultState();
-        transform.position = level.StartPoint.transform.position + Vector3.up * 20f;
-        _rigidbody.velocity = Vector3.zero;
+        transform.position = level.StartPoint.transform.position + Vector3.up * 50f;
+        _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y, 0);
     }
 }

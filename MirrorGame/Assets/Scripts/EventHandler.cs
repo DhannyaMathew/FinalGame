@@ -1,5 +1,8 @@
-public class EventHandler
+using System;
+
+public static class EventHandler
 {
+    
     public delegate void DoorEvent(Door door);
     public delegate void MirrorEvent(Mirror mirror);
     public delegate void LevelTransitionEvent(Door door, Level.Transition transition);
