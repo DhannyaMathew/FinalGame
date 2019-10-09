@@ -21,12 +21,4 @@ public class Chain : MonoBehaviour
             link.SetPhysics(veloctiiyDrag, angularVeloctiiyAngularDrag, dragLm, angularDragLm, maxVelocity, maxAngularVelocity);   
         }
     }
-
-    public void Disable()
-    {
-    }
-
-    
-
-
 }

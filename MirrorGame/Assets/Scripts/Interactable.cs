@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MainMenu;
 using UnityEngine;
 
 public abstract class Interactable : LevelObject
@@ -17,25 +18,26 @@ public abstract class Interactable : LevelObject
 
     protected abstract void OnInteract();
 
-    public static void Interact(IEnumerable<Interactable> interactables, Transform player)
+    public static void Interact(IEnumerable<Interactable> interactables, Transform player, float height)
     {
         var minDist = float.PositiveInfinity;
-        var forward = player.forward;
+        var forward = Vector3.Scale(player.forward, new Vector3(1, 0, 1));
         Interactable i = null;
         foreach (var interactable in interactables)
         {
+            Debug.Log(interactable.gameObject.name);
             if (interactable.gameObject.activeInHierarchy && interactable.CanBeInteractedWith)
             {
-                var ab = interactable.transform.position - player.position;
-                if (ab.y >= -0.3f && ab.y < 1.8f)
+                if (IsInCapsule(player.position, Vector3.up, height, interactable.successDistance,
+                    interactable.transform.position))
                 {
-                    forward = Vector3.Scale(forward, new Vector3(1, 0, 1));
-                    ab = Vector3.Scale(ab, new Vector3(1, 0, 1));
-                    var angle = Vector3.Angle(ab, forward);
-                    var angle1 = Vector3.Angle(ab, -forward);
-                    if (angle < interactable.successAngle || angle1 < interactable.successAngle)
+                    var r = Vector3.Scale(interactable.transform.position - player.position, new Vector3(1, 0, 1));
+
+                    var angle = Vector3.Angle(r, forward);
+
+                    if (angle < interactable.successAngle)
                     {
-                        var dist = ab.magnitude;
+                        var dist = r.magnitude;
                         if (dist < minDist && dist < interactable.successDistance)
                         {
                             minDist = dist;
@@ -56,12 +58,21 @@ public abstract class Interactable : LevelObject
             }
             else
             {
-                GameManager.ShowInteractUI();
+                UiControl.ShowInteractUI();
             }
         }
         else
         {
-            GameManager.HideInteractUI();
+            UiControl.HideInteractUI();
         }
+    }
+
+
+    private static bool IsInCapsule(Vector3 origin, Vector3 normal, float height, float radius, Vector3 point)
+    {
+        var p = Vector3.Dot(point, normal);
+        if (!(p >= -radius) || !(p <= height + radius)) return false;
+        var o = origin + Mathf.Clamp01(p / height) * normal;
+        return (point - o).sqrMagnitude < radius * radius;
     }
 }

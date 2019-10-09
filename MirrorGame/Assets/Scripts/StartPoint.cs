@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using PlayerManager;
+using UnityEngine;
 
 public class StartPoint : MonoBehaviour
 {

@@ -1,59 +1,60 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SoundController : MonoBehaviour
+namespace MainMenu
 {
-    public AudioSource[] Audio;
-	public AudioSource MusicSource;
-	public static SoundController instance = null;
-	private float higherPitch = 1.00f;
-	private float lowerPitch = 0.99f;
-
-	void Awake ()
+	public class SoundController : MonoBehaviour
 	{
-		if (instance == null) {
-			instance = this;
-		} else if (instance != null) {
-			Destroy (gameObject);
+		public AudioSource[] Audio;
+		public AudioSource MusicSource;
+		public static SoundController instance = null;
+		private float higherPitch = 1.00f;
+		private float lowerPitch = 0.99f;
+
+		void Awake ()
+		{
+			if (instance == null) {
+				instance = this;
+			} else if (instance != null) {
+				Destroy (gameObject);
+			}
+			if (Math.Abs(AudioListener.volume) < 0.001f)
+			{
+				AudioListener.volume = 1;
+			}
 		}
-        if (Math.Abs(AudioListener.volume) < 0.001f)
-        {
-            AudioListener.volume = 1;
-        }
-    }
 
 
-	public void Playone (int AudioSourceNum, AudioClip clip)
-	{
+		public void Playone (int AudioSourceNum, AudioClip clip)
+		{
 
-        Audio[AudioSourceNum].clip = clip;
-        Audio[AudioSourceNum].Play ();
+			Audio[AudioSourceNum].clip = clip;
+			Audio[AudioSourceNum].Play ();
+		}
+
+		public void PlayBG (AudioClip clip)
+		{
+
+			MusicSource.clip = clip;
+			MusicSource.Play ();
+		}
+
+		public void RandomPitchandsfx(int AudioSourceNum, params AudioClip[] clips)
+		{ 		
+			int randomIndex = Random.Range (0, clips.Length);			
+			float randomPitch = Random.Range (lowerPitch, higherPitch);	
+			Audio[AudioSourceNum].pitch = randomPitch;
+			Audio[AudioSourceNum].clip = clips [randomIndex];                           
+
+			if (!Audio[AudioSourceNum].isPlaying)
+			{
+				Audio[AudioSourceNum].Play();
+			}
+
+
+		}
+
+
 	}
-
-	public void PlayBG (AudioClip clip)
-	{
-
-		MusicSource.clip = clip;
-		MusicSource.Play ();
-	}
-
-	public void RandomPitchandsfx(int AudioSourceNum, params AudioClip[] clips)
-	{ 		
-		int randomIndex = Random.Range (0, clips.Length);			
-		float randomPitch = Random.Range (lowerPitch, higherPitch);	
-		Audio[AudioSourceNum].pitch = randomPitch;
-        Audio[AudioSourceNum].clip = clips [randomIndex];                           
-
-        if (!Audio[AudioSourceNum].isPlaying)
-        {
-            Audio[AudioSourceNum].Play();
-        }
-
-
-    }
-
-
 }

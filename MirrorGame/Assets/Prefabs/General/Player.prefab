@@ -1439,7 +1439,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1409186936462023400}
   - component: {fileID: 1409186936462023398}
-  - component: {fileID: 1409186936462023399}
   - component: {fileID: -6965109325804845293}
   - component: {fileID: 1050206565}
   - component: {fileID: 1050206566}
@@ -1481,31 +1480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4b39846a81b364ab33a743e5900b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1409186936462023399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409186936462023401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 096c1a872e32842468005e7cc7e02656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 3
-  runSpeed: 5
-  rotateLerpSpeed: 0.085
-  accelerationFactor: 1
-  debug: 1
-  maxGroundAngle: 200
-  ground:
-    serializedVersion: 2
-    m_Bits: 2560
-  ladder:
-    serializedVersion: 2
-    m_Bits: 1048576
-  walkSoundScale: 1
+  settings: {fileID: 11400000, guid: fcc09608ce8fd8b4ca970fe02778be57, type: 2}
 --- !u!114 &-6965109325804845293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1518,7 +1493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845bc857b68f7eb47af71eca06f1b847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0
 --- !u!54 &1050206565
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1530,7 +1504,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112

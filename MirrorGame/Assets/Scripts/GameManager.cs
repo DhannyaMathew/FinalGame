@@ -1,19 +1,12 @@
 ﻿using System;
+using MainMenu;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
+using PlayerManager;
 
 public class GameManager : MonoBehaviour
 {
-    [Serializable]
-    public enum PauseMenuState
-    {
-        Off,
-        MainPauseMenu,
-        Settings
-    }
-
-
     private static GameManager _instance;
 
     [SerializeField] private KeyCode restartKey;
@@ -25,20 +18,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Level[] levels;
 
     //Menu UI
-    [SerializeField] private GameObject pauseScreen;
-    [SerializeField] private GameObject settingsScreen;
-    [SerializeField] private GameObject mainMenuButton;
-    [SerializeField] private GameObject interactUi;
+
     private int _currentLevelIndex;
     private bool _paused;
     private Player _player;
     private MainCamera _mainCamera;
     private Orb _orb;
-    private PauseMenuState _pauseState = PauseMenuState.Off;
     private static int PrevLevelIndex => _instance._currentLevelIndex - 1;
     private static int NextLevelIndex => _instance._currentLevelIndex + 1;
 
-    private static int CurrentLevelIndex
+    internal static int CurrentLevelIndex
     {
         get => _instance._currentLevelIndex;
         set
@@ -77,8 +66,8 @@ public class GameManager : MonoBehaviour
                 current.Activate();
                 current.TurnOnparticleSystems();
                 current.TurnOnDirectionalLight();
-                MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
-                MainCamera.settings = current.cameraSettings;
+                //MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
+                MainCamera.SetLevelSettings(current);
             }
 
             if (prevLevel != null)
@@ -102,10 +91,9 @@ public class GameManager : MonoBehaviour
         get => _instance._paused;
         private set
         {
+            _instance._paused = value;
             Cursor.visible = value;
             Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
-            _instance.pauseScreen.SetActive(value);
-            _instance._paused = value;
             Time.timeScale = value ? 0f : 1f;
         }
     }
@@ -117,32 +105,6 @@ public class GameManager : MonoBehaviour
     public static Orb Orb => _instance._orb;
     public static bool CanPickupMirrors => CurrentLevelIndex >= 7;
 
-    private static PauseMenuState PauseState
-    {
-        get => _instance._pauseState;
-        set
-        {
-            _instance._pauseState = value;
-            switch (value)
-            {
-                case PauseMenuState.Off:
-                    Paused = false;
-                    _instance.settingsScreen.SetActive(false);
-                    _instance.pauseScreen.SetActive(false);
-                    return;
-                case PauseMenuState.MainPauseMenu:
-                    Paused = true;
-                    _instance.settingsScreen.SetActive(false);
-                    _instance.pauseScreen.SetActive(true);
-                    _instance.mainMenuButton.SetActive(CurrentLevelIndex != 1);
-                    return;
-                case PauseMenuState.Settings:
-                    _instance.settingsScreen.SetActive(true);
-                    _instance.pauseScreen.SetActive(false);
-                    return;
-            }
-        }
-    }
 
     private void Awake()
     {
@@ -154,8 +116,7 @@ public class GameManager : MonoBehaviour
         _player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         _mainCamera = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity).GetComponent<MainCamera>();
         _orb = Instantiate(orbPrefab, Vector3.zero, Quaternion.identity).GetComponent<Orb>();
-        
-        
+        Paused = false;
     }
 
     private void Start()
@@ -165,7 +126,6 @@ public class GameManager : MonoBehaviour
         TurnOffLevels();
         CurrentLevelIndex = startLevel;
         CurrentLevel.Setup(Player, MainCamera, Orb);
-        PauseState = PauseMenuState.Off;
         EventHandler.OnDoorWalkThrough += (door, transition) =>
         {
             switch (transition)
@@ -178,7 +138,6 @@ public class GameManager : MonoBehaviour
                     break;
             }
         };
-        EventHandler.OnFallOutOfMap += () => { Player.FallOffMap(CurrentLevel); };
     }
 
     public void BackToMainMenu()
@@ -197,18 +156,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(EscapeKey))
         {
-            switch (PauseState)
-            {
-                case PauseMenuState.Off:
-                    PauseState = PauseMenuState.MainPauseMenu;
-                    break;
-                case PauseMenuState.MainPauseMenu:
-                    PauseState = PauseMenuState.Off;
-                    break;
-                case PauseMenuState.Settings:
-                    PauseState = PauseMenuState.MainPauseMenu;
-                    break;
-            }
+            Paused = UiControl.MustPause;
+            UiControl.OnEscape();
         }
 
         if (Input.GetKeyDown(restartKey))
@@ -261,33 +210,6 @@ public class GameManager : MonoBehaviour
         _instance.levels[PrevLevelIndex].Deactivate();
     }
 
-    public static void ShowInteractUI()
-    {
-        _instance.interactUi.SetActive(true);
-    }
-
-    public static void HideInteractUI()
-    {
-        _instance.interactUi.SetActive(false);
-    }
-
-    public void Resume()
-    {
-        PauseState = PauseMenuState.Off;
-    }
-    
-    
-
-    public void Settings()
-    {
-        PauseState = PauseMenuState.Settings;
-    }
-
-    public void MainMenu()
-    {
-        PauseState = PauseMenuState.MainPauseMenu;
-    }
-
     public static void QuitStatic()
     {
         _instance.Quit();
@@ -297,10 +219,9 @@ public class GameManager : MonoBehaviour
     {
         MainCamera.SetCameraSensitivityX(val);
     }
-    
+
     public void SetCameraYSensitivity(float val)
     {
         MainCamera.SetCameraSensitivityY(val);
     }
-    
 }
