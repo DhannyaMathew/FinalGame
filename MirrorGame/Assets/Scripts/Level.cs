@@ -111,7 +111,7 @@ public class Level : MonoBehaviour
     public void Setup(Player player, MainCamera mainCamera, Orb orb)
     {
         orb.transform.parent = transform;
-        ResetLevel();
+        ResetLevelObjects();
         SetDefaultState();
         player.Setup(mainCamera);
         _levelStart.ResetPlayer(player);
@@ -222,7 +222,7 @@ public class Level : MonoBehaviour
         _levelObjects.Remove(mirror);
     }
 
-    public void ResetLevel()
+    public void ResetLevelObjects()
     {
         LevelObject.ResetLevelObjects(_levelObjects);
     }

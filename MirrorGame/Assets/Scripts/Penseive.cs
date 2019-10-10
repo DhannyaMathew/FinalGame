@@ -1,14 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Penseive : Interactable
 {
     [SerializeField] private int mirrors = 1;
+    private int _initial;
     private GameObject _liquidMirror;
 
     private void Awake()
     {
+        _initial = mirrors;
         _liquidMirror = transform.GetChild(0).gameObject;
+    }
+
+    private void Update()
+    {
+        CanBeInteractedWith = GameManager.Player.HasMirror || mirrors > 0;
     }
 
 
@@ -21,13 +29,18 @@ public class Penseive : Interactable
                 EventHandler.OnMirrorPickup();
             if (mirrors == 0)
             {
-                CanBeInteractedWith = false;
                 _liquidMirror.SetActive(false);
             }
+        }
+        else
+        {
         }
     }
 
     protected override void ResetObject()
     {
+        mirrors = _initial;
+        CanBeInteractedWith = mirrors != 0;
+        _liquidMirror.SetActive(mirrors != 0);
     }
 }

@@ -17,6 +17,7 @@ public class Key : Pickupable
     protected override void OnPickup()
     {
         EventHandler.OnKeyPickUp(this);
+        Debug.Log("Awe");
     }
 
     public void Freeze()

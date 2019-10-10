@@ -78,6 +78,10 @@ public class Mirror : Interactable
 
     protected override void ResetObject()
     {
+        if (CanBeInteractedWith)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Update()
@@ -92,7 +96,6 @@ public class Mirror : Interactable
             var val = DissolveAmount + dissolveSpeed * _direction * Time.deltaTime;
             if (val > 1)
             {
-                Level.RemoveMirror(this);
                 Destroy(gameObject);
                 return;
             }
@@ -134,5 +137,11 @@ public class Mirror : Interactable
         FadeOut();
         if (EventHandler.OnMirrorAbsorb != null)
             EventHandler.OnMirrorAbsorb();
+    }
+
+    private void OnDestroy()
+    {
+        Level.RemoveMirror(this);
+        
     }
 }

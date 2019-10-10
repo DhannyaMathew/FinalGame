@@ -25,6 +25,7 @@ namespace PlayerManager
         private static readonly int SpeedAnimatorParameter = Animator.StringToHash("Speed");
         private static readonly int YDirAnimatorParameter = Animator.StringToHash("yDir");
         private static readonly int XDirAnimatorParameter = Animator.StringToHash("xDir");
+        public bool HasMirror => _shoot.HasMirror;
 
         private void Awake()
         {
@@ -72,12 +73,14 @@ namespace PlayerManager
                 if (_tempKey.activeSelf)
                 {
                     door.Unlock();
+                    _tempKey.SetActive(false);
                 }
             };
         }
 
         public void Setup(MainCamera mainCamera)
         {
+            ResetObjects();
             _mainCamera = mainCamera;
         }
 
@@ -111,7 +114,7 @@ namespace PlayerManager
 
             if (transform.position.y < -50f)
             {
-                FallOffMap(GameManager.CurrentLevel);
+                FallOffMap();
             }
 
             _collisions.Clear();
@@ -139,10 +142,10 @@ namespace PlayerManager
             transform.position = target.position;
         }
 
-        private void FallOffMap(Level level)
+        private void FallOffMap()
         {
-            level.SetDefaultState();
-            transform.position = level.StartPoint.transform.position + Vector3.up * 50f;
+
+            GameManager.RestartLevel();
             _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y, 0);
         }
 
@@ -153,6 +156,12 @@ namespace PlayerManager
             {
                 _collCollect.Add(contact);
             }
+        }
+
+        private void ResetObjects()
+        {
+            _shoot.ResetObject();
+            _tempKey.SetActive(false);
         }
     }
 }

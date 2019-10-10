@@ -25,13 +25,13 @@ public abstract class Interactable : LevelObject
         Interactable i = null;
         foreach (var interactable in interactables)
         {
-            Debug.Log(interactable.gameObject.name);
             if (interactable.gameObject.activeInHierarchy && interactable.CanBeInteractedWith)
             {
-                if (IsInCapsule(player.position, Vector3.up, height, interactable.successDistance,
-                    interactable.transform.position))
+                if ((player.position - interactable.transform.position).sqrMagnitude <
+                    interactable.successDistance * interactable.successDistance)
                 {
-                    var r = Vector3.Scale(interactable.transform.position - player.position, new Vector3(1, 0, 1));
+                    var r = Vector3.Scale(interactable.transform.position - player.position + Vector3.up * 0.905f,
+                        new Vector3(1, 0, 1));
 
                     var angle = Vector3.Angle(r, forward);
 
@@ -70,9 +70,10 @@ public abstract class Interactable : LevelObject
 
     private static bool IsInCapsule(Vector3 origin, Vector3 normal, float height, float radius, Vector3 point)
     {
-        var p = Vector3.Dot(point, normal);
+        var p = Vector3.Dot(point, normal.normalized);
+        Debug.DrawLine(origin, origin + p * normal, Color.green);
         if (!(p >= -radius) || !(p <= height + radius)) return false;
-        var o = origin + Mathf.Clamp01(p / height) * normal;
+        var o = origin + p * normal;
         return (point - o).sqrMagnitude < radius * radius;
     }
 }

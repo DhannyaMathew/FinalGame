@@ -89,11 +89,9 @@ public class GameManager : MonoBehaviour
     public static bool Paused
     {
         get => _instance._paused;
-        private set
+        internal set
         {
             _instance._paused = value;
-            Cursor.visible = value;
-            Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
             Time.timeScale = value ? 0f : 1f;
         }
     }
@@ -138,13 +136,16 @@ public class GameManager : MonoBehaviour
                     break;
             }
         };
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void BackToMainMenu()
     {
-        Paused = false;
+      //  UiControl.TurnOffMenu();
         CurrentLevelIndex = 1;
         RestartLevel();
+        
     }
 
     private static Level GetLevel(int level)
@@ -156,8 +157,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(EscapeKey))
         {
-            Paused = UiControl.MustPause;
             UiControl.OnEscape();
+            Paused = UiControl.MustPause;
         }
 
         if (Input.GetKeyDown(restartKey))
@@ -175,7 +176,7 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    public void RestartLevel()
+    public static void RestartLevel()
     {
         Time.timeScale = 1f;
         CurrentLevel.Setup(Player, MainCamera, Orb);

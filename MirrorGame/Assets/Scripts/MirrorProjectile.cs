@@ -33,8 +33,7 @@ public class MirrorProjectile : MonoBehaviour
                 var mirrorObj = Instantiate(mirrorPrefab, GameManager.CurrentLevel.transform);
                 var mirror = mirrorObj.GetComponent<Mirror>();
                 mirror.transform.position = _target + _normal * 0.001f;
-                mirror.transform.rotation = Quaternion.LookRotation(_normal,
-                    _forward);
+                mirror.transform.rotation = Quaternion.LookRotation(_normal);
                 mirror.CanBeInteractedWith = GameManager.CanPickupMirrors;
                 mirror.SetLevel(GameManager.CurrentLevel);
                 mirror.Level.ResetMirrors();

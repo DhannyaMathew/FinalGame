@@ -189,11 +189,13 @@ namespace PlayerManager
                 _grounded = _grounded || a;
                 return a;
             }
+
             return false;
         }
 
         internal void DrawDebug()
         {
+#if UNITY_EDITOR
             var pos = _rigidBody.position;
             Gizmos.color = _bottomContactConnected ? Color.green : Color.red;
             Gizmos.DrawSphere(pos + _settings.height * _settings.bottomDetector * Vector3.up, 0.05f);
@@ -207,6 +209,7 @@ namespace PlayerManager
 
             Gizmos.color = Color.green;
             Gizmos.DrawLine(pos, pos + _averageContactNormal);
+#endif
         }
     }
 }

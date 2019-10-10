@@ -7,6 +7,8 @@ namespace PlayerManager
         private bool _hasMirror;
         private MirrorProjectile _mirrorProjectile;
 
+        public bool HasMirror => _hasMirror;
+
         private void Awake()
         {
             _mirrorProjectile = GetComponentInChildren<MirrorProjectile>();
@@ -41,11 +43,17 @@ namespace PlayerManager
                     Mathf.Infinity))
                 {
                     _hasMirror = false;
-                
+
                     _mirrorProjectile.Shoot(hit.point, hit.normal, GameManager.MainCamera.transform.forward);
                     //GameManager.CurrentLevel.ResetMirrors();
                 }
             }
+        }
+
+        public void ResetObject()
+        {
+            _mirrorProjectile.gameObject.SetActive(false);
+            _hasMirror = false;
         }
     }
 }
