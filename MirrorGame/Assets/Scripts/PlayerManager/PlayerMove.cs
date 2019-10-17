@@ -17,28 +17,32 @@ namespace PlayerManager
         private readonly CharacterSettings _settings;
         private float InputAngle => Vector3.SignedAngle(Vector3.forward, MoveDirection, Vector3.up);
 
-        private float BodyAngle
+        private Quaternion BodyRotation => _rigidBody.rotation;
+        private float BodyAngle => _rigidBody.rotation.eulerAngles.y;
+
+        private float ForwardAngle
         {
             get
             {
-                /*if (_laddered && !_grounded)
+                if (_laddered && !_grounded)
                 {
                     return _ladderAngle;
                 }
 
                 if (_grounded && _laddered)
                 {
-                    return MoveDirection.z > 0 ? _ladderAngle : _rigidBody.rotation.eulerAngles.y;
-                }*/
+                    return MoveDirection.z > 0 ? 0 : BodyAngle;
+                }
 
-                return _rigidBody.rotation.eulerAngles.y;
+                return BodyAngle;
             }
         }
 
-        private Quaternion ForwardRotation => Quaternion.AngleAxis(InputAngle + BodyAngle, _averageContactNormal);
+        private Quaternion InputRotation => Quaternion.AngleAxis(InputAngle, _averageContactNormal);
 
-        private Vector3 Forward => ForwardRotation * Quaternion.LookRotation(_averageContactNormal, Vector3.forward) *
-                                   Vector3.up;
+        private Vector3 Forward =>
+            Vector3.Cross(InputRotation * BodyRotation *
+                          Vector3.right, _averageContactNormal);
 
         internal float NormalizedSpeed => Speed * MoveDirection.magnitude / _settings.runSpeed;
         internal Vector3 MoveDirection { get; private set; }
@@ -66,12 +70,12 @@ namespace PlayerManager
 
         internal void GetInput()
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && !_laddered)
             {
                 _speed = _settings.runSpeed;
             }
 
-            if (Input.GetKeyUp(KeyCode.LeftShift))
+            else
             {
                 _speed = _settings.walkSpeed;
             }
@@ -166,9 +170,8 @@ namespace PlayerManager
                         a ? Color.green : Color.red);
                 }
 
-                var direction = Mathf.Sign(Vector3.Dot(ab, potentialLadder.forward));
-                _ladderAngle =
-                    -Vector3.SignedAngle(Vector3.forward, potentialLadder.forward, Vector3.up);
+                _ladderAngle = Vector3.SignedAngle(potentialLadder.forward, Vector3.forward, Vector3.up);
+
                 _laddered = _laddered || a;
                 return a;
             }
@@ -189,13 +192,11 @@ namespace PlayerManager
                 _grounded = _grounded || a;
                 return a;
             }
-
             return false;
         }
 
         internal void DrawDebug()
         {
-#if UNITY_EDITOR
             var pos = _rigidBody.position;
             Gizmos.color = _bottomContactConnected ? Color.green : Color.red;
             Gizmos.DrawSphere(pos + _settings.height * _settings.bottomDetector * Vector3.up, 0.05f);
@@ -205,11 +206,10 @@ namespace PlayerManager
             Gizmos.DrawLine(pos, pos + Forward);
             Handles.color = Color.blue;
             Handles.DrawWireArc(pos, _averageContactNormal,
-                Vector3.forward, InputAngle + BodyAngle, 0.6f);
+                Vector3.forward, InputAngle + ForwardAngle, 0.6f);
 
             Gizmos.color = Color.green;
             Gizmos.DrawLine(pos, pos + _averageContactNormal);
-#endif
         }
     }
 }
