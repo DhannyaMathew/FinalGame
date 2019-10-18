@@ -41,6 +41,7 @@ public class Door : Interactable
         _soundLocked = _soundsDoor[2];
         _initialOpen = open;
         _initialLocked = locked;
+      
     }
 
     private void Update()
@@ -85,8 +86,18 @@ public class Door : Interactable
         _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();
         var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
         _portal.gameObject.SetActive(true);
+        _connectedDoor.transform.localScale = transform.localScale;
+
+        EventHandler.OnMirrorWalkThrough += mirror =>
+        {
+            if (mirror.Level == Level)
+            {
+                _connectedDoor.transform.localScale = Vector3.Scale(new Vector3(Mathf.Sign(transform.lossyScale.x),1,1), _connectedDoor.transform.localScale);
+            }
+        };
         if (!connectingBack)
         {
+            
             other.openAngle = openAngle;
             other.openSpeed = openSpeed;
             other.locked = locked;
