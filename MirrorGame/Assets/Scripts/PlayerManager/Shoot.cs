@@ -43,8 +43,7 @@ namespace PlayerManager
                     Mathf.Infinity))
                 {
                     _hasMirror = false;
-
-                    _mirrorProjectile.Shoot(hit.point, hit.normal, GameManager.MainCamera.transform.forward);
+                    _mirrorProjectile.Shoot(hit);
                     //GameManager.CurrentLevel.ResetMirrors();
                 }
             }
@@ -54,6 +53,12 @@ namespace PlayerManager
         {
             _mirrorProjectile.gameObject.SetActive(false);
             _hasMirror = false;
+        }
+
+        public void PutBackMirror()
+        {
+            _hasMirror = _mirrorProjectile.isBig;
+            _mirrorProjectile.Shrink();
         }
     }
 }

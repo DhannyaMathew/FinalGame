@@ -163,5 +163,10 @@ namespace PlayerManager
             _shoot.ResetObject();
             _tempKey.SetActive(false);
         }
+
+        public void PutBackMirror()
+        {
+            _shoot.PutBackMirror();
+        }
     }
 }

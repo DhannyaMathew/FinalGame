@@ -25,17 +25,17 @@ public class Portal : MonoBehaviour
         _door = GetComponentInParent<Door>();
         Camera = GetComponentInChildren<Camera>();
         PortalTarget = transform.GetChild(1).gameObject;
-        if (_portalResetTimer == null)
+        if (_portalResetTimer == null && _otherPortal != null)
         {
             _portalResetTimer = new Timer(0.1f, false, ResetTeleporter);
-           
             _otherPortal._portalResetTimer = new Timer(0.1f, false, _otherPortal.ResetTeleporter);
         }
     }
 
     private void Update()
     {
-        _otherPortal._portalResetTimer.Tick(Time.deltaTime);
+        if(_otherPortal != null)
+            _otherPortal._portalResetTimer.Tick(Time.deltaTime);
     }
 
     private void ResetTeleporter()

@@ -34,6 +34,12 @@ public class Penseive : Interactable
         }
         else
         {
+            if (GameManager.Player.HasMirror)
+            {
+                _liquidMirror.SetActive(true);
+                mirrors++;
+                GameManager.Player.PutBackMirror();
+            }
         }
     }
 

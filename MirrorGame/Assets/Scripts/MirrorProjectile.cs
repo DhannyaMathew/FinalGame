@@ -8,17 +8,17 @@ public class MirrorProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private GameObject mirrorPrefab;
-    private Vector3 _target = Vector3.zero;
-    private Vector3 _normal = Vector3.forward;
-    private Vector3 _forward;
-    private bool _shot, _grow;
+    private RaycastHit _hit;
+    private bool _shot, _grow, _shrink, _isBig;
     private Vector3 _initialPosition;
     private Vector3 _initialScale;
+    public bool isBig => _isBig;
 
-    private void Start()
+    private void Awake()
     {
         _initialPosition = transform.localPosition;
         _initialScale = transform.localScale;
+        Debug.Log(_initialScale);
     }
 
 
@@ -27,13 +27,22 @@ public class MirrorProjectile : MonoBehaviour
         if (_shot)
         {
             transform.parent = GameManager.CurrentLevel.transform;
-            transform.position = Vector3.Lerp(transform.position, _target, speed * Time.deltaTime);
-            if ((transform.position - _target).sqrMagnitude < 0.2f * 0.2f)
+            transform.position = Vector3.Lerp(transform.position, _hit.point, speed * Time.deltaTime);
+            if ((transform.position - _hit.point).sqrMagnitude < 0.1f * 0.1f)
             {
                 var mirrorObj = Instantiate(mirrorPrefab, GameManager.CurrentLevel.transform);
                 var mirror = mirrorObj.GetComponent<Mirror>();
-                mirror.transform.position = _target + _normal * 0.001f;
-                mirror.transform.rotation = Quaternion.LookRotation(_normal);
+                if (_hit.transform.gameObject.CompareTag("MirrorSpot"))
+                {
+                    mirror.transform.position = _hit.transform.parent.position;
+                    mirror.transform.rotation = _hit.transform.parent.rotation;
+                }
+                else
+                {
+                    mirror.transform.position = _hit.point + _hit.normal * 0.001f;
+                    mirror.transform.rotation = Quaternion.LookRotation(_hit.normal);
+                }
+
                 mirror.CanBeInteractedWith = GameManager.CanPickupMirrors;
                 mirror.SetLevel(GameManager.CurrentLevel);
                 mirror.Level.ResetMirrors();
@@ -49,31 +58,51 @@ public class MirrorProjectile : MonoBehaviour
         if (_grow)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, _initialScale, 5 * Time.deltaTime);
-            if (Mathf.Abs(transform.localScale.x - _initialScale.x) < 0.05f)
+            if (Mathf.Abs(transform.localScale.x - _initialScale.x) < 0.001f)
             {
                 transform.localScale = _initialScale;
                 _grow = false;
+                _isBig = true;
+
+            }
+        }
+
+        if (_shrink)
+        {
+            _isBig = false;
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 5 * Time.deltaTime);
+            if (Mathf.Abs(transform.localScale.x) < 0.001f)
+            {
+                transform.localScale = Vector3.zero;
+                gameObject.SetActive(false);
+                _shrink = false;
             }
         }
     }
 
-    public void Shoot(Vector3 target, Vector3 normal, Vector3 forward)
+    public void Shoot(RaycastHit hit)
     {
-        _target = target;
-        _normal = normal;
-        _forward = Vector3.Lerp(Vector3.ProjectOnPlane(forward, normal), Vector3.up,
-            Mathf.Abs(Vector3.Dot(Vector3.forward, normal)));
+        _hit = hit;
         _shot = true;
     }
 
     public void Load()
     {
-        gameObject.SetActive(true);
+        Grow();
     }
 
     public void Grow()
     {
+        gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
         _grow = true;
+        _shrink = false;
+    }
+
+    public void Shrink()
+    {
+        _shrink = true;
+        _grow = false;
+        transform.localScale = _initialScale;
     }
 }
