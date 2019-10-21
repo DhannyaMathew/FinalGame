@@ -43,6 +43,7 @@ public class MirrorProjectile : MonoBehaviour
                     mirror.transform.rotation = Quaternion.LookRotation(_hit.normal);
                 }
 
+                mirror.transform.parent = _hit.transform.parent;
                 mirror.CanBeInteractedWith = GameManager.CanPickupMirrors;
                 mirror.SetLevel(GameManager.CurrentLevel);
                 mirror.Level.ResetMirrors();
