@@ -78,7 +78,6 @@ public class Mirror : Interactable
 
     protected override void ResetObject()
     {
-        Debug.Log(CanBeInteractedWith);
         if (CanBeInteractedWith)
         {
             Destroy(gameObject);

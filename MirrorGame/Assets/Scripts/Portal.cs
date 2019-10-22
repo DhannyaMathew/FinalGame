@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-   
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
@@ -34,7 +33,7 @@ public class Portal : MonoBehaviour
 
     private void Update()
     {
-        if(_otherPortal != null)
+        if (_otherPortal != null)
             _otherPortal._portalResetTimer.Tick(Time.deltaTime);
     }
 
@@ -62,20 +61,27 @@ public class Portal : MonoBehaviour
         var relativeForward = RootTransform.InverseTransformDirection(camera.transform.forward);
         var relativeUp = RootTransform.InverseTransformDirection(camera.transform.up);
         relativePosition = Vector3.Scale(relativePosition, flip);
-        relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
-        relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));
+        /*relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
+        relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));*/
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
-        _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
-        
+
+        if (transform.localRotation.eulerAngles.y == 0)
         {
-        //    relativeForward = Vector3.Scale(relativeForward, flip);
-        //    relativeUp = Vector3.Scale(relativeUp, flip);
+            relativeForward = Vector3.Scale(relativeForward, flip);
+            relativeUp = Vector3.Scale(relativeUp, flip);
+            _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
+            Debug.Log(_door.gameObject.name + " " + (RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1));
+        }
+        else
+        {
+            _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0);
+            Debug.Log(_door.gameObject.name + " " + (RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0));
         }
 
+        _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
-        _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
     }
 
     public void SetOtherPortal(Portal other)
@@ -83,7 +89,7 @@ public class Portal : MonoBehaviour
         _otherPortal = other;
         _exitPortalCamera = transform.GetChild(0).GetComponent<Camera>();
         _portalMaterial = transform.GetChild(1).GetComponent<Renderer>().material;
-        _portalMaterial.SetTexture(PortalTexture,_exitPortalCamera.targetTexture);
+        _portalMaterial.SetTexture(PortalTexture, _exitPortalCamera.targetTexture);
     }
 
     private void OnTriggerEnter(Collider other)

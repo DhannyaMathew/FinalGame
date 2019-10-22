@@ -108,17 +108,24 @@ public class Level : MonoBehaviour
         _resetMirrors = true;
     }
 
-    public void Setup(Player player, MainCamera mainCamera, Orb orb)
+    public void Setup(Player player, MainCamera mainCamera, Orb orb, bool isRestart = false)
     {
-        orb.transform.parent = transform;
         ResetLevelObjects();
         SetDefaultState();
-        player.Setup(mainCamera);
-        _levelStart.ResetPlayer(player);
-        if (hasOrb)
-            orb.Set(_orbPath);
+        if (!isRestart)
+        {
+            orb.transform.parent = transform;
+            player.Setup(mainCamera);
+            _levelStart.ResetPlayer(player);
+            if (hasOrb)
+                orb.Set(_orbPath);
+            else
+                orb.gameObject.SetActive(false);
+        }
         else
-            orb.gameObject.SetActive(false);
+        {
+            player.transform.position = _levelStart.transform.position + 25 * Vector3.up;
+        }
     }
 
     public void Link(Level level)

@@ -52,6 +52,9 @@ namespace PlayerManager
 
         private bool OnWalkableGround => Vector3.Angle(_averageContactNormal, Vector3.up) < _settings.maxGroundAngle;
         private bool TallEnough => _bottomContactConnected && !_topContactConnected;
+        public bool OnLadder => _laddered;
+
+        public bool Falling => !_grounded && !_laddered;
 
         internal PlayerMove(CharacterSettings settings, Rigidbody rigidBody)
         {
