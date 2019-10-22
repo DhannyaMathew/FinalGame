@@ -104,7 +104,7 @@ namespace PlayerManager
 
         private void UpdateAnimator()
         {
-            _animator.SetFloat(SpeedAnimatorParameter, _movement.NormalizedSpeed);
+            _animator.SetFloat(SpeedAnimatorParameter, _movement.Speed/2f);
             _animator.SetFloat(XDirAnimatorParameter, _movement.MoveDirection.x);
             _animator.SetFloat(YDirAnimatorParameter, _movement.MoveDirection.z);
             _animator.SetBool(OnLadder, _movement.OnLadder);

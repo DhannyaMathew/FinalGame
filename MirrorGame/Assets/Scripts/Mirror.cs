@@ -51,7 +51,7 @@ public class Mirror : Interactable
         {
             clamp =  true,
             minMaxIn = Vector2.up,
-            minMaxOut = new Vector2(1f,3f)
+            minMaxOut = new Vector2(1f,2.2f)
         };
     }
 
@@ -131,7 +131,7 @@ public class Mirror : Interactable
             transform.localRotation = Quaternion.LookRotation(-1.8f * mirrorTransform.forward, mirrorTransform.up);
             
             
-            other.transform.position += _offset.Evaluate(Mathf.Abs(Vector3.Dot(mirrorTransform.forward, Vector3.up)))* 3f * mirrorTransform.forward;
+            other.transform.position += _offset.Evaluate(Mathf.Abs(Vector3.Dot(mirrorTransform.forward, Vector3.up))) * mirrorTransform.forward;
             Level.transform.parent = null;
             transform.parent = Level.transform;
             Level.ResetMirrors();
