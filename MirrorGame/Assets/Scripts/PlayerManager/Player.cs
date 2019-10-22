@@ -104,7 +104,6 @@ namespace PlayerManager
 
         private void UpdateAnimator()
         {
-            Debug.Log(_movement.MoveDirection);
             _animator.SetFloat(SpeedAnimatorParameter, _movement.NormalizedSpeed);
             _animator.SetFloat(XDirAnimatorParameter, _movement.MoveDirection.x);
             _animator.SetFloat(YDirAnimatorParameter, _movement.MoveDirection.z);
