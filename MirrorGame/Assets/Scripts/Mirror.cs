@@ -20,6 +20,7 @@ public class Mirror : Interactable
 {
     [SerializeField] private LinearMapping distortion;
     [SerializeField] private float dissolveSpeed = 1f;
+    private LinearMapping _offset;
 
     private Material _material;
     private static readonly int NormalStrength = Shader.PropertyToID("_normalStrength");
@@ -46,6 +47,12 @@ public class Mirror : Interactable
         _soundsMirror = GetComponents<AudioSource>();
         _soundReverse = _soundsMirror[1];
         _material = GetComponentInChildren<Renderer>().material;
+        _offset = new LinearMapping()
+        {
+            clamp =  true,
+            minMaxIn = Vector2.up,
+            minMaxOut = new Vector2(1f,3f)
+        };
     }
 
     protected override void Start()
@@ -122,7 +129,9 @@ public class Mirror : Interactable
             mirrorTransform.localScale = new Vector3(
                 -1 * mirrorTransform.localScale.x, 1, 1);
             transform.localRotation = Quaternion.LookRotation(-1.8f * mirrorTransform.forward, mirrorTransform.up);
-            other.transform.position += mirrorTransform.forward * 2f;
+            
+            
+            other.transform.position += _offset.Evaluate(Mathf.Abs(Vector3.Dot(mirrorTransform.forward, Vector3.up)))* 3f * mirrorTransform.forward;
             Level.transform.parent = null;
             transform.parent = Level.transform;
             Level.ResetMirrors();
