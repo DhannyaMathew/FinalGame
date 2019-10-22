@@ -23,14 +23,12 @@ public class Key : Pickupable
     public void Freeze()
     {
         CanBeInteractedWith = false;
-        allowPickup = false;
         _rb.isKinematic = true;
     }
 
     public void Unfreeze()
     {
         CanBeInteractedWith = true;
-        allowPickup = true;
         _rb.isKinematic = false;
     }
 

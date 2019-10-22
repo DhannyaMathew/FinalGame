@@ -156,13 +156,15 @@ public class SwapGameObject
     public void Set()
     {
         normal.SetActive(true);
-        reflected.SetActive(false);
+        if(reflected != null)
+            reflected.SetActive(false);
     }
 
 
     public void Reflect(bool isReflected)
     {
         normal.SetActive(!isReflected);
-        reflected.SetActive(isReflected);
+        if(reflected != null)
+            reflected.SetActive(isReflected);
     }
 }

@@ -62,6 +62,7 @@ public class Door : Interactable
 
     private void UpdatePortals(Camera camera)
     {
+        Debug.Log(_portal);
         if (_isLinked)
         {
             if (IsOpen() && InRange(camera) && InFrontOf(camera))
@@ -78,17 +79,22 @@ public class Door : Interactable
         }
     }
 
+    private bool IsOpen()
+    {
+        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0f;
+    }
+
     public void Link(Door other, bool connectingBack)
     {
         IsEntrance = connectingBack;
         _connectedDoor = other;
         _isLinked = true;
         _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();
-        Debug.Log(Level.gameObject.name+ " " + other.transform.childCount);
-        var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
+
         _portal.gameObject.SetActive(true);
         _connectedDoor.transform.localScale = transform.localScale;
-
+        var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
+        Debug.Log(otherPortal);
         EventHandler.OnMirrorWalkThrough += mirror =>
         {
             if (mirror.Level == Level)
@@ -108,11 +114,6 @@ public class Door : Interactable
         }
 
         _portal.SetOtherPortal(otherPortal);
-    }
-
-    private bool IsOpen()
-    {
-        return Math.Abs(_hinge.localRotation.eulerAngles.y) > 0f;
     }
 
     private bool InRange(Camera camera)
