@@ -112,19 +112,15 @@ public class Level : MonoBehaviour
     {
         ResetLevelObjects();
         SetDefaultState();
+        _levelStart.ResetPlayer(player);
         if (!isRestart)
         {
             orb.transform.parent = transform;
             player.Setup(mainCamera);
-            _levelStart.ResetPlayer(player);
             if (hasOrb)
                 orb.Set(_orbPath);
             else
                 orb.gameObject.SetActive(false);
-        }
-        else
-        {
-            player.transform.position = _levelStart.transform.position + 25 * Vector3.up;
         }
     }
 

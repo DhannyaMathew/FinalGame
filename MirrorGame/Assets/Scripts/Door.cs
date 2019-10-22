@@ -84,6 +84,7 @@ public class Door : Interactable
         _connectedDoor = other;
         _isLinked = true;
         _portal = transform.GetChild(transform.childCount - 1).gameObject.GetComponent<Portal>();
+        Debug.Log(Level.gameObject.name+ " " + other.transform.childCount);
         var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
         _portal.gameObject.SetActive(true);
         _connectedDoor.transform.localScale = transform.localScale;
