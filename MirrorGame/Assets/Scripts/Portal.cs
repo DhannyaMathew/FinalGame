@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    [SerializeField] private bool _rotateBy180 = false;
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
@@ -61,25 +62,17 @@ public class Portal : MonoBehaviour
         var relativeForward = RootTransform.InverseTransformDirection(camera.transform.forward);
         var relativeUp = RootTransform.InverseTransformDirection(camera.transform.up);
         relativePosition = Vector3.Scale(relativePosition, flip);
-        /*relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
-        relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));*/
+        relativeForward = Vector3.Scale(relativeForward, new Vector3(flipOtherCamera, 1, flipOtherCamera));
+        relativeUp = Vector3.Scale(relativeUp, new Vector3(flipOtherCamera, 1, flipOtherCamera));
         var relativeRotation = Quaternion.LookRotation(relativeForward, relativeUp);
         relativeForward = pairPortal.InverseTransformDirection(relativeRotation * Vector3.forward);
         relativeUp = pairPortal.InverseTransformDirection(relativeRotation * Vector3.up);
-
-        if (transform.localRotation.eulerAngles.y == 0)
+        if (_rotateBy180)
         {
             relativeForward = Vector3.Scale(relativeForward, flip);
             relativeUp = Vector3.Scale(relativeUp, flip);
-            _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
-            Debug.Log(_door.gameObject.name + " " + (RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1));
         }
-        else
-        {
-            _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0);
-            Debug.Log(_door.gameObject.name + " " + (RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 1 : 0));
-        }
-
+        _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);
     }

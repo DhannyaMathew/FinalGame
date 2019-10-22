@@ -32,8 +32,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("Down");
-            foreach (var o in pressurePadObjects)
+        foreach (var o in pressurePadObjects)
             {
                 o.OnPressurePadDown();
             }
@@ -43,15 +42,11 @@ public class PressurePlate : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         
-        Debug.Log("up");
-        if (other.gameObject.CompareTag("Player"))
-        {
             foreach (var o in pressurePadObjects)
             {
                 o.OnPressurePadUp();
             }
             _isPressed = false;
-        }
     }
     
     

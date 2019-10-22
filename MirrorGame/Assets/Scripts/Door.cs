@@ -62,7 +62,6 @@ public class Door : Interactable
 
     private void UpdatePortals(Camera camera)
     {
-        Debug.Log(_portal);
         if (_isLinked)
         {
             if (IsOpen() && InRange(camera) && InFrontOf(camera))
