@@ -4,6 +4,7 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     [SerializeField] private bool _rotateBy180 = false;
+    [SerializeField] private bool _rotateBy90 = false;
     private Portal _otherPortal;
     private Material _portalMaterial;
     private Camera _exitPortalCamera;
@@ -72,6 +73,13 @@ public class Portal : MonoBehaviour
             relativeForward = Vector3.Scale(relativeForward, flip);
             relativeUp = Vector3.Scale(relativeUp, flip);
         }
+
+        if (_rotateBy90)
+        {
+            relativeForward = Quaternion.AngleAxis(90, Vector3.up) * relativeForward;
+            relativeUp = Quaternion.AngleAxis(90, Vector3.up) * relativeUp;
+        }
+
         _portalMaterial.SetInt("_FlipX", RootTransform.lossyScale.x * pairPortal.lossyScale.x > 0 ? 0 : 1);
         _exitPortalCamera.transform.position = pairPortal.TransformPoint(relativePosition);
         _exitPortalCamera.transform.rotation = Quaternion.LookRotation(relativeForward, relativeUp);

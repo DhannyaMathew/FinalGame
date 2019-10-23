@@ -93,7 +93,6 @@ public class Door : Interactable
         _portal.gameObject.SetActive(true);
         _connectedDoor.transform.localScale = transform.localScale;
         var otherPortal = other.transform.GetChild(other.transform.childCount - 1).gameObject.GetComponent<Portal>();
-        Debug.Log(otherPortal);
         EventHandler.OnMirrorWalkThrough += mirror =>
         {
             if (mirror.Level == Level)
