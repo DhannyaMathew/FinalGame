@@ -55,6 +55,7 @@ namespace PlayerManager
         public bool OnLadder => _laddered;
 
         public bool Falling => !_grounded && !_laddered;
+        public float ActualSpeed => Vector3.ClampMagnitude(this.MoveDirection * Speed, 1f).magnitude;
 
         internal PlayerMove(CharacterSettings settings, Rigidbody rigidBody)
         {
@@ -115,6 +116,7 @@ namespace PlayerManager
 
             if (!_grounded && !_laddered)
             {
+                _rigidBody.velocity = Vector3.Scale(_rigidBody.velocity, new Vector3(0.8f, 1, 0.8f));
                 _averageContactNormal = Vector3.up;
             }
             else if (_grounded && !_laddered)
@@ -138,9 +140,12 @@ namespace PlayerManager
 
         private void Rotate(float cameraFlatAngle)
         {
-            var direction = Quaternion.Euler(0, cameraFlatAngle, 0);
-            _rigidBody.rotation =
-                Quaternion.LerpUnclamped(_rigidBody.rotation, direction, Time.deltaTime * _settings.rotateSpeed);
+            if (MoveDirection != Vector3.zero && !_laddered)
+            {
+                var direction = Quaternion.Euler(0, cameraFlatAngle, 0);
+                _rigidBody.rotation =
+                    Quaternion.LerpUnclamped(_rigidBody.rotation, direction, Time.deltaTime * _settings.rotateSpeed);
+            }
         }
 
         private void Move()
@@ -175,7 +180,7 @@ namespace PlayerManager
 
                 _ladderAngle = Vector3.SignedAngle(potentialLadder.forward, Vector3.forward, Vector3.up);
 
-                _laddered = _laddered || a;
+                _laddered = (_laddered || a);
                 return a;
             }
 
@@ -195,11 +200,13 @@ namespace PlayerManager
                 _grounded = _grounded || a;
                 return a;
             }
+
             return false;
         }
 
         internal void DrawDebug()
         {
+#if UNITY_EDITOR
             var pos = _rigidBody.position;
             Gizmos.color = _bottomContactConnected ? Color.green : Color.red;
             Gizmos.DrawSphere(pos + _settings.height * _settings.bottomDetector * Vector3.up, 0.05f);
@@ -213,6 +220,7 @@ namespace PlayerManager
 
             Gizmos.color = Color.green;
             Gizmos.DrawLine(pos, pos + _averageContactNormal);
+#endif
         }
     }
 }

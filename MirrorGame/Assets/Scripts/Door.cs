@@ -48,16 +48,12 @@ public class Door : Interactable
     {
         _targetRotation = open ? Quaternion.Euler(0, -openAngle, 0) : Quaternion.Euler(0, 0, 0);
         _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
-        UpdatePortals(GameManager.MainCamera.Camera);
-        if (_triggerLockAndClose)
+        if ((GameManager.Player.transform.position - transform.position).sqrMagnitude>  5 * 5 && Level == GameManager.CurrentLevel)
         {
-            if ((GameManager.Player.transform.position - transform.position).sqrMagnitude > 1.5f * 1.5f)
-            {
-                Close(true);
-                GameManager.DisablePrevLevel();
-                _triggerLockAndClose = false;
-            }
+            Close(false);
         }
+        
+        UpdatePortals(GameManager.MainCamera.Camera);
     }
 
     private void UpdatePortals(Camera camera)
@@ -144,13 +140,16 @@ public class Door : Interactable
 
     public void Close(bool andLock)
     {
-        _soundClosing.Play();
-        open = false;
-        locked = andLock;
-        if (_isLinked)
+        if (open)
         {
-            _connectedDoor.open = false;
-            _connectedDoor.locked = andLock;
+            _soundClosing.Play();
+            open = false;
+            locked = andLock;
+            if (_isLinked)
+            {
+                _connectedDoor.open = false;
+                _connectedDoor.locked = andLock;
+            }
         }
     }
 
@@ -171,11 +170,12 @@ public class Door : Interactable
         {
             _soundLocked.Play();
         }
-       
     }
+    
 
     protected override void OnInteract()
     {
+        
         if (EventHandler.OnDoorInteract != null)
             EventHandler.OnDoorInteract(this);
         TryOpen();

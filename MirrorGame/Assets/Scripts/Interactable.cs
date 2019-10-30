@@ -10,12 +10,6 @@ public abstract class Interactable : LevelObject
 
     public bool CanBeInteractedWith;
 
-    protected override void Start()
-    {
-        base.Start();
-        CanBeInteractedWith = true;
-    }
-
     protected abstract void OnInteract();
 
     public static void Interact(IEnumerable<Interactable> interactables, Transform player, float height)

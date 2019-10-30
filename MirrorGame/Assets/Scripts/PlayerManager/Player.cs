@@ -27,6 +27,7 @@ namespace PlayerManager
         private static readonly int XDirAnimatorParameter = Animator.StringToHash("xDir");
         private static readonly int OnLadder = Animator.StringToHash("OnLadder");
         private static readonly int Falling = Animator.StringToHash("Falling");
+        private static readonly int ActualSpeed = Animator.StringToHash("ActualSpeed");
         public bool HasMirror => _shoot.HasMirror;
 
         private void Awake()
@@ -109,6 +110,7 @@ namespace PlayerManager
             _animator.SetFloat(YDirAnimatorParameter, _movement.MoveDirection.z);
             _animator.SetBool(OnLadder, _movement.OnLadder);
             _animator.SetBool(Falling, _movement.Falling);
+            _animator.SetFloat(ActualSpeed, _movement.ActualSpeed);
         }
 
         private void FixedUpdate()

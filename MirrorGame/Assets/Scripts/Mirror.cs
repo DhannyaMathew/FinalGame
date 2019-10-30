@@ -151,6 +151,5 @@ public class Mirror : Interactable
     private void OnDestroy()
     {
         Level.RemoveMirror(this);
-        
     }
 }
