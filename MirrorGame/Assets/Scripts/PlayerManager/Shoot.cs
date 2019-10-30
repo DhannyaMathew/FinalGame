@@ -38,6 +38,7 @@ namespace PlayerManager
             if (Input.GetButtonDown("Fire1") && _hasMirror)
             {
                 RaycastHit hit;
+                GameManager.Player.PlayInteractAnim();
                 UiControl.HideHintUI();
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(_mirrorProjectile.transform.position,

@@ -46,6 +46,7 @@ public abstract class Interactable : LevelObject
         {
             if (Input.GetButtonDown("Interact"))
             {
+                GameManager.Player.PlayInteractAnim();
                 i.OnInteract();
                 if (EventHandler.OnInteract != null)
                     EventHandler.OnInteract();

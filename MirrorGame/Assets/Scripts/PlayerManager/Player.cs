@@ -28,8 +28,9 @@ namespace PlayerManager
         private static readonly int OnLadder = Animator.StringToHash("OnLadder");
         private static readonly int Falling = Animator.StringToHash("Falling");
         private static readonly int ActualSpeed = Animator.StringToHash("ActualSpeed");
+        private static readonly int Interact = Animator.StringToHash("Interact");
         public bool HasMirror => _shoot.HasMirror;
-
+        private bool _interacting;
         private void Awake()
         {
             _collisions = new List<ContactPoint>();
@@ -116,6 +117,7 @@ namespace PlayerManager
         private void FixedUpdate()
         {
             CollectContacts();
+            
             _movement.Move(_mainCamera.Theta, _collisions);
 
             if (transform.position.y < -50f)
@@ -173,6 +175,11 @@ namespace PlayerManager
         public void PutBackMirror()
         {
             _shoot.PutBackMirror();
+        }
+
+        public void PlayInteractAnim()
+        {
+            _animator.SetTrigger(Interact);
         }
     }
 }
