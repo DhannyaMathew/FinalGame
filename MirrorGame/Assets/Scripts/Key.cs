@@ -2,16 +2,14 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Key : Pickupable
 {
-    [CanBeNull] private Joint _joint;
     private Rigidbody _rb;
-
+    private bool _initalCanBeInteractedWith;
     private void Awake()
     {
-        _joint = GetComponent<Joint>();
         _rb = GetComponent<Rigidbody>();
+        _initalCanBeInteractedWith = CanBeInteractedWith;
     }
 
     protected override void OnPickup()
@@ -32,8 +30,14 @@ public class Key : Pickupable
         _rb.isKinematic = false;
     }
 
+    public void MakeInteractable()
+    {
+        CanBeInteractedWith = true;
+    }
+
     protected override void ResetObject()
     {
+        CanBeInteractedWith = _initalCanBeInteractedWith;
         gameObject.SetActive(true);
     }
 }

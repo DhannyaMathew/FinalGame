@@ -17,8 +17,9 @@ namespace MainMenu
 
         [SerializeField] private GameObject pauseScreen;
         [SerializeField] private GameObject settingsScreen;
-        [SerializeField] private GameObject mainMenuButton;
+        //[SerializeField] private GameObject mainMenuButton;
         [SerializeField] private GameObject interactUi;
+        [SerializeField] private GameObject hintUi;
         private PauseMenuState _pauseState = PauseMenuState.Off;
 
 
@@ -52,7 +53,7 @@ namespace MainMenu
                     case PauseMenuState.MainPauseMenu:
                         instance.settingsScreen.SetActive(false);
                         instance.pauseScreen.SetActive(true);
-                        instance.mainMenuButton.SetActive(GameManager.CurrentLevelIndex != 1);
+                        //instance.mainMenuButton.SetActive(GameManager.CurrentLevelIndex != 1);
                         GameManager.Paused = true;
                         Cursor.visible = true;
                         Cursor.lockState = CursorLockMode.None;
@@ -95,6 +96,17 @@ namespace MainMenu
         {
             
             if (instance != null) instance.interactUi.SetActive(false);
+        }
+        
+        public static void ShowHintUI()
+        {
+            if (instance != null) instance.hintUi.SetActive(true);
+        }
+
+        public static void HideHintUI()
+        {
+            
+            if (instance != null) instance.hintUi.SetActive(false);
         }
 
         public void OnResume()

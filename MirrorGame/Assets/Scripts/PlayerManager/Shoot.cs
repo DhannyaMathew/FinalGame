@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MainMenu;
+using UnityEngine;
 
 namespace PlayerManager
 {
@@ -24,6 +25,7 @@ namespace PlayerManager
             };
             EventHandler.OnMirrorAbsorb += () =>
             {
+                UiControl.ShowHintUI();
                 _mirrorProjectile.gameObject.SetActive(true);
                 _mirrorProjectile.Grow();
                 _hasMirror = true;
@@ -36,7 +38,8 @@ namespace PlayerManager
             if (Input.GetButtonDown("Fire1") && _hasMirror)
             {
                 RaycastHit hit;
-
+                GameManager.Player.PlayInteractAnim();
+                UiControl.HideHintUI();
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(_mirrorProjectile.transform.position,
                     GameManager.MainCamera.transform.forward, out hit,

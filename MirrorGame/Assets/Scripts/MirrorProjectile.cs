@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using MainMenu;
 using UnityEngine;
 
 public class MirrorProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private GameObject mirrorPrefab;
+
     private RaycastHit _hit;
     private bool _shot, _grow, _shrink, _isBig;
     private Vector3 _initialPosition;
@@ -89,6 +91,7 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Load()
     {
+        UiControl.ShowHintUI();
         Grow();
     }
 
@@ -102,6 +105,7 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Shrink()
     {
+        UiControl.HideHintUI();
         _shrink = true;
         _grow = false;
         transform.localScale = _initialScale;

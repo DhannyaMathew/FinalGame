@@ -40,7 +40,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159749610}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -639,7 +639,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786501678128783724}
-  m_Mesh: {fileID: -1351237935171107740, guid: a222091c5d94adc4196fd466a35fd851, type: 3}
+  m_Mesh: {fileID: 178441573410212102, guid: a222091c5d94adc4196fd466a35fd851, type: 3}
 --- !u!23 &8723430176156514737
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -772,7 +772,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3553950224786234680}
-  m_Mesh: {fileID: -1351237935171107740, guid: a222091c5d94adc4196fd466a35fd851, type: 3}
+  m_Mesh: {fileID: 178441573410212102, guid: a222091c5d94adc4196fd466a35fd851, type: 3}
 --- !u!23 &190361017761771839
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1840,6 +1840,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExitT1
       objectReference: {fileID: 0}
+    - target: {fileID: 6515325749659690701, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: CanBeInteractedWith
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1895,6 +1900,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 713ae3714b95682499d071f07bc657fa, type: 2}
+    - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: e88e603a1c74e934189e6874e5717186, type: 2}
     - target: {fileID: 1440983037452752866, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: volumeLayerMask.m_Bits
@@ -1910,16 +1925,11 @@ PrefabInstance:
       propertyPath: probeLayerMask.m_Bits
       value: 16384
       objectReference: {fileID: 0}
-    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+    - target: {fileID: 4405864635174514832, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 713ae3714b95682499d071f07bc657fa, type: 2}
-    - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_TargetTexture
-      value: 
-      objectReference: {fileID: 8400000, guid: e88e603a1c74e934189e6874e5717186, type: 2}
+      propertyPath: _rotateBy90
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10b7cc3b310333d468ed8befe2e0ef53, type: 3}
 --- !u!4 &6543159598752784406 stripped
@@ -2112,6 +2122,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EntranceT1
       objectReference: {fileID: 0}
+    - target: {fileID: 6515325749659690701, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: CanBeInteractedWith
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7796041442738153548, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2172,6 +2187,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: -0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 25a1dce53acd87f4cb28e3c56817d02c, type: 2}
+    - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
+        type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 586dd653844fec048b3a2261bcf76314, type: 2}
     - target: {fileID: 1440983037452752866, guid: 10b7cc3b310333d468ed8befe2e0ef53,
         type: 3}
       propertyPath: volumeLayerMask.m_Bits
@@ -2197,16 +2222,6 @@ PrefabInstance:
       propertyPath: renderingPathCustomFrameSettingsOverrideMask.mask.data1
       value: 8519680
       objectReference: {fileID: 0}
-    - target: {fileID: 3250490937393273322, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 25a1dce53acd87f4cb28e3c56817d02c, type: 2}
-    - target: {fileID: 2483302284299333656, guid: 10b7cc3b310333d468ed8befe2e0ef53,
-        type: 3}
-      propertyPath: m_TargetTexture
-      value: 
-      objectReference: {fileID: 8400000, guid: 586dd653844fec048b3a2261bcf76314, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10b7cc3b310333d468ed8befe2e0ef53, type: 3}
 --- !u!114 &7346744871415197264 stripped

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-
+    [SerializeField] private Material Up;
+    [SerializeField] private Material Down;
     [SerializeField] private PressurePadObject[] pressurePadObjects;
     private bool _isPressed;
     private Vector3 _initialPostion;
@@ -21,33 +22,43 @@ public class PressurePlate : MonoBehaviour
     {
         if (_isPressed)
         {
-            transform.localPosition  = Vector3.Lerp(transform.localPosition, _initialPostion - Vector3.up*0.1f, 0.05f);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, _initialPostion - Vector3.up * 0.1f, 0.05f);
         }
         else
         {
-            
-            transform.localPosition  = Vector3.Lerp(transform.localPosition, _initialPostion, 0.05f);
-        } 
+            transform.localPosition = Vector3.Lerp(transform.localPosition, _initialPostion, 0.05f);
+        }
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void PressDown()
     {
         foreach (var o in pressurePadObjects)
-            {
-                o.OnPressurePadDown();
-            }
-            _isPressed = true;
-        
+        {
+            o.OnPressurePadDown();
+        }
+
+        _isPressed = true;
+        GetComponent<Renderer>().material = Down;
     }
+    
+    private void OnCollisionEnter(Collision other)
+    {
+       PressDown();
+    }
+
+    public void Unpress()
+    {
+        foreach (var o in pressurePadObjects)
+        {
+            o.OnPressurePadUp();
+        }
+
+        GetComponent<Renderer>().material = Up;
+        _isPressed = false;
+    }
+
     private void OnCollisionExit(Collision other)
     {
-        
-            foreach (var o in pressurePadObjects)
-            {
-                o.OnPressurePadUp();
-            }
-            _isPressed = false;
+        Unpress();
     }
-    
-    
 }

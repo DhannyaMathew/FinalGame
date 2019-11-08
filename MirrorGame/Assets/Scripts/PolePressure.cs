@@ -10,9 +10,11 @@ public class PolePressure : PressurePadObject
     private bool _isDown;
     private Quaternion _initialRotation;
     private float _rot = 0;
+    private AudioSource _source;
 
     private void Start()
     {
+        _source = GetComponent<AudioSource>();
         _initialRotation = transform.localRotation;
     }
 
@@ -24,9 +26,12 @@ public class PolePressure : PressurePadObject
             if (Mathf.Sign(rotation) * _rot > 0)
             {
                 _rot -= Mathf.Sign(rotation) * speed * Time.deltaTime;
+                if (!_source.isPlaying)
+                    _source.Play();
             }
             else
             {
+                _source.Stop();
                 _rot = 0;
             }
         }
@@ -34,10 +39,13 @@ public class PolePressure : PressurePadObject
         {
             if (_rot > rotation)
             {
+                if (!_source.isPlaying)
+                    _source.Play();
                 _rot += Mathf.Sign(rotation) * speed * Time.deltaTime;
             }
             else
             {
+                _source.Stop();
                 _rot = rotation;
             }
         }
