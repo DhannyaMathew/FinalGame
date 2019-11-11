@@ -64,10 +64,10 @@ namespace PlayerManager
             _rigidBody = rigidBody;
         }
 
-        internal void Move(float cameraFlatAngle, IEnumerable<ContactPoint> collisions)
+        internal void Move(float cameraFlatAngle, IEnumerable<ContactPoint> collisions, bool interacting)
         {
             UpdateContactNormal(collisions);
-            CalculateSpeed();
+            CalculateSpeed(interacting);
             Rotate(cameraFlatAngle);
             Move();
         }
@@ -133,9 +133,9 @@ namespace PlayerManager
             }
         }
 
-        private void CalculateSpeed()
+        private void CalculateSpeed(bool interacting)
         {
-            Speed = Mathf.Lerp(Speed, _speed, Time.deltaTime * _settings.acceleration);
+            Speed = interacting ? 0 : Mathf.Lerp(Speed, _speed, Time.deltaTime * _settings.acceleration);
         }
 
         private void Rotate(float cameraFlatAngle)

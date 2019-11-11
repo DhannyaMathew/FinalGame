@@ -117,9 +117,13 @@ namespace PlayerManager
         private void FixedUpdate()
         {
             CollectContacts();
-            
-            _movement.Move(_mainCamera.Theta, _collisions);
 
+            
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
+            {
+                _interacting = false;
+            }
+            _movement.Move(_mainCamera.Theta, _collisions, _interacting);
             if (transform.position.y < -50f)
             {
                 FallOffMap();
@@ -180,6 +184,7 @@ namespace PlayerManager
         public void PlayInteractAnim()
         {
             _animator.SetTrigger(Interact);
+            _interacting = true;
         }
     }
 }
