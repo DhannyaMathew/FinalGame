@@ -119,7 +119,7 @@ namespace PlayerManager
             CollectContacts();
 
             
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
             {
                 _interacting = false;
             }

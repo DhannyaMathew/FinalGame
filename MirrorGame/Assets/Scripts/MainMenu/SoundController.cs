@@ -44,7 +44,7 @@ namespace MainMenu
 		{ 		
 			int randomIndex = Random.Range (0, clips.Length);			
 			float randomPitch = Random.Range (lowerPitch, higherPitch);	
-			Audio[AudioSourceNum].pitch = randomPitch;
+			Audio[AudioSourceNum].pitch = 0.5f;
 			Audio[AudioSourceNum].clip = clips [randomIndex];                           
 
 			if (!Audio[AudioSourceNum].isPlaying)
