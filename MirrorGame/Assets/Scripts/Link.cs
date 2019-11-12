@@ -1,20 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Link : MonoBehaviour
 {
-
     private AnimationCurve _drag;
     private AnimationCurve _angularDrag;
     private LinearMapping _angularDragLM;
     private LinearMapping _dragLM;
+    private Chain _chain;
     private Rigidbody _rb;
     private float _maxVelocity;
     private float _maxAngularVelocity;
 
+    public bool AboveSoundThresh => _rb.velocity.sqrMagnitude > _chain.soundThresh * _chain.soundThresh;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _chain = GetComponentInParent<Chain>();
     }
 
     private void Update()
@@ -28,7 +32,8 @@ public class Link : MonoBehaviour
     }
 
 
-    public void SetPhysics(AnimationCurve drag, AnimationCurve angularDrag, LinearMapping dragLM, LinearMapping angularDragLM, float maxVelocity, float maxAngularVelocity)
+    public void SetPhysics(AnimationCurve drag, AnimationCurve angularDrag, LinearMapping dragLM,
+        LinearMapping angularDragLM, float maxVelocity, float maxAngularVelocity)
     {
         _dragLM = dragLM;
         _angularDragLM = angularDragLM;

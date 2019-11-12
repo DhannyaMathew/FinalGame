@@ -31,6 +31,7 @@ namespace PlayerManager
         private static readonly int Interact = Animator.StringToHash("Interact");
         public bool HasMirror => _shoot.HasMirror;
         private bool _interacting;
+
         private void Awake()
         {
             _collisions = new List<ContactPoint>();
@@ -106,7 +107,7 @@ namespace PlayerManager
 
         private void UpdateAnimator()
         {
-            _animator.SetFloat(SpeedAnimatorParameter, _movement.Speed/2f);
+            _animator.SetFloat(SpeedAnimatorParameter, _movement.Speed / 2f);
             _animator.SetFloat(XDirAnimatorParameter, _movement.MoveDirection.x);
             _animator.SetFloat(YDirAnimatorParameter, _movement.MoveDirection.z);
             _animator.SetBool(OnLadder, _movement.OnLadder);
@@ -118,18 +119,35 @@ namespace PlayerManager
         {
             CollectContacts();
 
-            
+
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
             {
                 _interacting = false;
             }
+
             _movement.Move(_mainCamera.Theta, _collisions, _interacting);
-            if (transform.position.y < -50f)
+            if (GameManager.CurrentLevelIndex < 11)
             {
-                FallOffMap();
+                if (transform.position.y < -50f)
+                {
+                    FallOffMap();
+                }
+            }
+            else
+            {
+                if (transform.position.y < -50f)
+                {
+                    FallToMain();
+                }
             }
 
             _collisions.Clear();
+        }
+
+        private void FallToMain()
+        {
+            GameManager.CurrentLevelIndex = 1;
+            
         }
 
         private void CollectContacts()
@@ -156,7 +174,6 @@ namespace PlayerManager
 
         private void FallOffMap()
         {
-
             GameManager.RestartLevel();
             _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y, 0);
         }
@@ -170,7 +187,7 @@ namespace PlayerManager
             }
         }
 
-        private void ResetObjects()
+        public void ResetObjects()
         {
             _shoot.ResetObject();
             _tempKey.SetActive(false);

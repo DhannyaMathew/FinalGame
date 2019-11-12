@@ -18,7 +18,6 @@ namespace MainMenu
         public void Awake()
         {
             _buttons = GetComponentsInChildren<MenuButton>();
-            Debug.Log(_buttons.Length);
             for (var index = 0; index < _buttons.Length; index++)
             {
                 if (index + 1 < _buttons.Length)
@@ -73,7 +72,10 @@ namespace MainMenu
 
         public void SetButton(MenuButton menuButton)
         {
+            if(_currentButton != null)
+                _currentButton.UnSet();
             _currentButton = menuButton;
+            _currentButton.Set();
             selector.transform.position = _currentButton.Position;
             SoundController.instance.RandomPitchandsfx(0, buttonClick);
         }

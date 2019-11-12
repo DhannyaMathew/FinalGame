@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         CurrentLevel.Setup(Player, MainCamera, Orb, true);
+        Player.ResetObjects();
     }
 
     private void LinkLevels()

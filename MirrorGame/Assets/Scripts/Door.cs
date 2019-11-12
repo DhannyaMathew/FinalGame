@@ -157,7 +157,6 @@ public class Door : Interactable
     {
         if (!locked)
         {
-
             if(!open)
                 _soundOpening.Play();
             else

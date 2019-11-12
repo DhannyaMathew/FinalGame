@@ -7,47 +7,46 @@ public class PressurePlate : MonoBehaviour
 {
     [SerializeField] private Material Up;
     [SerializeField] private Material Down;
+
     [SerializeField] private PressurePadObject[] pressurePadObjects;
     private bool _isPressed;
     private Vector3 _initialPostion;
-    
+    private AudioSource _as;
+
 
     private void Start()
     {
         _initialPostion = transform.localPosition;
+        _as = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (_isPressed)
-        {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, _initialPostion - Vector3.up * 0.1f, 0.05f);
-        }
-        else
-        {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, _initialPostion, 0.05f);
-        }
-    }
 
     public void PressDown()
     {
+        _as.pitch = 1f;
         foreach (var o in pressurePadObjects)
         {
             o.OnPressurePadDown();
         }
 
+        _as.Play();
         _isPressed = true;
         GetComponent<Renderer>().material = Down;
     }
-    
+
     private void OnCollisionEnter(Collision other)
     {
-       PressDown();
+        if (Water.canBePressed)
+        {
+            PressDown();
+        }
     }
 
     public void Unpress()
     {
+        _as.pitch = 0.6f;
+        _as.Play();
         foreach (var o in pressurePadObjects)
         {
             o.OnPressurePadUp();
@@ -59,6 +58,9 @@ public class PressurePlate : MonoBehaviour
 
     private void OnCollisionExit(Collision other)
     {
-        Unpress();
+        if (Water.canBePressed)
+        {
+            Unpress();
+        }
     }
 }

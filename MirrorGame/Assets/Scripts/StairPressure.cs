@@ -33,13 +33,11 @@ public class StairPressure : PressurePadObject
 
     public override void OnPressurePadDown()
     {
-        Debug.Log("Awe1");
         _isDown = true;
     }
 
     public override void OnPressurePadUp()
     {
-        Debug.Log("Awe2");
         _isDown = false;
     }
 }

@@ -154,7 +154,14 @@ namespace PlayerManager
                 _rigidBody.velocity = MoveDirection.magnitude * Speed * Forward;
             else
             {
-                _rigidBody.velocity += Physics.gravity * Time.deltaTime;
+                if (GameManager.CurrentLevelIndex < 11)
+                {
+                    _rigidBody.velocity += Physics.gravity * Time.deltaTime;
+                }
+                else
+                {
+                    _rigidBody.velocity = new Vector3(0,-3f, 0);
+                }
             }
         }
 
