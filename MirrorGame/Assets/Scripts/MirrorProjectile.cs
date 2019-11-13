@@ -19,8 +19,9 @@ public class MirrorProjectile : MonoBehaviour
     private void Awake()
     {
         _initialPosition = transform.localPosition;
+        transform.localScale = Vector3.zero;
         _initialScale = new Vector3(0.4f,0.4f,0.4f);
-        Debug.Log(_initialScale);
+        Unload();
     }
 
 
@@ -91,13 +92,14 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Load()
     {
-        gameObject.SetActive(true);
-        UiControl.ShowHintUI();
-        Grow();
+        if (!isBig)
+        {
+            gameObject.SetActive(true);
+            UiControl.ShowHintUI();
+            Grow();
+        }
     }
     
-    
-
     private void Grow()
     {
         gameObject.SetActive(true);
@@ -108,6 +110,7 @@ public class MirrorProjectile : MonoBehaviour
 
     private void Shrink()
     {
+        
         UiControl.HideHintUI();
         _shrink = true;
         _grow = false;
@@ -116,6 +119,9 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Unload()
     {
-        Shrink();
+        if (isBig)
+        {
+            Shrink();
+        }
     }
 }

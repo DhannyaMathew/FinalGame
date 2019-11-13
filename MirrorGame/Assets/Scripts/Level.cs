@@ -60,9 +60,8 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
-        foreach (var levelObject in GetComponentsInChildren<LevelObject>())
+        foreach (var levelObject in GetComponentsInChildren<LevelObject>(true))
         {
-            Debug.Log(this+" "+levelObject);
             _levelObjects.Add(levelObject);
         }
             

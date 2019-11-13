@@ -17,13 +17,14 @@ namespace PlayerManager
 
         private void Start()
         {
-            EventHandler.OnMirrorPickup += _mirrorProjectile.Load;
-                EventHandler.OnMirrorAbsorb += _mirrorProjectile.Load;
-            
-            EventHandler.OnDoorWalkThrough += (door, transition) =>
+            EventHandler.OnMirrorPickup += () =>
             {
-                _mirrorProjectile.Unload();
+                
+                _mirrorProjectile.Load();
             };
+            EventHandler.OnMirrorAbsorb += () => { _mirrorProjectile.Load(); };
+
+            EventHandler.OnDoorWalkThrough += (door, transition) => { _mirrorProjectile.Unload(); };
         }
 
         // Update is called once per frame
@@ -32,7 +33,7 @@ namespace PlayerManager
             if (Input.GetButtonDown("Fire1") && HasMirror)
             {
                 RaycastHit hit;
-               // GameManager.Player.PlayInteractAnim();
+                // GameManager.Player.PlayInteractAnim();
                 UiControl.HideHintUI();
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(_mirrorProjectile.transform.position,
@@ -52,6 +53,7 @@ namespace PlayerManager
 
         public void PutBackMirror()
         {
+            Debug.Log(HasMirror);
             _mirrorProjectile.Unload();
         }
     }

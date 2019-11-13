@@ -22,7 +22,6 @@ public class Water : LevelObject
     protected override void Start()
     {
         base.Start();
-        Debug.Log(Level);
         _source = GetComponent<AudioSource>();
         _ps = GetComponent<ParticleSystem>();
         ice = transform.GetChild(1).gameObject;
@@ -81,12 +80,12 @@ public class Water : LevelObject
             plate.PressDown();
         }
         count++;
+        Debug.Log(count);
     }
 
     protected override void ResetObject()
     {
-        Debug.Log(Level);
-        count = -1;
+        count = 0;
         _ps.Stop();
         other.Stop();
         plate.Unpress();

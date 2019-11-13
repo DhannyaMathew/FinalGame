@@ -9,7 +9,7 @@ public abstract class Interactable : LevelObject
     [SerializeField] protected float successDistance;
 
     public bool CanBeInteractedWith;
-
+    protected bool playAnimation = true;
     protected abstract void OnInteract();
 
     public static void Interact(IEnumerable<Interactable> interactables, Transform player, float height)
@@ -46,7 +46,8 @@ public abstract class Interactable : LevelObject
         {
             if (Input.GetButtonDown("Interact"))
             {
-                GameManager.Player.PlayInteractAnim();
+                if(i.playAnimation)
+                    GameManager.Player.PlayInteractAnim();
                 i.OnInteract();
                 if (EventHandler.OnInteract != null)
                     EventHandler.OnInteract();

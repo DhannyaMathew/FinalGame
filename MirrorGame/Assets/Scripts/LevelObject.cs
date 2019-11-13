@@ -16,7 +16,6 @@ public abstract class LevelObject : MonoBehaviour
     {
         foreach (var o in levelObjects)
         {
-            Debug.Log(o+" reset");
             o.ResetObject();
         }
     }

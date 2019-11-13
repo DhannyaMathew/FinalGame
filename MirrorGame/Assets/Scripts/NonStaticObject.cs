@@ -6,7 +6,7 @@ public class NonStaticObject : LevelObject
 {
     private Vector3 _initialPos;
     private Quaternion _initialRot;
-    private Rigidbody _rigidbody;
+    protected Rigidbody _rigidbody;
 
     protected override void Start()
     {
