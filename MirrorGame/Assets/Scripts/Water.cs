@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Water : LevelObject
 {
+    
     private ParticleSystem _ps;
     [SerializeField] private ParticleSystem other;
     [SerializeField] private PressurePlate plate;
@@ -21,6 +22,7 @@ public class Water : LevelObject
     protected override void Start()
     {
         base.Start();
+        Debug.Log(Level);
         _source = GetComponent<AudioSource>();
         _ps = GetComponent<ParticleSystem>();
         ice = transform.GetChild(1).gameObject;
@@ -60,8 +62,6 @@ public class Water : LevelObject
 
     public void Reflect()
     {
-     
-        Debug.Log(count);
         if (count == 0)
         {
             _source.Play();
@@ -85,6 +85,7 @@ public class Water : LevelObject
 
     protected override void ResetObject()
     {
+        Debug.Log(Level);
         count = -1;
         _ps.Stop();
         other.Stop();
@@ -93,7 +94,6 @@ public class Water : LevelObject
         water.SetActive(false);
         iceBlock.SetActive(true);
         _isWater = false;
-        Debug.Log(count);
         canBePressed = true;
     }
 }

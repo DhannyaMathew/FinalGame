@@ -1,16 +1,16 @@
 
 using UnityEngine;
 
-public abstract class Pickupable:Interactable
+public abstract class Pickupable: Interactable
 {
-    protected bool _isHeld;
+    protected bool IsHeld;
 
     protected override void OnInteract()
     {
        
-            if (!_isHeld)
+            if (!IsHeld)
             {
-                _isHeld = true;
+                IsHeld = true;
                 OnPickup();
             }
         

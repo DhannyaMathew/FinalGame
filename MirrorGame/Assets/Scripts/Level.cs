@@ -62,8 +62,8 @@ public class Level : MonoBehaviour
     {
         foreach (var levelObject in GetComponentsInChildren<LevelObject>())
         {
+            Debug.Log(this+" "+levelObject);
             _levelObjects.Add(levelObject);
-            Debug.Log(gameObject.name +" "+levelObject);
         }
             
         

@@ -10,12 +10,13 @@ public abstract class LevelObject : MonoBehaviour
         Level = GetComponentInParent<Level>();
     }
 
-    protected abstract void ResetObject();
+    protected abstract void  ResetObject();
 
     public static void ResetLevelObjects(IEnumerable<LevelObject> levelObjects)
     {
         foreach (var o in levelObjects)
         {
+            Debug.Log(o+" reset");
             o.ResetObject();
         }
     }

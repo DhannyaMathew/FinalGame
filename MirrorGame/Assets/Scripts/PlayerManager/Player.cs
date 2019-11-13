@@ -77,9 +77,14 @@ namespace PlayerManager
             {
                 if (_tempKey.activeSelf)
                 {
+                    if(door.IsLocked)
+                        _tempKey.SetActive(false);
                     door.Unlock();
-                    _tempKey.SetActive(false);
                 }
+            };
+            EventHandler.OnDoorWalkThrough += (door, transition) =>
+            {
+                _tempKey.SetActive(false);
             };
         }
 
@@ -175,7 +180,7 @@ namespace PlayerManager
         private void FallOffMap()
         {
             GameManager.RestartLevel();
-            _rigidbody.velocity = new Vector3(0, _rigidbody.velocity.y, 0);
+            _rigidbody.velocity = new Vector3(0, 0, 0);
         }
 
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuLight : MonoBehaviour
+public class MenuLevel : MonoBehaviour
 {
     private float _intialY;
     private float _intialXRot;

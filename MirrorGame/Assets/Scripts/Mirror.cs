@@ -142,6 +142,7 @@ public class Mirror : Interactable
 
     protected override void OnInteract()
     {
+        CanBeInteractedWith = false;
         DissolveAmount = 0f;
         FadeOut();
         if (EventHandler.OnMirrorAbsorb != null)

@@ -5,37 +5,31 @@ namespace PlayerManager
 {
     internal class Shoot : MonoBehaviour
     {
-        private bool _hasMirror;
         private MirrorProjectile _mirrorProjectile;
 
-        public bool HasMirror => _hasMirror;
+        public bool HasMirror => _mirrorProjectile.isBig;
 
         private void Awake()
         {
             _mirrorProjectile = GetComponentInChildren<MirrorProjectile>();
-            _mirrorProjectile.gameObject.SetActive(false);
+            _mirrorProjectile.Unload();
         }
 
         private void Start()
         {
-            EventHandler.OnMirrorPickup += () =>
+            EventHandler.OnMirrorPickup += _mirrorProjectile.Load;
+                EventHandler.OnMirrorAbsorb += _mirrorProjectile.Load;
+            
+            EventHandler.OnDoorWalkThrough += (door, transition) =>
             {
-                _mirrorProjectile.Load();
-                _hasMirror = true;
-            };
-            EventHandler.OnMirrorAbsorb += () =>
-            {
-                UiControl.ShowHintUI();
-                _mirrorProjectile.gameObject.SetActive(true);
-                _mirrorProjectile.Grow();
-                _hasMirror = true;
+                _mirrorProjectile.Unload();
             };
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetButtonDown("Fire1") && _hasMirror)
+            if (Input.GetButtonDown("Fire1") && HasMirror)
             {
                 RaycastHit hit;
                // GameManager.Player.PlayInteractAnim();
@@ -45,7 +39,6 @@ namespace PlayerManager
                     GameManager.MainCamera.transform.forward, out hit,
                     Mathf.Infinity))
                 {
-                    _hasMirror = false;
                     _mirrorProjectile.Shoot(hit);
                     //GameManager.CurrentLevel.ResetMirrors();
                 }
@@ -54,14 +47,12 @@ namespace PlayerManager
 
         public void ResetObject()
         {
-            _mirrorProjectile.gameObject.SetActive(false);
-            _hasMirror = false;
+            _mirrorProjectile.Unload();
         }
 
         public void PutBackMirror()
         {
-            _hasMirror = _mirrorProjectile.isBig;
-            _mirrorProjectile.Shrink();
+            _mirrorProjectile.Unload();
         }
     }
 }
