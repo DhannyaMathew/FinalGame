@@ -24,7 +24,6 @@ public class Ball : NonStaticObject
     {
         if (other.CompareTag("Water"))
         {
-            Debug.Log("Floating");
             _animator.enabled = true;
             _rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
         }
@@ -35,7 +34,6 @@ public class Ball : NonStaticObject
     {
         if (other.CompareTag("Water"))
         {
-            Debug.Log("not floating");
             _animator.enabled = false;
             _rigidbody.constraints = 0;
         }

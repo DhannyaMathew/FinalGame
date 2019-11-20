@@ -11,10 +11,10 @@ public class MirrorProjectile : MonoBehaviour
     [SerializeField] private GameObject mirrorPrefab;
 
     private RaycastHit _hit;
-    private bool _shot, _grow, _shrink, _isBig;
+    private bool _shot, _grow, _shrink;
     private Vector3 _initialPosition;
     private Vector3 _initialScale;
-    public bool isBig => _isBig;
+    public bool hasMirror => transform.localScale.magnitude > 0.1f && !_shot;
 
     private void Awake()
     {
@@ -52,10 +52,10 @@ public class MirrorProjectile : MonoBehaviour
                 mirror.Level.ResetMirrors();
                 mirror.DissolveAmount = 1f;
                 mirror.FadeIn();
-                gameObject.transform.parent = GameManager.Player.transform;
-                gameObject.transform.localPosition = _initialPosition;
+                transform.parent = GameManager.Player.transform;
+                transform.localPosition = _initialPosition;
+                transform.localScale = Vector3.zero;
                 _shot = false;
-                gameObject.SetActive(false);
             }
         }
 
@@ -66,19 +66,15 @@ public class MirrorProjectile : MonoBehaviour
             {
                 transform.localScale = _initialScale;
                 _grow = false;
-                _isBig = true;
-
             }
         }
 
         if (_shrink)
         {
-            _isBig = false;
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 5 * Time.deltaTime);
             if (Mathf.Abs(transform.localScale.x) < 0.001f)
             {
                 transform.localScale = Vector3.zero;
-                gameObject.SetActive(false);
                 _shrink = false;
             }
         }
@@ -92,9 +88,8 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Load()
     {
-        if (!isBig)
+        if (!hasMirror)
         {
-            gameObject.SetActive(true);
             UiControl.ShowHintUI();
             Grow();
         }
@@ -119,7 +114,7 @@ public class MirrorProjectile : MonoBehaviour
 
     public void Unload()
     {
-        if (isBig)
+        if (hasMirror)
         {
             Shrink();
         }

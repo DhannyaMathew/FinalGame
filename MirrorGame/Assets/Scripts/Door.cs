@@ -28,31 +28,31 @@ public class Door : Interactable
     private AudioSource _soundLocked;
 
 
-
     protected override void Start()
     {
         base.Start();
         _hinge = transform.GetChild(0);
         KeyHole = GameObject.FindWithTag("KeyHole").transform;
-        
+
         _soundsDoor = GetComponents<AudioSource>();
         _soundOpening = _soundsDoor[0];
         _soundClosing = _soundsDoor[1];
         _soundLocked = _soundsDoor[2];
         _initialOpen = open;
         _initialLocked = locked;
-      
     }
 
     private void Update()
     {
+        CanBeInteractedWith = (GameManager.Player.transform.position - transform.position).sqrMagnitude > 0.5f * 0.5f;
         _targetRotation = open ? Quaternion.Euler(0, -openAngle, 0) : Quaternion.Euler(0, 0, 0);
         _hinge.localRotation = Quaternion.Lerp(_hinge.localRotation, _targetRotation, Time.deltaTime * openSpeed);
-        if ((GameManager.Player.transform.position - transform.position).sqrMagnitude>  5 * 5 && Level == GameManager.CurrentLevel)
+        if ((GameManager.Player.transform.position - transform.position).sqrMagnitude > 5 * 5 &&
+            Level == GameManager.CurrentLevel)
         {
             Close(false);
         }
-        
+
         UpdatePortals(GameManager.MainCamera.Camera);
     }
 
@@ -93,12 +93,12 @@ public class Door : Interactable
         {
             if (mirror.Level == Level)
             {
-                _connectedDoor.transform.localScale = Vector3.Scale(new Vector3(Mathf.Sign(transform.lossyScale.x),1,1), _connectedDoor.transform.localScale);
+                _connectedDoor.transform.localScale = Vector3.Scale(
+                    new Vector3(Mathf.Sign(transform.lossyScale.x), 1, 1), _connectedDoor.transform.localScale);
             }
         };
         if (!connectingBack)
         {
-            
             other.openAngle = openAngle;
             other.openSpeed = openSpeed;
             other.locked = locked;
@@ -157,7 +157,7 @@ public class Door : Interactable
     {
         if (!locked)
         {
-            if(!open)
+            if (!open)
                 _soundOpening.Play();
             else
                 _soundClosing.Play();
@@ -170,11 +170,10 @@ public class Door : Interactable
             _soundLocked.Play();
         }
     }
-    
+
 
     protected override void OnInteract()
     {
-        
         if (EventHandler.OnDoorInteract != null)
             EventHandler.OnDoorInteract(this);
         TryOpen();
@@ -201,4 +200,7 @@ public class Door : Interactable
     {
         _triggerLockAndClose = true;
     }
+    
+
+    
 }

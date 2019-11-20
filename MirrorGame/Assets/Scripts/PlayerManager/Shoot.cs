@@ -7,7 +7,7 @@ namespace PlayerManager
     {
         private MirrorProjectile _mirrorProjectile;
 
-        public bool HasMirror => _mirrorProjectile.isBig;
+        public bool HasMirror => _mirrorProjectile.hasMirror;
 
         private void Awake()
         {

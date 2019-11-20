@@ -21,6 +21,7 @@ namespace PlayerManager
         private Timer _footStepModulator;
         private AudioSource _audioSource;
         private GameObject _tempKey;
+        private ParticleSystem _ps;
 
         private static readonly int SpeedAnimatorParameter = Animator.StringToHash("Speed");
         private static readonly int YDirAnimatorParameter = Animator.StringToHash("yDir");
@@ -41,6 +42,7 @@ namespace PlayerManager
             _rigidbody = GetComponent<Rigidbody>();
             _audioSource = GetComponent<AudioSource>();
             _movement = new PlayerMove(settings, _rigidbody);
+            _ps = GetComponentInChildren<ParticleSystem>(true);
             _footStepModulator = new Timer(1f, true, () =>
             {
                 var mag = _movement.HasInput ? _movement.Speed : 0;
@@ -77,15 +79,12 @@ namespace PlayerManager
             {
                 if (_tempKey.activeSelf)
                 {
-                    if(door.IsLocked)
+                    if (door.IsLocked)
                         _tempKey.SetActive(false);
                     door.Unlock();
                 }
             };
-            EventHandler.OnDoorWalkThrough += (door, transition) =>
-            {
-                _tempKey.SetActive(false);
-            };
+            EventHandler.OnDoorWalkThrough += (door, transition) => { _tempKey.SetActive(false); };
         }
 
         public void Setup(MainCamera mainCamera)
@@ -152,7 +151,6 @@ namespace PlayerManager
         private void FallToMain()
         {
             GameManager.CurrentLevelIndex = 1;
-            
         }
 
         private void CollectContacts()
@@ -207,6 +205,18 @@ namespace PlayerManager
         {
             _animator.SetTrigger(Interact);
             _interacting = true;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Puddle"))
+                _ps.Play();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Puddle"))
+                _ps.Stop();
         }
     }
 }
