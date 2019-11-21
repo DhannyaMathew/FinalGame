@@ -60,12 +60,12 @@ namespace MainMenu
         {
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
             {
-                SetButton(_currentButton.prev);
+                SetButton(_currentButton.next);
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
             {
-                SetButton(_currentButton.next);
+                SetButton(_currentButton.prev);
             }
             MenuSystem.SetSelectedGameObject(_currentButton.gameObject); 
         }
