@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 using PlayerManager;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
             if (CurrentLevel != null)
             {
                 current.Activate();
+                current.TurnOnOtherLights();
                 current.TurnOnparticleSystems();
                 current.TurnOnDirectionalLight();
                 //MainCamera.GetComponent<HDAdditionalCameraData>().volumeAnchorOverride = current.transform;
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour
             if (nextLevel != null)
             {
                 nextLevel.Activate();
+                nextLevel.TurnOffOtherLights();
                 nextLevel.TurnOffparticleSystems();
                 nextLevel.TurnOffDirectionalLight();
             }
@@ -106,11 +109,17 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
-            _instance = this;
-        else
-            Destroy(gameObject);
+        if (_instance != null)
+        {
+            Destroy(_instance.gameObject);
+            Debug.Log("I got replaced");
+        }
+        _instance = this;
+        Init();
+    }
 
+    private void Init()
+    {
         _player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         _mainCamera = Instantiate(mainCameraPrefab, Vector3.zero, Quaternion.identity).GetComponent<MainCamera>();
         _orb = Instantiate(orbPrefab, Vector3.zero, Quaternion.identity).GetComponent<Orb>();
@@ -119,6 +128,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Starting");
         //Setup sensitivity for mouse from settings, volume etc - Dhannya
         LinkLevels();
         TurnOffLevels();
@@ -142,10 +152,9 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
-      //  UiControl.TurnOffMenu();
+        //  UiControl.TurnOffMenu();
         CurrentLevelIndex = 1;
         RestartLevel();
-        
     }
 
     private static Level GetLevel(int level)
@@ -225,5 +234,16 @@ public class GameManager : MonoBehaviour
     public void SetCameraYSensitivity(float val)
     {
         MainCamera.SetCameraSensitivityY(val);
+    }
+
+    public void FullRestart()
+    {
+        SceneManager.LoadScene(0);
+        EventHandler.Clear();
+    }
+
+    public static void FullReload()
+    {
+        _instance.FullRestart();
     }
 }

@@ -19,7 +19,6 @@ public class Key : Pickupable
     protected override void OnPickup()
     {
         EventHandler.OnKeyPickUp(this);
-        Debug.Log("Awe");
     }
 
     public void Freeze()
@@ -48,6 +47,7 @@ public class Key : Pickupable
 
         transform.localPosition = _initialPos;
         transform.localRotation = _initialRot;
+        IsHeld = false;
 
     }
 }

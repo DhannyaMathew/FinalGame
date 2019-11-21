@@ -25,10 +25,12 @@ namespace MainMenu
 
         private void Awake()
         {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(gameObject);
+            if (instance != null)
+            {
+                Destroy(instance.gameObject);
+                Debug.Log("I got replaced");
+            }
+            instance = this;
             
             _pauseState = PauseMenuState.Off;
         

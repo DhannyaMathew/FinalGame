@@ -72,6 +72,7 @@ namespace PlayerManager
             _tempKey = transform.GetChild(1).gameObject;
             EventHandler.OnKeyPickUp += (key) =>
             {
+                
                 key.gameObject.SetActive(false);
                 _tempKey.SetActive(true);
             };
@@ -150,7 +151,7 @@ namespace PlayerManager
 
         private void FallToMain()
         {
-            GameManager.CurrentLevelIndex = 1;
+            GameManager.FullReload();
         }
 
         private void CollectContacts()

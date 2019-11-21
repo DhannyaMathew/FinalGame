@@ -19,4 +19,17 @@ public static class EventHandler
     public static InteractEvent OnInteract;
     public static InteractEvent OnMirrorPickup;
     public static InteractEvent OnMirrorAbsorb;
+
+    public static void Clear()
+    {
+       OnMirrorWalkThrough = null;
+       OnKeyPickUp = null;
+       OnDoorInteract = null;
+       OnDoorWalkThrough = null;
+       OnFallOutOfMap = null;
+       OnPortalTeleport = null;
+       OnInteract = null;
+       OnMirrorPickup = null;
+       OnMirrorAbsorb = null;
+    }
 }

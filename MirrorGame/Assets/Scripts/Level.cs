@@ -56,6 +56,7 @@ public class Level : MonoBehaviour
         _lights = GetComponentsInChildren<Light>();
         _initialPosition = transform.position;
         _intialRotation = transform.rotation;
+        TurnOnOtherLights();
     }
 
     private void Start()
@@ -64,7 +65,6 @@ public class Level : MonoBehaviour
         {
             _levelObjects.Add(levelObject);
         }
-            
         
         reflectionAttribute.Set();
     }
@@ -168,6 +168,7 @@ public class Level : MonoBehaviour
         {
             if (light.type != LightType.Directional)
             {
+                light.gameObject.SetActive(true);
                 light.enabled = true;
             }
         }

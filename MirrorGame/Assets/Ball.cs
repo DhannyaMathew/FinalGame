@@ -28,7 +28,7 @@ public class Ball : NonStaticObject
             _rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
         }
     }
-
+ 
 
     private void OnTriggerExit(Collider other)
     {

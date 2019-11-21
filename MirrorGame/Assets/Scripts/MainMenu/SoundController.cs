@@ -14,11 +14,12 @@ namespace MainMenu
 
 		void Awake ()
 		{
-			if (instance == null) {
-				instance = this;
-			} else if (instance != null) {
-				Destroy (gameObject);
+			if (instance != null)
+			{
+				Destroy(instance.gameObject);
+				Debug.Log("I got replaced");
 			}
+			instance = this;
 			if (Math.Abs(AudioListener.volume) < 0.001f)
 			{
 				AudioListener.volume = 1;

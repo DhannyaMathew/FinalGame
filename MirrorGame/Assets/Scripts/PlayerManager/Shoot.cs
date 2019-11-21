@@ -35,13 +35,11 @@ namespace PlayerManager
                 RaycastHit hit;
                 // GameManager.Player.PlayInteractAnim();
                 UiControl.HideHintUI();
-                // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(_mirrorProjectile.transform.position,
                     GameManager.MainCamera.transform.forward, out hit,
                     Mathf.Infinity))
                 {
                     _mirrorProjectile.Shoot(hit);
-                    //GameManager.CurrentLevel.ResetMirrors();
                 }
             }
         }

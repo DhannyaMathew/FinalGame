@@ -14,13 +14,15 @@ public class MirrorProjectile : MonoBehaviour
     private bool _shot, _grow, _shrink;
     private Vector3 _initialPosition;
     private Vector3 _initialScale;
-    public bool hasMirror => transform.localScale.magnitude > 0.1f && !_shot;
+    private GameObject _probe;
+    public bool hasMirror => transform.localScale.magnitude > 0.1f && !_shot && !_grow;
 
     private void Awake()
     {
         _initialPosition = transform.localPosition;
         transform.localScale = Vector3.zero;
         _initialScale = new Vector3(0.4f,0.4f,0.4f);
+        _probe = transform.GetChild(0).gameObject;
         Unload();
     }
 
@@ -66,6 +68,7 @@ public class MirrorProjectile : MonoBehaviour
             {
                 transform.localScale = _initialScale;
                 _grow = false;
+
             }
         }
 
@@ -74,6 +77,7 @@ public class MirrorProjectile : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 5 * Time.deltaTime);
             if (Mathf.Abs(transform.localScale.x) < 0.001f)
             {
+                _probe.SetActive(false);
                 transform.localScale = Vector3.zero;
                 _shrink = false;
             }
@@ -97,7 +101,7 @@ public class MirrorProjectile : MonoBehaviour
     
     private void Grow()
     {
-        gameObject.SetActive(true);
+        _probe.SetActive(true);
         transform.localScale = Vector3.zero;
         _grow = true;
         _shrink = false;

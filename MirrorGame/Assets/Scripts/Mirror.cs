@@ -47,7 +47,7 @@ public class Mirror : Interactable
         _soundsMirror = GetComponents<AudioSource>();
         _soundReverse = _soundsMirror[1];
         _material = GetComponentInChildren<Renderer>().material;
-        _offset = new LinearMapping()
+        _offset = new LinearMapping
         {
             clamp =  true,
             minMaxIn = Vector2.up,

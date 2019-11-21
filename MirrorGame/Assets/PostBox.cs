@@ -37,7 +37,6 @@ public class PostBox : Interactable
                 closestDoor = door;
             }
         }
-        Debug.Log(closest);
         if (closestDoor != null)
         {
             closestDoor.Toggle();
